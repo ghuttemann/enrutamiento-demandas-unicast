@@ -1,16 +1,22 @@
 #include "GrafoLista.h"
 
-GrafoLista::GrafoLista(struct enlace e[], int n, int r)
-{
-	nodos = vector<ListaAdyacencia>(r);
-	
-	for (int i = 0; i < n; i++) {
-		struct enlace aux = e[i];
-		int pos = aux.origen;
-		nodos[pos].agregarEnlace(Enlace(aux.destino, aux.costo, aux.capacidad)); 
-	}
+GrafoLista::GrafoLista() {
 }
 
-GrafoLista::~GrafoLista()
-{
+GrafoLista::~GrafoLista() {
+}
+
+void GrafoLista::imprimir() {
+    for (int i=0; i < this->cantidadNodos(); i++) {
+        ListaAdyacencia a = this->adyacentes(i);
+        for (int j=0; j < a.cantidadEnlaces(); j++) {
+            Enlace e = a.obtenerEnlace(j);
+            cout << "{";
+            cout << "Orig:" << e.getOrigen()     << ", ";
+            cout << "Dest:" << e.getDestino()    << ", ";
+            cout << "Cost:" << e.getCosto()      << ", ";
+            cout << "Capa:" << e.getCapaciadad() << "}";
+            cout << endl;
+        }
+    }
 }

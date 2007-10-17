@@ -5,8 +5,8 @@
 
 class Lector {
 public:
-    Lector() {};
-    ~Lector() {};
+    Lector();
+    ~Lector();
     void leerArchivo(const char*, Grafo);
 };
 

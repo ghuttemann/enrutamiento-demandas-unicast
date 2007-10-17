@@ -6,16 +6,15 @@ using namespace std;
 #include "Enlace.h"
 #include <vector>
 
-class ListaAdyacencia
-{
+class ListaAdyacencia {
 private:
 	vector<Enlace> enlaces;
 public:
 	void agregarEnlace(Enlace enc) { enlaces.push_back(enc); }
 	int cantidadEnlaces() { return enlaces.size(); }
 	Enlace obtenerEnlace(int pos) { return enlaces.at(pos); }
-	ListaAdyacencia() {};
-	~ListaAdyacencia() { enlaces.clear(); };
+	ListaAdyacencia();
+	~ListaAdyacencia() { enlaces.clear(); }
 };
 
 #endif /*LISTAADYACENCIA_H_*/

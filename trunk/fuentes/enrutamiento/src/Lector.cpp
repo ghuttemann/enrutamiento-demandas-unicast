@@ -12,7 +12,7 @@
 #include <fstream>
 #include <iostream>
 
-void Lector::leerArchivo(const char *filename, Grafo grafo){
+void Lector::leerArchivo(const char *filename, Grafo grafo) {
     ifstream source;
     string linea;
     int cantEnlaces; // contador de lineas leidas
@@ -32,7 +32,7 @@ void Lector::leerArchivo(const char *filename, Grafo grafo){
     source >> cantVertices; // se lee cantidad de enlace
     
     cantEnlaces = 0;
-    while (source || cantEnlaces < cantVertices){
+    while (source || cantEnlaces < cantVertices) {
         // Cargamos una linea del archivo
         source >> origen;
         source >> destino;

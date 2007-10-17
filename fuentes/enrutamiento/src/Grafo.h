@@ -2,17 +2,16 @@
 #define GRAFO_H_
 
 #include "Enlace.h"
+#include "ListaAdyacencia.h"
 
-class Grafo
-{
+class Grafo {
 public:
-	Grafo();
-	virtual ~Grafo();
+    Grafo();
+    virtual ~Grafo();
+    virtual int cantidadNodos();
+    virtual ListaAdyacencia adyacentes(int);
+    virtual void agregarEnlace(int, Enlace);
+    virtual void imprimir();
 };
 
 #endif /*GRAFO_H_*/
-
-struct enlace {
-	int origen, destino;
-	double costo, capacidad;
-};

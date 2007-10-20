@@ -9,11 +9,11 @@ Grafo::Grafo(int cantVert) {
 }
 
 Grafo::~Grafo() {
+	delete[] tabla;
 }
 
 void Grafo::agregarArista(Arista *a) {
 	int origen = a->getOrigen();
-
 	tabla[origen].agregarAdyacencia(a);
 }
 
@@ -31,9 +31,9 @@ void Grafo::imprimir() {
 		for (lista->iniciarIteracion(); lista->hayMas(); lista->siguiente()) {
 			Arista *a = lista->aristaActual();
 			cout << "{";
-			cout << "Orig:" << a->getOrigen()     << ", ";
-			cout << "Dest:" << a->getDestino()    << ", ";
-			cout << "Cost:" << a->getCosto()      << ", ";
+			cout << "Orig:" << a->getOrigen()    << ", ";
+			cout << "Dest:" << a->getDestino()   << ", ";
+			cout << "Cost:" << a->getCosto()     << ", ";
 			cout << "Capa:" << a->getCapacidad() << "}";
 			cout << endl;
 		}

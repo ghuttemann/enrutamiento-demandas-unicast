@@ -1,25 +1,18 @@
 #include "Arista.h"
 
 Arista::Arista(int orig, int dest, double cost, double capa, Arista *s) {
-	origen    = orig;
-	destino   = dest;
-	costo     = cost;
-	capacidad = capa;
-	sgte      = s;
+	setOrigen(orig);
+	setDestino(dest);
+	setCosto(cost);
+	setCapacidad(capa);
+	setSgte(s);
 }
 
 Arista::~Arista() {
 }
 
 bool Arista::igual(const Arista& a) {
-	if (origen == a.origen && destino == a.destino)
-		return true;
-	else
-		return false;
-}
-
-bool Arista::operator <(const Arista& a) {
-	return !igual(a);
+	return (origen == a.origen) && (destino == a.destino);
 }
 
 void Arista::setOrigen(int orig) {

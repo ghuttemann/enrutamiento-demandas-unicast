@@ -16,7 +16,9 @@ public:
 	void iniciarIteracion();
 	void siguiente();
 	bool hayMas();
+	bool adestino(int);
 	Arista *aristaActual();
+	int getLongitud();
 private:
 	void vaciar();
 };

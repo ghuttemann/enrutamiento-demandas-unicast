@@ -40,3 +40,10 @@ Arista* Lista::aristaActual() {
 bool Lista::hayMas() {
 	return (actual != NULL);
 }
+
+int Lista::getLongitud(){
+	return this->longitud;
+}
+bool Lista::adestino(int de){
+	return (actual->getOrigen() == de);
+}

@@ -2,6 +2,7 @@
 #define GRAFO_H_
 
 #include "Vertice.h"
+#include "../ag/Demanda.h"
 
 class Grafo {
 private:
@@ -15,6 +16,7 @@ public:
 	void agregarArista(Arista *);
 	Vertice *obtenerVertice(int);
 	int cantVertices();
+	void generarRutas(Demanda); 
 	void imprimir();
 };
 

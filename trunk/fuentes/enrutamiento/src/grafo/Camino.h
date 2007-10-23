@@ -16,6 +16,9 @@ public:
 	void quitarVertice();
 	bool getVacio();
 	int getLongitud();
+	int getPrimero();
+	int getUltimo();
+	void imprimir();
 private:
 	void redimensionar();
 	void sgteFactor();

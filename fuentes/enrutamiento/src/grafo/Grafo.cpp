@@ -51,7 +51,7 @@ int Grafo::cantVertices() {
  * @param d[] demandas de conexiones
  * @param Camino* Caminos encontrados (R*N caminos)
  */
-void Grafo::generarRutas(int index1, int index2, Demanda d[], Camino route[]) {
+void Grafo::generarRutas(int index1, int index2, Demanda d[], Camino route[][Rmax]) {
 	
 	int origen = d[index1].getOrigen(); // Origen
 	int destino = d[index1].getDestino(); // Destino
@@ -81,9 +81,9 @@ void Grafo::generarRutas(int index1, int index2, Demanda d[], Camino route[]) {
 			// se pone como visitado
 			v->setVisitado(true);
 			// se agrega el costo del camino
-			route[index2].setCosto(route[index2].getCosto() + a->getCosto());
+			route[index1][index2].setCosto(route[index1][index2].getCosto() + a->getCosto());
 			// se agrega el camino
-			route[index2].agregarCamino(a);
+			route[index1][index2].agregarCamino(a);
 			// se eligen los siguentes adyacentes
 			cout << "Me fui a:"<<a->getDestino()<<endl;
 			lista = v->getAdyacentes();
@@ -103,30 +103,30 @@ void Grafo::generarRutas(int index1, int index2, Demanda d[], Camino route[]) {
 	}
 	
 	
-	if (route[index2].getPrimero()!=origen || route[index2].getUltimo()!=destino) {
+	if (route[index1][index2].getPrimero()!=origen || route[index1][index2].getUltimo()!=destino) {
 		cout << "No hay camino entre los nodos"<<endl;
 		cout <<"De:"<<origen<<" A:"<<destino<<endl;
 	} else {
-		route[index2].imprimir();
+		route[index1][index2].imprimir();
 	}
 }
 /**
  * Funcion principal para generar todas las rutas 
  */
-void Grafo::generarRutas(Demanda d[], Camino route[]) {
+void Grafo::generarRutas(Demanda d[], Camino route[][Rmax]) {
 	srand ( time(NULL) );
 	// i indica el indice de la a leer demanda
 	// j indica el indice de la ruta a ser insertada
-	for (int i = 0; i<1 ; i++){
-		for (int j = 0; j<5; j++){
+	for (int i = 0; i<3 ; i++){
+		for (int j = 0; j<Rmax; j++){
 			generarRutas(i,j,d,route);
-			reset(route[j]);
+			reset(route[i][j]);
 		}
 	}
 }
 
 void Grafo::reset(Camino route){
-	for (int i = 0; i<5; i++){
+	for (int i = 0; i<Rmax; i++){
 		int n = route.getNodo(i);
 		tabla[n].setVisitado(false);
 	}
@@ -135,12 +135,6 @@ void Grafo::reset(Camino route){
 
 
 int Grafo::random(int cant){
-
-	//int i;
-	//time_t *s;
-	//tm *seed = localtime(s);
-	//cout<<"Semilla:"<<seed->tm_wday<<";"<<seed->tm_year<<";"<<CLOCKS_PER_SEC<<endl;
-	//srand(seed->tm_sec);
 	int retorno = (double(rand())/RAND_MAX)*cant;
 	return retorno;
 }

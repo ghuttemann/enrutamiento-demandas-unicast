@@ -19,8 +19,8 @@ public:
 	void agregarArista(Arista *);
 	Vertice *obtenerVertice(int);
 	int cantVertices();
-	void generarRutas(int index,int index2, Demanda d[], Camino route[]); 
-	void generarRutas(Demanda d[], Camino route[]); 
+	void generarRutas(int index,int index2, Demanda d[], Camino route[][Rmax]); 
+	void generarRutas(Demanda d[], Camino route[][Rmax]); 
 	void reset(Camino);
 	void imprimir();
 	

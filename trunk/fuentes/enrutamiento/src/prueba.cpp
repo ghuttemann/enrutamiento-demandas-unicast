@@ -2,7 +2,9 @@
 
 #include "grafo/ConstructorGrafo.h"
 #include "grafo/Camino.h"
+#include "grafo/Grafo.h"
 #include "ag/Demanda.h"
+
 
 int main(int argc, char *argv[]) {
 	//--------------| Lectura del Grafo |------------------
@@ -29,17 +31,25 @@ int main(int argc, char *argv[]) {
 	d[2].setDestino(9);
 	d[2].setAncho(2.5);
 	
-	Camino rutas [5]; //R = 5;
-	
+	Camino rutas [3][5]; //R = 5;
+
 	grafo->generarRutas(d, rutas);
+	cout<<"\n\n";
 	//--------------| Rutas CALCULADAS |-------------------
-	
-	for (int i=0; i<5; i++){
-		cout <<"------------------RESULTADO-----------------------"<<endl;
-		rutas[i].imprimir();
-		cout << endl<< (rutas[i].getPrimero())<<"·"<<rutas[i].getUltimo()<<endl;
-		cout << rutas[i].getCosto()<<endl;
-		cout <<"--------------------------------------------------"<<endl;
+	for (int j=0; j<3; j++){
+		for (int i=0; i<5; i++){
+			
+			cout <<"------------------RESULTADO-----------------------"<<endl;
+			if (rutas[j][i].getPrimero()!=d[j].getOrigen() || rutas[j][i].getUltimo()!=d[j].getDestino()) {
+				cout << "No hay camino entre los nodos"<<endl;
+				cout <<"De:"<<d[j].getOrigen() <<" A:"<<d[j].getDestino() <<endl;
+			}else{
+				rutas[j][i].imprimir();
+				cout << endl<< (rutas[j][i].getPrimero())<<"·"<<rutas[j][i].getUltimo()<<endl;
+				cout << rutas[j][i].getCosto()<<endl;
+			}
+			cout <<"--------------------------------------------------"<<endl;
+		}
 	}
 	
 	//--------------| Calculo de AG |----------------------

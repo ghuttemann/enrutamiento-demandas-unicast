@@ -44,6 +44,6 @@ bool Lista::hayMas() {
 int Lista::getLongitud(){
 	return this->longitud;
 }
-bool Lista::adestino(int de){
+bool Lista::endestino(int de){
 	return (actual->getOrigen() == de);
 }

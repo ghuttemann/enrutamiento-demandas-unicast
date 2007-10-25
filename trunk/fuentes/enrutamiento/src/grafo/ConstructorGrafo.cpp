@@ -2,6 +2,7 @@
 #include "../utils/utils.h"
 
 #include <fstream>
+
 using namespace std;
 
 ConstructorGrafo::ConstructorGrafo() {
@@ -52,7 +53,7 @@ Grafo* ConstructorGrafo::leerGrafo(const char *archivo) {
 	
 	// Cerramos el stream
 	stream.close();
-
+	
 	if (contador != cantAristas) {
 		string str = string("Error en el archivo \"") + archivo + "\"\n";
 		str += "La cantidad de vertices leidos no coincide con ";

@@ -101,4 +101,8 @@ public class Arista {
 	public void setCapacidad(double capacidad) {
 		this.capacidad = capacidad;
 	}
+	
+	public String getClave() {
+		return ("[" + origen + ":" + destino + "]");
+	}
  }

@@ -27,9 +27,15 @@ public class Vertice {
  	 */
  	private boolean visitado;
  	
+ 	/*
+ 	 * Identificador numerico
+ 	 */
+ 	private int id;
+ 	
 
 	/** Construye un nuevo Vertice */
- 	public Vertice() {
+ 	public Vertice(int id) {
+ 		this.id = id;
  		adyacentes = new Vector<Arista>();
  	}
  	
@@ -60,5 +66,13 @@ public class Vertice {
 
 	public void setVisitado(boolean visitado) {
 		this.visitado = visitado;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public String toString() {
+		return String.valueOf(id);
 	}
  }

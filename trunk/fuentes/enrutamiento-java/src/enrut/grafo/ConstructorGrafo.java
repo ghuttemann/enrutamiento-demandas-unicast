@@ -3,9 +3,7 @@
  */
 package enrut.grafo;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import enrut.utils.Lector;
 
 /**
  * Clase que realiza la construccion de un Grafo, leyendo
@@ -19,7 +17,6 @@ public class ConstructorGrafo {
 	private Grafo grafo;
 	
 	public void leerGrafo(String archivo) {
-		BufferedReader input;
 		String linea; // variable auxiliar
 		int contador=0; // contador de lineas leidas
 		int cantAristas;
@@ -28,17 +25,17 @@ public class ConstructorGrafo {
 		double costo, capacidad;
 
 		// Abrimos el archivo
-		input = getConexionArchivo(archivo);
+		Lector lector = new Lector(archivo);
 		
 		try {
 			// Leemos cantidad de vertices y aristas
-			cantVertices = Integer.parseInt(input.readLine());
-			cantAristas  = Integer.parseInt(input.readLine());
+			cantVertices = Integer.parseInt(lector.leerLinea());
+			cantAristas  = Integer.parseInt(lector.leerLinea());
 			
 			// Construimos el grafo
 			grafo = new Grafo(cantVertices);
 	
-			linea = input.readLine();
+			linea = lector.leerLinea();
 			while (linea != null) {
 				String[] partes = linea.split("\\s");
 				
@@ -52,7 +49,7 @@ public class ConstructorGrafo {
 				grafo.agregarArista(a);
 	
 				contador++;
-				linea = input.readLine();
+				linea = lector.leerLinea();
 			}
 			
 			if (contador != cantAristas) {
@@ -63,31 +60,15 @@ public class ConstructorGrafo {
 			}
 		}
 		catch (NumberFormatException e) {
-		}
-		catch (IOException e) {
+			System.out.println("Error al convertir número");
+			e.printStackTrace();
+			System.exit(0);
 		}
 		
-		try {
-			input.close();
-		} 
-		catch (IOException e) {
-		}
+		lector.cerrar();
 	}
 	
 	public Grafo getGrafo() {
 		return grafo;
 	}
-	
-	private BufferedReader getConexionArchivo(String archivo) {
- 		BufferedReader input = null;
-
- 		try {
- 			input = new BufferedReader( new FileReader(archivo) );
- 		}
- 		catch(IOException e) {
- 			throw new Error("No se puede abrir el archivo \"" + archivo + "\"");
- 		}
- 		
- 		return input;
- 	}
 }

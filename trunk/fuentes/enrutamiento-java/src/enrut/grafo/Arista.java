@@ -105,4 +105,14 @@ public class Arista {
 	public String getClave() {
 		return ("[" + origen + ":" + destino + "]");
 	}
+	
+	public String toString() {
+		StringBuffer buf = new StringBuffer();
+		buf.append("{Origen:").append(origen);
+		buf.append(", Destino:").append(destino);
+		buf.append(", Costo:").append(costo);
+		buf.append(", Capacidad:").append(capacidad);
+		buf.append("}");
+		return buf.toString();
+	}
  }

@@ -3,6 +3,8 @@
  */
 package enrut.ag;
 
+import enrut.grafo.GrupoCaminos;
+
 public class Demanda {
 	/*
 	 * El vertice origen de la demanda.
@@ -19,6 +21,11 @@ public class Demanda {
 	 * Demanda. Medido en KB/s.
 	 */
 	private double anchoDeBanda;
+	
+	/*
+	 * Caminos para la demanda
+	 */
+	private GrupoCaminos caminos;
 	
 	/**
 	 * Construye una nueva Demanda.
@@ -59,5 +66,13 @@ public class Demanda {
 
 	public void setAnchoDeBanda(double anchoDeBanda) {
 		this.anchoDeBanda = anchoDeBanda;
+	}
+
+	public GrupoCaminos getCaminos() {
+		return caminos;
+	}
+
+	public void setCaminos(GrupoCaminos caminos) {
+		this.caminos = caminos;
 	}
 }

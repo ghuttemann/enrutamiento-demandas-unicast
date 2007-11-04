@@ -4,31 +4,42 @@
 package enrut.utils;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Clase usada para la lectura de datos desde
  * teclado y para el borrado de pantalla.
  *
  * @author German Huttemann Arza
- * @version 1.00 04/05/03
  */
 public class Lector {
-	private BufferedReader in;
+	protected BufferedReader in;
+	private String archivo;
 	
 	/**
 	 * Construimos un nuevo lector
 	 */
-	public Lector() {
-		in = new BufferedReader( new InputStreamReader(System.in) );
+	public Lector(String archivo) {
+		try {
+			in = new BufferedReader( new FileReader(archivo) );
+		} catch (FileNotFoundException e) {
+			System.out.println("Error abriendo \"" + archivo + "\"");
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	protected Lector() {
+		// necesaria para clases hijas
 	}
 	
 	/**
 	 * Lee una linea de la entreda estandar, desplegando 
 	 * el mensaje que se le pasa como parametro.
 	 */
-	public String leerLinea(String mensaje) {
-		System.out.print(mensaje);
+	public String leerLinea() {
 		String linea = null;
 		
 		try {
@@ -39,20 +50,12 @@ public class Lector {
 		}
 		return linea;
 	}
-	
-	/**
-	 * Lee una linea de la entreda estandar.
-	 */
-	public String leerLinea() {
-		return leerLinea("");
+
+	public void cerrar() {
+		try {
+			in.close();
+		}
+		catch (IOException e) {
+		}
 	}
-	
-	/** 
-	 * Simula el borrado de pantalla
-	 * imprimiendo lineas en blanco.
-	 */
-	public void clear() {
-		for(int i=0; i < 100; ++i)
-			System.out.println("\t\t\t\t\t");
-	}	
 }

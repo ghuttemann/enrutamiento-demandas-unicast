@@ -33,7 +33,7 @@ public class Grafo {
  	public Grafo(int cantidad) {
  		vertices = new Vector<Vertice>(cantidad);
  		for (int i=0; i < cantidad; i++) {
- 			vertices.add(new Vertice());
+ 			vertices.add(new Vertice(i));
  		}
  	}
  	
@@ -47,7 +47,7 @@ public class Grafo {
  	
  	/** Agrega un nuevo vertice al Grafo. */
  	public void agregarVertice() {
- 		vertices.setSize(vertices.size()+1);
+ 		vertices.add(new Vertice(this.cantVertices()));
  	}
  	
  	/**

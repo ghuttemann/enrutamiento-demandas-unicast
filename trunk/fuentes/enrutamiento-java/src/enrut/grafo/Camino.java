@@ -15,9 +15,16 @@ import java.util.Vector;
  * @author Germán Hüttemann Arza
  */
 public class Camino {
- 	private Vector<Arista> secuencia;
+	private Vector<Arista> secuencia;
 	private double costo;
 	private int incremento;
+	
+	/*
+	 * Clave que representa univocamente a este
+	 * camino, en funcion de las aristas que lo
+	 * componen.
+	 */
+	private StringBuffer clave;
 	
 	private final int INIT_INCR  = 5;
 	private final int FIRST_INCR = 10;
@@ -27,6 +34,7 @@ public class Camino {
  	 * Construye un nuevo camino
  	 */
  	public Camino() {
+ 		clave = new StringBuffer();
  		costo = 0;
  		incremento = INIT_INCR;
  		secuencia = new Vector<Arista>(10);
@@ -39,11 +47,20 @@ public class Camino {
  		}
  		secuencia.add(a);
  		costo += a.getCosto();
+ 		
+ 		// Agregamos la clave de la Arista
+ 		clave.append(a.getClave());
  	}
  	
  	public Arista quitarArista() {
  		Arista a = secuencia.remove(secuencia.size()-1);
- 		costo -= a.getCosto();
+ 		costo -= a.getCosto(); 		
+ 		
+ 		// Removemos la clave de la Arista
+ 		int posIni = clave.indexOf(a.getClave());
+ 		int posFin = clave.indexOf("]", posIni);
+ 		clave.delete(posIni, posFin+1);
+ 		
  		return a;
  	}
  	
@@ -93,19 +110,49 @@ public class Camino {
  		String thisClass = this.getClass().getName();
  		String objClass  = this.getClass().getName();
  		
+ 		/* 
+ 		 * Proveemos una implementacion "O(1)" de la
+ 		 * comparacion entre los Caminos.
+ 		 */
  		if (thisClass.equalsIgnoreCase(objClass)) {
  			Camino cam = (Camino) obj;
- 			if (this.secuencia.size() != cam.secuencia.size())
- 				return false;
- 			
- 			for (int i=0; i < this.secuencia.size(); i++) {
- 				Arista a = this.secuencia.get(i);
- 				Arista b = cam.secuencia.get(i);
- 				if (!a.equals(b))
- 					return false;
- 			}
- 			return true;
+ 			return getClave().equals(cam.getClave());
  		}
- 		return false;
+ 		else {
+ 			return false;
+ 		}
+ 	}
+ 	
+ 	public String getClave() {
+ 		return clave.toString();
+ 	}
+ 	
+ 	public Camino clonar() {
+ 		Camino cam = new Camino();
+ 		
+ 		for (int i=0; i < this.getLongitud(); i++)
+ 			cam.agregarArista(this.getArista(i));
+ 		
+ 		return cam;
+ 	}
+ 	
+ 	public String toString() {
+ 		StringBuffer buffer = new StringBuffer();
+ 		buffer.append(1 + this.getLongitud() + ":");
+ 		buffer.append(this.getCosto() + ":");
+ 		
+ 		for (int i=0; i < this.getLongitud(); i++) {
+ 			Arista a = this.getArista(i);
+ 			buffer.append(a.getOrigen());
+ 			buffer.append("-");
+ 		}
+ 		
+ 		buffer.append(this.getUltimaArista().getDestino());
+ 		return buffer.toString();
+ 	}
+ 	
+ 	public void vaciar() {
+ 		while (!this.getVacio())
+ 			this.quitarArista();
  	}
  }

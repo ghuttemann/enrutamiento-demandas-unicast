@@ -30,28 +30,30 @@ public class Arista {
 	private int destino;
  	
  	/*
+ 	 * Un double que representa la capacidad
+ 	 * que soporta esta arista.
+ 	 */
+	private double capacidad;
+	
+	/*
  	 * Un entero que representa el costo/peso
  	 * de la arista.
  	 */
 	private double costo;
  	
- 	/*
- 	 * Un double que representa la capacidad
- 	 * que soporta esta arista.
- 	 */
-	private double capacidad;
- 	
  	/**
  	 * Construye una nueva arista
  	 *
+ 	 * @param origen El vertice origen de la arista.
  	 * @param destino El vertice destino de la arista.
+ 	 * @param capacidad La capacidad soportada por la arista.
  	 * @param costo El costo/peso de la arista.
  	 */
- 	public Arista(int origen, int destino, double costo, double capacidad) {
+ 	public Arista(int origen, int destino, double capacidad, double costo) {
  		this.origen    = origen;
  		this.destino   = destino;
- 		this.costo     = costo;
  		this.capacidad = capacidad;
+ 		this.costo     = costo;
  	}
  	
  	@Override
@@ -67,7 +69,7 @@ public class Arista {
  	}
  	
  	public Arista clonar() {
- 		return new Arista(origen, destino, costo, capacidad);
+ 		return new Arista(origen, destino, capacidad, costo);
  	}
 
 	public int getOrigen() {
@@ -102,17 +104,14 @@ public class Arista {
 		this.capacidad = capacidad;
 	}
 	
-	public String getClave() {
-		return ("[" + origen + ":" + destino + "]");
-	}
-	
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("{Origen:").append(origen);
-		buf.append(", Destino:").append(destino);
-		buf.append(", Costo:").append(costo);
-		buf.append(", Capacidad:").append(capacidad);
-		buf.append("}");
+		
+		buf.append(origen);
+		buf.append(":").append(destino);
+		buf.append(":").append(capacidad);
+		buf.append(":").append(costo);
+		
 		return buf.toString();
 	}
  }

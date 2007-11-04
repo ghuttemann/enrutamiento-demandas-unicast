@@ -19,13 +19,6 @@ public class Camino {
 	private double costo;
 	private int incremento;
 	
-	/*
-	 * Clave que representa univocamente a este
-	 * camino, en funcion de las aristas que lo
-	 * componen.
-	 */
-	private StringBuffer clave;
-	
 	private final int INIT_INCR  = 5;
 	private final int FIRST_INCR = 10;
 	private final int NEXT_INCR  = 15;
@@ -34,7 +27,6 @@ public class Camino {
  	 * Construye un nuevo camino
  	 */
  	public Camino() {
- 		clave = new StringBuffer();
  		costo = 0;
  		incremento = INIT_INCR;
  		secuencia = new Vector<Arista>(10);
@@ -47,20 +39,11 @@ public class Camino {
  		}
  		secuencia.add(a);
  		costo += a.getCosto();
- 		
- 		// Agregamos la clave de la Arista
- 		clave.append(a.getClave());
  	}
  	
  	public Arista quitarArista() {
  		Arista a = secuencia.remove(secuencia.size()-1);
- 		costo -= a.getCosto(); 		
- 		
- 		// Removemos la clave de la Arista
- 		int posIni = clave.indexOf(a.getClave());
- 		int posFin = clave.indexOf("]", posIni);
- 		clave.delete(posIni, posFin+1);
- 		
+ 		costo -= a.getCosto();
  		return a;
  	}
  	
@@ -110,21 +93,26 @@ public class Camino {
  		String thisClass = this.getClass().getName();
  		String objClass  = this.getClass().getName();
  		
- 		/* 
- 		 * Proveemos una implementacion "O(1)" de la
- 		 * comparacion entre los Caminos.
- 		 */
+ 		// Resultado de la opearción
+ 		boolean resultado = false;
+ 		
+ 		// Realizamos la comparación
  		if (thisClass.equalsIgnoreCase(objClass)) {
  			Camino cam = (Camino) obj;
- 			return getClave().equals(cam.getClave());
+ 			if (this.secuencia.size() == cam.secuencia.size()) {
+ 				resultado = true;
+ 				for (int i=0; i < this.secuencia.size(); i++) {
+ 					Arista a = this.secuencia.get(i);
+ 					Arista b = cam.secuencia.get(i);
+ 					if (!a.equals(b)) {
+ 						resultado = false;
+ 						break;
+ 					}
+ 				}
+ 			}
  		}
- 		else {
- 			return false;
- 		}
- 	}
- 	
- 	public String getClave() {
- 		return clave.toString();
+ 		
+ 		return resultado; 
  	}
  	
  	public Camino clonar() {
@@ -138,16 +126,14 @@ public class Camino {
  	
  	public String toString() {
  		StringBuffer buffer = new StringBuffer();
- 		buffer.append(1 + this.getLongitud() + ":");
- 		buffer.append(this.getCosto() + ":");
+ 		buffer.append(this.getLongitud());
+ 		buffer.append("-" + this.getCosto());
  		
  		for (int i=0; i < this.getLongitud(); i++) {
  			Arista a = this.getArista(i);
- 			buffer.append(a.getOrigen());
- 			buffer.append("-");
+ 			buffer.append("-" + a);
  		}
  		
- 		buffer.append(this.getUltimaArista().getDestino());
  		return buffer.toString();
  	}
  	

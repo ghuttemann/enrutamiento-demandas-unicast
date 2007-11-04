@@ -32,6 +32,9 @@ public class Grafo {
  	 */
  	public Grafo(int cantidad) {
  		vertices = new Vector<Vertice>(cantidad);
+ 		for (int i=0; i < cantidad; i++) {
+ 			vertices.add(new Vertice());
+ 		}
  	}
  	
  	/**
@@ -141,12 +144,12 @@ public class Grafo {
  			Iterator<Arista> it = this.getVertice(i).getAdyacentes().iterator();
  			while (it.hasNext()) {
  				Arista a = it.next();
- 				System.out.print("{");
- 				System.out.print("Orig:" + a.getOrigen()    + ", ");
- 				System.out.print("Dest:" + a.getDestino()   + ", ");
- 				System.out.print("Cost:" + a.getCosto()     + ", ");
- 				System.out.print("Capa:" + a.getCapacidad() + "}");
- 				System.out.println();
+ 				output.print("{");
+ 				output.print("Orig:" + a.getOrigen()    + ", ");
+ 				output.print("Dest:" + a.getDestino()   + ", ");
+ 				output.print("Cost:" + a.getCosto()     + ", ");
+ 				output.print("Capa:" + a.getCapacidad() + "}");
+ 				output.println();
  			}
  		}
  		output.close();

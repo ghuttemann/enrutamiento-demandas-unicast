@@ -3,172 +3,134 @@
  */
 package enrut.grafo;
 
-import java.util.Random;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
 
+/**
+ * Esta clase se encarga de generar todos los caminos
+ * posibles dentro del grafo. Esto es, todos los caminos
+ * entre cada par de vertices.
+ */
 public class GeneradorCaminos {
-	private Random rand;
+	
+	private GeneradorCaminos() {
+	}
+	
+	public static void generar(Grafo grafo, String path) {
+		int numVert = grafo.cantVertices();
+		GrupoCaminos[][] caminos = new GrupoCaminos[numVert][numVert];
+		
+		// Inicializamos la matriz
+		System.out.println("Inicializando matriz...");
+		for (int i=0; i < numVert; i++)
+		for (int j=0; j < numVert; j++)
+			if (i != j)
+			caminos[i][j] = new GrupoCaminos();
+		
+		// Generamos todos los caminos del grafo
+		generar(grafo, caminos);
+		
+		/*
+		 * Una vez que hemos generado todos los caminos
+		 * del grafo, procedemos a guardarlos en archivos.
+		 * Los nombres de los archivos generados seguiran 
+		 * el patron: "caminos-[a]-[b].txt", donde [a] y 
+		 * [b] son numeros enteros indicando el origen y 
+		 * destino, respectivamente, de los caminos 
+		 * contenidos en el archivo.
+		 */		
+		for (int i=0; i < numVert; i++) {
+			for (int j=0; j < numVert; j++) {
+				if (i != j) {
+					String archivo = path + "caminos-"+i+"-"+j+".txt";
+					try {
+						PrintWriter writer = new PrintWriter(new FileWriter(archivo));
+						GrupoCaminos grupo = caminos[i][j];
+						
+						writer.println(i);
+						writer.println(j);
+						
+						for (int k=0; k < grupo.getCantCaminos(); k++) {
+							Camino cam = grupo.getCamino(k);
+							writer.println(cam);
+						}
+						
+						writer.flush();
+						writer.close();
+					} 
+					catch (IOException e) {
+						System.out.println("Error escribiendo en \"" + archivo + "\"");
+						e.printStackTrace();
+						System.exit(0);
+					}
+				}
+			}
+		}
+	}
 	
 	/**
-	 * Función que genera las R rutas (o menos si no hay suficientes) para
-	 * las correspondientes N demandas.
-	 * @param index1 indica el indice de la a leer demanda
-	 * @param index2 indica el indice de la ruta a ser insertada
-	 * @param d[] demandas de conexiones
-	 * @param Camino* Caminos encontrados (R*N caminos)
+	 * Genera todos los caminos del grafo
+	 * 
+	 * @param grafo El grafo del cual deben generarse los caminos
+	 * @param caminos Matriz en la que se guardan los caminos
 	 */
-	void generarRutas(int index1, int index2, Demanda d[], Camino route[]) {
-		int origen = d[index1].getOrigen(); // Origen
-		int destino = d[index1].getDestino(); // Destino
-		cout<<"Origen:"<<origen<<" Destino:"<<destino<<endl<<endl;
+	private static void generar(Grafo grafo, GrupoCaminos[][] caminos) {
+		Camino camino = new Camino();
+		for (int i=0; i < grafo.cantVertices(); i++) {
+			System.out.printf("Generando caminos vertice %d...\n", i);
+			generarGrupo(grafo, i, i, camino, caminos);
+			camino.vaciar();
+		}
+	}
+	
+	/**
+	 * Genera todos los caminos para un vertice
+	 * en particular
+	 * 
+	 * @param grafo El grafo del cual deben generarse los caminos
+	 * @param origen El vertice origen para los caminos a generarse
+	 * @param actual El vertice actual en el recorrido
+	 * @param camino El camino contruido hasta el vertice actual
+	 * @param caminos Todos los caminos del grafo
+	 */
+	private static void generarGrupo(Grafo grafo, final int origen, int actual, 
+			Camino camino, GrupoCaminos[][] caminos) {
 		
-		Lista *lista = obtenerVertice(origen)->getAdyacentes(); //adyacentes
-		int cantady = lista->getLongitud();
-		int sigte = random(cantady); // id del camino a seguir
-		cout<<"Cantady = "<<cantady<<"; sigte = "<<sigte<<endl;
+		/*
+		 * Si no estamos en el vertice actual, entonces
+		 * guardamos el camino construido hasta el momento
+		 * al grupo de caminos entre el par de vertices
+		 * origen y actual.
+		 */
+		if (origen != actual) {
+			Camino cam = camino.clonar();
+			caminos[origen][actual].agregarCamino(cam);
+		}
 		
-		lista->iniciarIteracion();
-		obtenerVertice(origen)->setVisitado(true);
+		// Obtenemos el vertice en cuestion
+		Vertice vert = grafo.getVertice(actual);
 		
-		// sigte esta limitado por el tamaño de la lista
-		for (int i = 0; i<sigte; i++)
-			lista->siguiente();
+		// Marcamos al vertice como visitado
+		vert.setVisitado(true);
 		
-		int contador=0;
-		while(!lista->endestino(destino) && contador<10*cantady) {
+		// Obtenemos un iterador sobre las aristas del vertice
+		Iterator<Arista> it = vert.getAdyacentes().iterator();
+		
+		// Comenzamos el recorrido
+		while (it.hasNext()) {
+			Arista a = it.next();
+			int destino = a.getDestino();
+			Vertice v = grafo.getVertice(destino);
 			
-			Arista *a = lista->aristaActual(); // arista actual
-			cout << "Estoy en:"<<a->getOrigen()<<endl;
-			Vertice *v = obtenerVertice(a->getDestino()); // vertice subdestino
-		
-			if (! v->getVisitado()) {
-				cout<<endl<<"VISITADO"<<endl;
-				// se pone como visitado
-				v->setVisitado(true);
-				// se agrega el costo del camino
-				route[index2].setCosto(route[index2].getCosto() + a->getCosto());
-				// se agrega el camino
-				route[index2].agregarCamino(a);
-				// se eligen los siguentes adyacentes
-				cout << "Me fui a:"<<a->getDestino()<<endl;
-				lista = v->getAdyacentes();
-				cantady = lista->getLongitud();
-				contador = 0;
-			} else {
-				cout<<endl<<"NO VISITADO"<<endl;
-				contador++;
-			}
-					
-			sigte = random(cantady); // id del camino a seguir
-			cout<<" Cantady = "<<cantady<<"; sigte = "<<sigte<<endl;
-			// Selección de una arista
-			lista->iniciarIteracion();
-			for (int i = 0; i<sigte ; i++)
-				lista->siguiente();
-		}
-		
-		
-		if (route[index2].getPrimero()!=origen || route[index2].getUltimo()!=destino) {
-			cout << "No hay camino entre los nodos"<<endl;
-			cout <<"De:"<<origen<<" A:"<<destino<<endl;
-		} else {
-			route[index2].imprimir();
-		}
-	}
-
-	/**
-	 * Funcion principal para generar todas las rutas 
-	 */
-	void generarRutas(Demanda d[], Camino route[]) {
-		srand ( time(NULL) );
-		// i indica el indice de la a leer demanda
-		// j indica el indice de la ruta a ser insertada
-		for (int i = 0; i<1 ; i++){
-			for (int j = 0; j<5; j++){
-				generarRutas(i,j,d,route);
-				reset(route[j]);
-			}
-		}
-	}
-
-	void reset(Camino route){
-		for (int i = 0; i<5; i++){
-			int n = route.getNodo(i);
-			tabla[n].setVisitado(false);
-		}
-		tabla[route.getUltimo()].setVisitado(false);
-	}
-	
-	/*
-	 * Determine if there is a route between from and to
-	 * by using depth-first searching.
-	 */
-	void findroute(Lista * list, int from, int to) {
-		double cost;
-		//Vertice *v;
-		Arista *a;
-		Demanda c;
-		stack<Demanda> btStack;
-
-		// See if at destination. 
-		if (match(list, from, to, cost)) {
-			btStack.push(Demanda(from, to, cost)); 
-			return;
-		}
-
-		//Try another connection. 
-		if (find(list, from, a)) {
-			btStack.push(Demanda(from,to,a->getCosto()));
-			findroute(obtenerVertice(a->getDestino())->getAdyacentes(), 
-					a->getDestino(), to);
-		} else if (!btStack.empty()) {
-			//Backtrack and try another connection.
-			c = btStack.top();
-			btStack.pop();
-			findroute(list, c.getOrigen(), c.getDestino());
-		}
-	}
-
-	/**
-	 * Función que busca un camino de from a to en la lista de artistas
-	 * Retorna verdadero si existe algún camino, sino, retorna falso.
-	 */
-	boolean match(Lista *lista, int from, int to, double &cost) 
-	{ 
-		for (lista->iniciarIteracion(); lista->hayMas(); lista->siguiente()) {
-			Arista *a = lista->aristaActual();
-			Vertice *v = obtenerVertice(a->getDestino());
-			if (a->getOrigen()==from && a->getDestino()==to && !v->getVisitado()){
-				v->setVisitado(true);
-				cost = a->getCosto();
-				return true;
+			if (!v.getVisitado()) {
+				camino.agregarArista(a);
+				generarGrupo(grafo, origen, destino, camino, caminos);
+				camino.quitarArista();
 			}
 		}
 		
-		return false; // no encontrado  
-	} 
-	   
-	// Given from, find any connection. 
-	// Return true if a connection is found,
-	// and false otherwise.
-	boolean find(Lista *lista, int from, Arista *arist) 
-	{ 
-		for (lista->iniciarIteracion(); lista->hayMas(); lista->siguiente()) {
-			Arista *a = lista->aristaActual();
-			Vertice *v = obtenerVertice(a->getDestino());
-			if (a->getOrigen()==from && !v->getVisitado()){
-				v->setVisitado(true);
-				arist= a; // OJO Controlar!!!
-				return true;
-			}
-		}
-
-	  return false; 
-	}
-	
-	private int random(int n) {
-		if (rand == null)
-			rand = new Random(System.currentTimeMillis());
-		
-		return rand.nextInt(n);
+		vert.setVisitado(false);
 	}
 }

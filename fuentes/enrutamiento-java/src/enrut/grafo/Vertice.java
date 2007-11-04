@@ -16,13 +16,19 @@ import java.util.Vector;
  * @author Germán Hüttemann Arza
  */
 public class Vertice {
- 	
  	/*
  	 * Lista de Aristas adyacentes al vertice.
  	 */
  	private Vector<Arista> adyacentes;
  	
- 	/** Construye un nuevo Vertice */
+ 	/*
+ 	 * Para saber si fue visitado durante algún
+ 	 * recorrido sobre el grafo.
+ 	 */
+ 	private boolean visitado;
+ 	
+
+	/** Construye un nuevo Vertice */
  	public Vertice() {
  		adyacentes = new Vector<Arista>();
  	}
@@ -47,4 +53,12 @@ public class Vertice {
  	public Arista getArista(int i) {
  		return adyacentes.get(i);
  	}
+ 	
+ 	public boolean getVisitado() {
+		return visitado;
+	}
+
+	public void setVisitado(boolean visitado) {
+		this.visitado = visitado;
+	}
  }

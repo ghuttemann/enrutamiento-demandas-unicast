@@ -66,7 +66,7 @@ public class Camino {
  		 * Si el camino se ha vaciado,
  		 * entonces su capacidad es cero.
  		 */
- 		if (this.getVacio())
+ 		if (this.estaVacio())
  			return 0;
  		
  		// Calculamos la menor capacidad
@@ -80,7 +80,7 @@ public class Camino {
  		return menor;
  	}
  	
- 	public boolean getVacio() {
+ 	public boolean estaVacio() {
  		return secuencia.isEmpty();
  	}
  	
@@ -175,7 +175,7 @@ public class Camino {
  	}
  	
  	public void vaciar() {
- 		while (!this.getVacio())
+ 		while (!this.estaVacio())
  			this.quitarArista();
  	}
  }

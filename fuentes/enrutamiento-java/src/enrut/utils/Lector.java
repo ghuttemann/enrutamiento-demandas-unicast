@@ -15,24 +15,37 @@ import java.io.IOException;
  * @author German Huttemann Arza
  */
 public class Lector {
-	protected BufferedReader in;
+	protected BufferedReader input;
 	private String archivo;
 	
 	/**
-	 * Construimos un nuevo lector
+	 * Construimos un nuevo Lector
+	 * y abrimos el archivo asociado.
 	 */
 	public Lector(String archivo) {
+		abrir(archivo);
+	}
+
+	/**
+	 * Construimos un nuevo Lector
+	 */
+	public Lector() {
+		
+	}
+	
+	/**
+	 * Abre el archivo que recibe como argumento
+	 * @param archivo Nombre del archivo a abrir.
+	 */
+	public void abrir(String archivo) {
 		try {
-			in = new BufferedReader( new FileReader(archivo) );
-		} catch (FileNotFoundException e) {
+			input = new BufferedReader( new FileReader(archivo) );
+		}
+		catch (FileNotFoundException e) {
 			System.out.println("Error abriendo \"" + archivo + "\"");
 			e.printStackTrace();
 			System.exit(0);
 		}
-	}
-
-	protected Lector() {
-		// necesaria para clases hijas
 	}
 	
 	/**
@@ -43,17 +56,19 @@ public class Lector {
 		String linea = null;
 		
 		try {
-			linea = in.readLine();
+			linea = input.readLine();
 		}
 		catch(Exception e) {
-			System.out.println(e);
+			System.out.println("Error al leer de \"" + archivo + "\"");
+			e.printStackTrace();
+			System.exit(0);
 		}
 		return linea;
 	}
 
 	public void cerrar() {
 		try {
-			in.close();
+			input.close();
 		}
 		catch (IOException e) {
 		}

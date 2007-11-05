@@ -88,7 +88,7 @@ public class ConstructorCaminos {
 			Camino cam = new Camino();
 			
 			// Leemos cada arista del camino
-			for (int i=2; i < partes.length-2; i++) {
+			for (int i=3; i < partes.length-3; i++) {
 				String[] arista = partes[i].split(":");
 				
 				// Obtenemos los datos de la arista

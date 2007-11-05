@@ -30,7 +30,7 @@ public class GrupoCaminos {
 		return caminos.remove(i);		
 	}
 	
-	public boolean vacio() {
+	public boolean estaVacio() {
 		return caminos.isEmpty();
 	}
 	

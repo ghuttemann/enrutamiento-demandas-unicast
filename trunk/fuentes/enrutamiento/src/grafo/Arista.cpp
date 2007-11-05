@@ -54,3 +54,7 @@ double Arista::getCosto() {
 Arista* Arista::getSgte() {
 	return sgte;
 }
+
+Arista Arista::clonar() {
+	return Arista(origen, destino, costo, capacidad, NULL);
+}

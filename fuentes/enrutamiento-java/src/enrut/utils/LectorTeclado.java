@@ -18,7 +18,7 @@ public class LectorTeclado extends Lector {
 	 * Construimos un nuevo lector
 	 */
 	public LectorTeclado() {
-		in = new BufferedReader( new InputStreamReader(System.in) );
+		input = new BufferedReader( new InputStreamReader(System.in) );
 	}
 	
 	/**
@@ -30,10 +30,12 @@ public class LectorTeclado extends Lector {
 		String linea = null;
 		
 		try {
-			linea = in.readLine();
+			linea = input.readLine();
 		}
 		catch(Exception e) {
-			System.out.println(e);
+			System.out.println("Error al leer de \"" + System.in + "\"");
+			e.printStackTrace();
+			System.exit(0);
 		}
 		return linea;
 	}

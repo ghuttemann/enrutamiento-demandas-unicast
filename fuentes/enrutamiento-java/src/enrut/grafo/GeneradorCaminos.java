@@ -3,10 +3,8 @@
  */
 package enrut.grafo;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Iterator;
+import enrut.utils.Escritor;
 
 /**
  * Esta clase se encarga de generar todos los caminos
@@ -40,34 +38,27 @@ public class GeneradorCaminos {
 		 * [b] son numeros enteros indicando el origen y 
 		 * destino, respectivamente, de los caminos 
 		 * contenidos en el archivo.
-		 */		
+		 */
+		Escritor escritor = new Escritor();
 		for (int i=0; i < numVert; i++)
 		for (int j=0; j < numVert; j++)
 		if (i != j) {
 			String archivo = path + "caminos-"+i+"-"+j+".txt";
-			try {
-				PrintWriter writer = new PrintWriter(new FileWriter(archivo));
-				GrupoCaminos grupo = caminos[i][j];
-				
-				// Escribimos el origen
-				writer.println(i);
-				
-				// Escribimos el destino
-				writer.println(j);
-				
-				for (int k=0; k < grupo.getCantCaminos(); k++) {
-					Camino cam = grupo.getCamino(k);
-					writer.println(cam);
-				}
-				
-				writer.flush();
-				writer.close();
-			} 
-			catch (IOException e) {
-				System.out.println("Error escribiendo en \"" + archivo + "\"");
-				e.printStackTrace();
-				System.exit(0);
+			escritor.abrir(archivo);
+			GrupoCaminos grupo = caminos[i][j];
+			
+			// Escribimos el origen
+			escritor.imprimir(i).nuevaLinea();
+			
+			// Escribimos el destino
+			escritor.imprimir(j).nuevaLinea();
+			
+			for (int k=0; k < grupo.getCantCaminos(); k++) {
+				Camino cam = grupo.getCamino(k);
+				escritor.imprimir(cam).nuevaLinea();
 			}
+			
+			escritor.cerrar();
 		}
 	}
 	

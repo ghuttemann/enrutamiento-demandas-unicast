@@ -60,7 +60,7 @@ public class ConstructorGrafo {
 			}
 		}
 		catch (NumberFormatException e) {
-			System.out.println("Error al convertir número");
+			System.out.println("Error de conversión numérica");
 			e.printStackTrace();
 			System.exit(0);
 		}

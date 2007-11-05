@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <stack>
 #include <ctime>
-//#include <stdlib.h>
+
 using namespace std;
 
 /**
@@ -14,6 +14,7 @@ Grafo::Grafo(int cantVert) {
 	tabla = new Vertice[cantVert];
 	longitud = cantVert;
 }
+
 /**
  * Destructor
  */
@@ -43,6 +44,7 @@ Vertice* Grafo::obtenerVertice(int vertice) {
 int Grafo::cantVertices() {
 	return longitud;
 }
+
 /**
  * Función que genera las R rutas (o menos si no hay suficientes) para
  * las correspondientes N demandas.
@@ -52,7 +54,6 @@ int Grafo::cantVertices() {
  * @param Camino* Caminos encontrados (R*N caminos)
  */
 void Grafo::generarRutas(int index1, int index2, Demanda d[], Camino route[][Rmax]) {
-	
 	int origen = d[index1].getOrigen(); // Origen
 	int destino = d[index1].getDestino(); // Destino
 	cout<<"Origen:"<<origen<<" Destino:"<<destino<<endl<<endl;
@@ -110,6 +111,7 @@ void Grafo::generarRutas(int index1, int index2, Demanda d[], Camino route[][Rma
 		route[index1][index2].imprimir();
 	}
 }
+
 /**
  * Funcion principal para generar todas las rutas 
  */

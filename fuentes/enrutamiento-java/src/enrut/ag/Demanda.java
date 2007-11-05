@@ -75,4 +75,14 @@ public class Demanda {
 	public void setCaminos(GrupoCaminos caminos) {
 		this.caminos = caminos;
 	}
+	
+	public String toString() {
+		StringBuffer buf = new StringBuffer();
+		
+		buf.append(origen);
+		buf.append(":").append(destino);
+		buf.append(":").append(anchoDeBanda);
+		
+		return buf.toString();
+	}
 }

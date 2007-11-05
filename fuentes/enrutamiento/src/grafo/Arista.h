@@ -8,11 +8,11 @@ private:
 	int origen, destino;
 	double costo, capacidad;
 	Arista *sgte;
-	
 public:
 	Arista(int = -1, int = -1, double = -1.0, double = -1.0, Arista* = NULL);
 	virtual ~Arista();
 	bool igual(const Arista&);
+	Arista clonar();
 	
 	// setters
 	void setOrigen(int);

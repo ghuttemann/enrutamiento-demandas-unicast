@@ -3,6 +3,7 @@
  */
 package enrut.grafo;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -17,6 +18,7 @@ import java.util.Vector;
 public class Camino {
 	private Vector<Arista> secuencia;
 	private double costo;
+	private double capacidadMinima;
 	private int incremento;
 	
 	private final int INIT_INCR  = 5;
@@ -28,6 +30,7 @@ public class Camino {
  	 */
  	public Camino() {
  		costo = 0;
+ 		capacidadMinima = 0;
  		incremento = INIT_INCR;
  		secuencia = new Vector<Arista>(10);
  	}
@@ -37,14 +40,44 @@ public class Camino {
  			secuencia.ensureCapacity(secuencia.size() + incremento);
  			incremento = getSgteIncremento();
  		}
+ 		
  		secuencia.add(a);
  		costo += a.getCosto();
+ 		
+ 		// Actualizamos la capacidad mínima del camino
+ 		double capacidadArista = a.getCapacidad();
+ 		if (capacidadMinima == 0 || capacidadArista < capacidadMinima)
+ 			capacidadMinima = capacidadArista;
  	}
  	
  	public Arista quitarArista() {
  		Arista a = secuencia.remove(secuencia.size()-1);
  		costo -= a.getCosto();
+ 		
+ 		// Actualizamos la capacidad mínima del camino
+ 		if (a.getCapacidad() == capacidadMinima)
+ 			capacidadMinima = getMenorCapacidad();
+ 		
  		return a;
+ 	}
+ 	
+ 	private double getMenorCapacidad() {
+ 		/*
+ 		 * Si el camino se ha vaciado,
+ 		 * entonces su capacidad es cero.
+ 		 */
+ 		if (this.getVacio())
+ 			return 0;
+ 		
+ 		// Calculamos la menor capacidad
+ 		Iterator<Arista> it = secuencia.iterator();
+ 		double menor = it.next().getCapacidad();
+ 		while (it.hasNext()) {
+ 			double tmp = it.next().getCapacidad();
+ 			if (tmp < menor)
+ 				menor = tmp;
+ 		}
+ 		return menor;
  	}
  	
  	public boolean getVacio() {
@@ -69,6 +102,10 @@ public class Camino {
  	
  	public double getCosto() {
  		return costo;
+ 	}
+ 	
+ 	public double getCapacidadMinima() {
+ 		return capacidadMinima;
  	}
  	
  	private int getSgteIncremento() {
@@ -111,7 +148,6 @@ public class Camino {
  				}
  			}
  		}
- 		
  		return resultado; 
  	}
  	
@@ -128,6 +164,7 @@ public class Camino {
  		StringBuffer buffer = new StringBuffer();
  		buffer.append(this.getLongitud());
  		buffer.append("-" + this.getCosto());
+ 		buffer.append("-" + this.getCapacidadMinima());
  		
  		for (int i=0; i < this.getLongitud(); i++) {
  			Arista a = this.getArista(i);

@@ -32,8 +32,16 @@ public class ConstructorCaminos {
 			lector.abrir(path + archivo);
 			
 			// Leemos el origen y destino del archivo
-			int origEnArch = Integer.parseInt(lector.leerLinea());
-			int destEnArch = Integer.parseInt(lector.leerLinea());
+			int origEnArch=0, destEnArch=0;
+			try {
+				origEnArch = Integer.parseInt(lector.leerLinea());
+				destEnArch = Integer.parseInt(lector.leerLinea());
+			}
+			catch (NumberFormatException e) {
+				System.out.println("Error de conversión numérica");
+				e.printStackTrace();
+				System.exit(0);
+			}
 			
 			// Verificamos que origen y destino coincidan
 			if (origen != origEnArch || destino != destEnArch) {
@@ -84,10 +92,19 @@ public class ConstructorCaminos {
 				String[] arista = partes[i].split(":");
 				
 				// Obtenemos los datos de la arista
-				int origen       = Integer.parseInt(arista[0]);
-				int destino      = Integer.parseInt(arista[1]);
-				double capacidad = Double.parseDouble(arista[2]);
-				double costo     = Double.parseDouble(arista[3]);
+				int origen=0, destino=0;
+				double capacidad=0, costo=0;
+				try {
+					origen    = Integer.parseInt(arista[0]);
+					destino   = Integer.parseInt(arista[1]);
+					capacidad = Double.parseDouble(arista[2]);
+					costo     = Double.parseDouble(arista[3]);
+				}
+				catch (NumberFormatException e) {
+					System.out.println("Error de conversión numérica");
+					e.printStackTrace();
+					System.exit(0);
+				}
 				
 				// Agregamos la arista al camino
 				Arista a = new Arista(origen, destino, capacidad, costo);

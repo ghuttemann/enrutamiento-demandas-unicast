@@ -26,15 +26,33 @@ public class Cromosoma {
 	public Cromosoma(Demanda[] demandas) {
 		this.demandas = demandas;
 		genes = new int[demandas.length];
-		
-		/*
-		 * Seteamos los genes del cromosoma con
-		 * alelos randómicos.
-		 */
+	}
+	
+	/**
+	 * Setea los genes del cromosoma con 
+	 * alelos randómicos.
+	 */
+	public void generarGenes() {
 		Random rand = new Random(System.currentTimeMillis());
 		for (int i=0; i < genes.length; i++) {
 			int cantCaminos = demandas[i].getCaminos().getCantCaminos();
 			genes[i] = rand.nextInt(cantCaminos);
 		}
+	}
+	
+	public void setGen(int pos, int valor) {
+		this.genes[pos] = valor;
+	}
+	
+	public int getGen(int pos) {
+		return this.genes[pos];
+	}
+	
+	public Demanda[] getDemandas() {
+		return this.demandas;
+	}
+	
+	public int getCantGenes() {
+		return this.genes.length;
 	}
 }

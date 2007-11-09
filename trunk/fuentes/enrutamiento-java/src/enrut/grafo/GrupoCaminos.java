@@ -67,13 +67,22 @@ public class GrupoCaminos {
 		
 		/* 
 		 * En cualquier otro caso, eliminamos al 
-		 * azar (cantCaminos-max) caminos.
+		 * azar max caminos y los guardamos en una
+		 * lista temporal, que finalmente reemplaza
+		 * a la lista actual.
 		 */
+		Vector<Camino> temp = new Vector<Camino>();
 		Random rand = new Random(System.currentTimeMillis());
-		for (int i=0; i < (cantCaminos - max); i++) {
+		for (int i=0; i < max; i++) {
 			int cantidad = this.getCantCaminos();
 			int elegido = rand.nextInt(cantidad);
-			this.eliminar(elegido);
+			Camino cam = this.eliminar(elegido);
+			temp.add(cam);
 		}
+		
+		/*
+		 * Finalmente reemplazamos las listas
+		 */
+		this.caminos = temp;
 	}
 }

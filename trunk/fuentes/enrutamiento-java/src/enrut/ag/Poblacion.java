@@ -3,6 +3,8 @@
  */
 package enrut.ag;
 
+import java.util.Random;
+
 import enrut.ag.oper.OperadorCruce;
 import enrut.ag.oper.OperadorMutacion;
 import enrut.ag.oper.OperadorSeleccion;
@@ -13,6 +15,10 @@ public class Poblacion {
 	 */
 	private Cromosoma[] individuos;
 	
+	/*
+	 * Valor de calidad de un cromosoma 
+	 */
+	private Double[] fitness;
 	/*
 	 * Operador de cruce
 	 */
@@ -62,23 +68,77 @@ public class Poblacion {
 	public void descartarIguales() {
 		
 	}
-	
-	public void mutar() {
-		
+
+	/**
+	 * Selecciona nuevos individuos de esta población
+	 * @return Cromosoma[] nuevos individuos seleccionados
+	 */
+	public Cromosoma[] seleccionar() {
+		return operadorSeleccion.seleccionar(this);
 	}
 	
-	public void cruzar() {
-		
-	}
-	
-	public void seleccionar() {
-		
-	}
-	
-	public void reemplazar() {
-		
+	/**
+	 * Cruza los individuos seleccionados eliminando la población
+	 * vieja. 
+	 * @param selectos
+	 */
+	public void cruzar(Cromosoma []selectos) {
+		for (int i = 0; i<=selectos.length-2; i=i+2){
+			Cromosoma nuevos[];
+			nuevos = operadorCruce.cruzar(selectos[i], selectos[i+1]);
+			individuos[i]=nuevos[i];
+			individuos[i+1]=nuevos[i+1];
+		}
 	}
 
+	/**
+	 * Muta cromosomas de la población con una problabilidad de
+	 * mutar de p = 0.1
+	 */
+	public void mutar() {
+		Random rand = new Random(System.currentTimeMillis());
+		
+		for (int i =0; i<this.getTamaño(); i++){
+			if (rand.nextInt(10)>8)
+				operadorMutacion.mutar(individuos[i]);
+		}
+	}
+	
+	public void reemplazar(Cromosoma nuevo, int pos) {
+		individuos[pos]=nuevo;
+	}
+
+	public void evaluar(){
+		for (int i=0; i<=this.getTamaño();i++){
+			fitness[i] = evaluar(i);
+		}
+	}
+	
+	private double evaluar(int ind){
+		double costo=0;
+		double retorno=0;
+		
+		Cromosoma x = this.getIndividuo(ind);
+		
+		for (int i=0; i<x.getCantGenes(); i++){
+			double max = x.getDemandas()[i].getAnchoDeBanda();
+			costo = x.getDemandas()[i].getCaminos().getCamino(ind).getCosto();
+			retorno +=costo; 
+			if (max < costo){
+				retorno +=costo;
+			}
+		}
+ 
+		return (1/retorno);
+	}
+	
+	public double getFitness(int ind){
+		return fitness[ind];
+	}
+	
+	public Cromosoma getIndividuo(int pos){
+		return individuos[pos];
+	}
 	public OperadorCruce getOperadorCruce() {
 		return operadorCruce;
 	}

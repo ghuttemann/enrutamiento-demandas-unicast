@@ -11,7 +11,6 @@ public class Cromosoma {
 	 */
 	private int[] genes;
 	
-	
 	/*
 	 * Demandas realizadas
 	 */
@@ -42,6 +41,7 @@ public class Cromosoma {
 	
 	public void setGen(int pos, int valor) {
 		this.genes[pos] = valor;
+		
 	}
 	
 	public int getGen(int pos) {

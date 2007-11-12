@@ -15,7 +15,7 @@ import enrut.ag.oper.OperadorCruce;
  * @author ghuttemann
  */
 public class CruceUniforme implements OperadorCruce {
-	@Override
+	//@Override
 	public Cromosoma[] cruzar(Cromosoma a, Cromosoma b) {
 		Cromosoma[] hijos = new Cromosoma[2];
 		

@@ -6,12 +6,11 @@ package enrut.ag.oper.impl.seleccion;
 import java.util.Random;
 
 import enrut.ag.Cromosoma;
-import enrut.ag.Demanda;
 import enrut.ag.Poblacion;
 import enrut.ag.oper.OperadorSeleccion;
 
 public class TorneoBinario implements OperadorSeleccion {
-	@Override
+	//@Override
 	public Cromosoma[] seleccionar(Poblacion p) {
 		int cantMejores = p.getTamaño(); //tamaño de población seleccionada
 		Cromosoma Mejores[] = new Cromosoma[cantMejores];
@@ -25,9 +24,7 @@ public class TorneoBinario implements OperadorSeleccion {
 				ind2 = rand.nextInt(p.getTamaño()); // se reelige un individuo
 			}
 			
-			// se trae las demandas para sacar los costos
-			Demanda d[] = p.getIndividuo(ind1).getDemandas();
-			
+			// Se extrae los fitness de los correspondientes individuos 
 			double costo1 = p.getFitness(ind1);
 			double costo2 = p.getFitness(ind2);
 			

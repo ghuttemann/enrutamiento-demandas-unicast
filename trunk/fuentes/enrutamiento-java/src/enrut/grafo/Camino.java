@@ -3,6 +3,7 @@
  */
 package enrut.grafo;
 
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -20,6 +21,7 @@ public class Camino {
 	private double costo;
 	private double capacidadMinima;
 	private int incremento;
+	private Hashtable<String, Arista> hash;
 	
 	private final int INIT_INCR  = 5;
 	private final int FIRST_INCR = 10;
@@ -33,6 +35,7 @@ public class Camino {
  		capacidadMinima = 0;
  		incremento = INIT_INCR;
  		secuencia = new Vector<Arista>(10);
+ 		hash = new Hashtable<String, Arista>();
  	}
  	
  	public void agregarArista(Arista a) {
@@ -48,6 +51,9 @@ public class Camino {
  		double capacidadArista = a.getCapacidad();
  		if (capacidadMinima == 0 || capacidadArista < capacidadMinima)
  			capacidadMinima = capacidadArista;
+ 		
+ 		// Agregamos la arista también al hash
+ 		hash.put(a.toString(), a);
  	}
  	
  	public Arista quitarArista() {
@@ -57,6 +63,9 @@ public class Camino {
  		// Actualizamos la capacidad mínima del camino
  		if (a.getCapacidad() == capacidadMinima)
  			capacidadMinima = getMenorCapacidad();
+ 		
+ 		// Quitamos la arista también del hash
+ 		hash.remove(a.toString());
  		
  		return a;
  	}
@@ -90,6 +99,10 @@ public class Camino {
  	
  	public Arista getArista(int i) {
  		return secuencia.get(i);
+ 	}
+ 	
+ 	public boolean contiene(Arista a) {
+ 		return hash.containsKey(a.toString());
  	}
  	
  	public Arista getPrimeraArista() {

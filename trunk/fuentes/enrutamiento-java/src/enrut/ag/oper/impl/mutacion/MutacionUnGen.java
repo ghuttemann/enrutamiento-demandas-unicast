@@ -24,7 +24,7 @@ public class MutacionUnGen implements OperadorMutacion {
 		 * el gen, representado por la cantidad
 		 * de caminos disponibles.
 		 */
-		int cantCaminos = a.getDemandas()[elegido].getCaminos().getCantCaminos();
+		int cantCaminos = a.getGrupoCaminos(elegido).getCantCaminos();
 		
 		/*
 		 * Obtenemos el nuevo valor para el gen.

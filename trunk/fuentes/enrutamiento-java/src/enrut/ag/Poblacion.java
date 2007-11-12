@@ -18,7 +18,8 @@ public class Poblacion {
 	/*
 	 * Valor de calidad de un cromosoma 
 	 */
-	private Double[] fitness;
+	private double[] fitness;
+	
 	/*
 	 * Operador de cruce
 	 */
@@ -66,7 +67,9 @@ public class Poblacion {
 	 * por nuevos, generados aleatoriamente.
 	 */
 	public void descartarIguales() {
-		
+		/*
+		 * Falta implementar
+		 */
 	}
 
 	/**
@@ -78,67 +81,60 @@ public class Poblacion {
 	}
 	
 	/**
-	 * Cruza los individuos seleccionados eliminando la población
-	 * vieja. 
+	 * Cruza los individuos seleccionados eliminando
+	 * la población vieja. 
 	 * @param selectos
 	 */
 	public void cruzar(Cromosoma []selectos) {
-		for (int i = 0; i<=selectos.length-2; i=i+2){
+		for (int i=0; i <= selectos.length-2; i = i+2){
 			Cromosoma nuevos[];
 			nuevos = operadorCruce.cruzar(selectos[i], selectos[i+1]);
-			individuos[i]=nuevos[i];
-			individuos[i+1]=nuevos[i+1];
+			/*
+			 * Los cromosomas que se van obteniendo
+			 * tienen que ir siendo guardados en alguna
+			 * estructura auxiliar, que sirva a la hora
+			 * de realizar el reemplazo de población.
+			 */
 		}
 	}
 
 	/**
-	 * Muta cromosomas de la población con una problabilidad de
-	 * mutar de p = 0.1
+	 * Muta cromosomas de la población con una 
+	 * problabilidad de mutar de 0.01
 	 */
 	public void mutar() {
 		Random rand = new Random(System.currentTimeMillis());
 		
-		for (int i =0; i<this.getTamaño(); i++){
-			if (rand.nextInt(10)>8)
+		for (int i=0; i < this.getTamaño(); i++){
+			if (rand.nextInt(100) > 98)
 				operadorMutacion.mutar(individuos[i]);
 		}
 	}
 	
-	public void reemplazar(Cromosoma nuevo, int pos) {
-		individuos[pos]=nuevo;
+	/**
+	 * Realiza el reemplazo de individuos de
+	 * la población.
+	 */
+	public void reemplazar() {
+		/*
+		 * Falta implementar
+		 */
 	}
 
-	public void evaluar(){
-		for (int i=0; i<=this.getTamaño();i++){
-			fitness[i] = evaluar(i);
+	public void evaluar() {
+		for (int i=0; i<=this.getTamaño();i++) {
+			fitness[i] = individuos[i].evaluar();
 		}
 	}
 	
-	private double evaluar(int ind){
-		double costo=0;
-		double retorno=0;
-		
-		Cromosoma x = this.getIndividuo(ind);
-		
-		for (int i=0; i<x.getCantGenes(); i++){
-			double max = x.getDemandas()[i].getAnchoDeBanda();
-			costo = x.getDemandas()[i].getCaminos().getCamino(ind).getCosto();
-			retorno +=costo; 
-			if (max < costo){
-				retorno +=costo;
-			}
-		}
- 
-		return (1/retorno);
-	}
-	
-	public double getFitness(int ind){
+	public double getFitness(int ind) {
 		return fitness[ind];
 	}
 	
-	public Cromosoma getIndividuo(int pos){
+	public Cromosoma getIndividuo(int pos) {
 		return individuos[pos];
 	}
+	
 	public OperadorCruce getOperadorCruce() {
 		return operadorCruce;
 	}

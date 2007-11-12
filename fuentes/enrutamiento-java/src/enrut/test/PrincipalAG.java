@@ -83,11 +83,8 @@ public class PrincipalAG {
 					config.setTamPoblacion(valor);
 				}
 				else if (partes[0].equalsIgnoreCase("PATH_ARCHIVOS")) {
-					/*
-					 * Del archivo demandas.txt deben leerse las
-					 * demandas y crear el arreglo correspondiente
-					 */
 					Demanda[] demandas = null;
+					demandas = getDemandas(path+"demandas.txt");
 					
 					ConstructorCaminos builder = new ConstructorCaminos();
 					builder.leerCaminos(demandas, config.getMaxCaminos(), partes[1]);
@@ -102,9 +99,55 @@ public class PrincipalAG {
 				e.printStackTrace();
 				System.exit(0);
 			}
+			linea = lector.leerLinea();
 		}
 		
 		return config;
+	}
+	
+	private static Demanda[] getDemandas(String path){
+		
+		Lector lector = new Lector(path);
+
+		String linea = lector.leerLinea();
+		if (linea == null) {
+			System.out.println("Archivo de demandas no valido");
+			System.exit(0);
+		}
+		
+		// se lee la cantidad de demandas
+		int cantidad=0;
+		try {
+			cantidad = Integer.parseInt(linea);
+		} catch (NumberFormatException e) {
+			System.out.println("Error de conversión numérica");
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+		// se lee todas las demandas
+		Demanda[] d = new Demanda[cantidad];
+		for (int i=0; i<cantidad; i++) {
+			linea = lector.leerLinea();
+			String[] partes = linea.split(" ");
+			
+			int origen=0;
+			int destino=0;
+			double capacidad=0.0;
+			try {
+				origen = Integer.parseInt(partes[0]);
+				destino = Integer.parseInt(partes[1]);
+				capacidad = Double.parseDouble(partes[2]);
+			}
+			catch (NumberFormatException e) {
+				System.out.println("Error de conversión numérica");
+				e.printStackTrace();
+				System.exit(0);
+			}
+			d[i]= new Demanda(origen, destino, capacidad);
+		}
+		
+		return d;
 	}
 	
 	private static Poblacion inicializarPoblacion(Config conf) {

@@ -1,0 +1,4 @@
+MAX_ITERACIONES=100
+MAX_CAMINOS=15
+MAX_POBLACION=32
+PATH_ARCHIVOS=C:\eclipse\Workspace\Enrutamiento\fuentes\enrutamiento-java\data\nsf\

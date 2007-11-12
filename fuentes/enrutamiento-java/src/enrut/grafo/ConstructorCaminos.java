@@ -70,7 +70,7 @@ public class ConstructorCaminos {
 		 */
 		if (max > 0)
 		for (int i=0; i < demandas.length; i++)
-			demandas[i].getCaminos().conservar(max);
+			demandas[i].getGrupoCaminos().conservar(max);
 	}
 	
 	/**

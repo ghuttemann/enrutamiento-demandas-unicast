@@ -14,7 +14,11 @@ public class Poblacion {
 	 * Individuos de la población
 	 */
 	private Cromosoma[] individuos;
-	
+
+	/*
+	 * hijos de los individuos selectos
+	 */
+	private Cromosoma[] hijos;
 	/*
 	 * Valor de calidad de un cromosoma 
 	 */
@@ -42,6 +46,7 @@ public class Poblacion {
 	 */
 	public Poblacion(Demanda[] demandas, int cant) {
 		individuos = new Cromosoma[cant];
+		hijos = new Cromosoma[cant];
 		
 		for (int i=0; i < individuos.length; i++) {
 			individuos[i] = new Cromosoma(demandas);
@@ -63,13 +68,19 @@ public class Poblacion {
 	
 	/**
 	 * Compara cada individuo de la población con
-	 * los demás y reemplaza los cromosomas duplicados
-	 * por nuevos, generados aleatoriamente.
+	 * los demás y modifica los cromosomas duplicados
+	 * mutandolos.
 	 */
 	public void descartarIguales() {
-		/*
-		 * Falta implementar
-		 */
+		for (int i=0; i<this.getTamaño()-1; i++) {
+			for (int j=i+1; j<this.getTamaño(); j++) {
+				if (individuos[i].equals(individuos[j])){
+					operadorMutacion.mutar(individuos[j]);
+					i=0; // OJO (opcionalmente, se puede continuar)
+					j=1; // OJO (opcionalmente, se puede continuar)
+				}
+			}
+		}
 	}
 
 	/**
@@ -86,15 +97,13 @@ public class Poblacion {
 	 * @param selectos
 	 */
 	public void cruzar(Cromosoma []selectos) {
+		
 		for (int i=0; i <= selectos.length-2; i = i+2){
 			Cromosoma nuevos[];
 			nuevos = operadorCruce.cruzar(selectos[i], selectos[i+1]);
-			/*
-			 * Los cromosomas que se van obteniendo
-			 * tienen que ir siendo guardados en alguna
-			 * estructura auxiliar, que sirva a la hora
-			 * de realizar el reemplazo de población.
-			 */
+			
+			this.hijos[i] = nuevos[0];
+			this.hijos[i+1] = nuevos[1];
 		}
 	}
 
@@ -116,9 +125,8 @@ public class Poblacion {
 	 * la población.
 	 */
 	public void reemplazar() {
-		/*
-		 * Falta implementar
-		 */
+		for (int i =0; i<this.getTamaño(); i++)
+				individuos[i] = hijos[i];
 	}
 
 	public void evaluar() {

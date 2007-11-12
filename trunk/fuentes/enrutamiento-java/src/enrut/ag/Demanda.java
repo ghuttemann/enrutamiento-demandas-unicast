@@ -68,7 +68,7 @@ public class Demanda {
 		this.anchoDeBanda = anchoDeBanda;
 	}
 
-	public GrupoCaminos getCaminos() {
+	public GrupoCaminos getGrupoCaminos() {
 		return caminos;
 	}
 

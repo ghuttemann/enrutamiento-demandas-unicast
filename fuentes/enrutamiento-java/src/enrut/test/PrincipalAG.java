@@ -69,31 +69,38 @@ public class PrincipalAG {
 		while (linea != null) {
 			String[] partes = linea.split("=");
 			
-			if (partes[0].equalsIgnoreCase("MAX_ITERACIONES")) {
-				int valor = Integer.parseInt(partes[1]);
-				config.setMaxIteraciones(valor);
+			try {
+				if (partes[0].equalsIgnoreCase("MAX_ITERACIONES")) {
+					int valor = Integer.parseInt(partes[1]);
+					config.setMaxIteraciones(valor);
+				}
+				else if (partes[0].equalsIgnoreCase("MAX_CAMINOS")) {
+					int valor = Integer.parseInt(partes[1]);
+					config.setMaxCaminos(valor);
+				}
+				else if (partes[0].equalsIgnoreCase("MAX_POBLACION")) {
+					int valor = Integer.parseInt(partes[1]);
+					config.setTamPoblacion(valor);
+				}
+				else if (partes[0].equalsIgnoreCase("PATH_ARCHIVOS")) {
+					/*
+					 * Del archivo demandas.txt deben leerse las
+					 * demandas y crear el arreglo correspondiente
+					 */
+					Demanda[] demandas = null;
+					
+					ConstructorCaminos builder = new ConstructorCaminos();
+					builder.leerCaminos(demandas, config.getMaxCaminos(), partes[1]);
+					config.setDemandas(demandas);
+				}
+				else {
+					throw new Error("Valor de configuración incorrecto");
+				}
 			}
-			else if (partes[0].equalsIgnoreCase("MAX_CAMINOS")) {
-				int valor = Integer.parseInt(partes[1]);
-				config.setMaxCaminos(valor);
-			}
-			else if (partes[0].equalsIgnoreCase("MAX_POBLACION")) {
-				int valor = Integer.parseInt(partes[1]);
-				config.setTamPoblacion(valor);
-			}
-			else if (partes[0].equalsIgnoreCase("PATH_ARCHIVOS")) {
-				/*
-				 * Del archivo demandas.txt deben leerse las
-				 * demandas y crear el arreglo correspondiente
-				 */
-				Demanda[] demandas = null;
-				
-				ConstructorCaminos builder = new ConstructorCaminos();
-				builder.leerCaminos(demandas, config.getMaxCaminos(), partes[1]);
-				config.setDemandas(demandas);
-			}
-			else {
-				throw new Error("Valor de configuración incorrecto");
+			catch (NumberFormatException e) {
+				System.out.println("Error de conversión numérica");
+				e.printStackTrace();
+				System.exit(0);
 			}
 		}
 		

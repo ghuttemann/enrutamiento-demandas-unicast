@@ -4,25 +4,46 @@
 package enrut.utils;
 
 import enrut.ag.Demanda;
-import enrut.ag.oper.OperadorCruce;
-import enrut.ag.oper.OperadorMutacion;
-import enrut.ag.oper.OperadorSeleccion;
 
 public class Config {
-	private OperadorSeleccion seleccion;
-	private OperadorCruce cruce;
-	private OperadorMutacion mutacion;
 	private Demanda[] demandas;
-	private String path;
+	private int maxCaminos;
+	private int maxIteraciones;
+	private int tamPoblacion;
 	
-	public Config(String file) {
-		try {
-			Class c = Class.forName("TorneoBinario");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public Config() {
+		
 	}
-	
-	
+
+	public Demanda[] getDemandas() {
+		return demandas;
+	}
+
+	public void setDemandas(Demanda[] demandas) {
+		this.demandas = demandas;
+	}
+
+	public int getMaxCaminos() {
+		return maxCaminos;
+	}
+
+	public void setMaxCaminos(int maxCaminos) {
+		this.maxCaminos = maxCaminos;
+	}
+
+	public int getMaxIteraciones() {
+		return maxIteraciones;
+	}
+
+	public void setMaxIteraciones(int maxIteraciones) {
+		this.maxIteraciones = maxIteraciones;
+	}
+
+	public int getTamPoblacion() {
+		return tamPoblacion;
+	}
+
+	public void setTamPoblacion(int tamPoblacion) {
+		this.tamPoblacion = tamPoblacion;
+	}
 }

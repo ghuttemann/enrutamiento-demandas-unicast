@@ -1,0 +1,4 @@
+MAX_POBLACION=32
+MAX_CAMINOS=15
+PATH_ARCHIVOS=D:\Facultad\2007\IA\repos\fuentes\enrutamiento-java\data\nsf
+MAX_ITERACIONES=100

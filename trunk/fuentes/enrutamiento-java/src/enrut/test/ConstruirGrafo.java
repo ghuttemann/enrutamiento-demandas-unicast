@@ -42,7 +42,7 @@ public class ConstruirGrafo {
 						  new Camino(),
 						  new Camino()};
 		
-		System.out.println("¡¡¡END OF PROGRAM!!!");
+		System.out.println("¡¡¡END OF PROGRAM!!!"+rutas);
 	}
 
 }

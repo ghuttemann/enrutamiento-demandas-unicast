@@ -166,6 +166,18 @@ public class Cromosoma {
 		return true;
 	}
 	
+	public boolean equals(Cromosoma c) {
+		boolean retorno=true;
+		
+		if (this.getCantGenes()!=c.getCantGenes())
+			return false;
+		
+		for (int i=0; i<this.getCantGenes(); i++){
+			if (this.getGen(i) != c.getGen(i))
+				return false;
+		}
+		return retorno;
+	}
 	private class Capacidad {
 		private double valor;
 		

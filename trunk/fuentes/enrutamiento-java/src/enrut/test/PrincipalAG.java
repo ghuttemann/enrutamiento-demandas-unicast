@@ -6,19 +6,16 @@ package enrut.test;
 import enrut.ag.Cromosoma;
 import enrut.ag.Demanda;
 import enrut.ag.Poblacion;
-import enrut.ag.oper.OperadorCruce;
-import enrut.ag.oper.OperadorMutacion;
-import enrut.ag.oper.OperadorSeleccion;
 import enrut.ag.oper.impl.cruce.CruceUniforme;
 import enrut.ag.oper.impl.mutacion.MutacionUnGen;
 import enrut.ag.oper.impl.seleccion.TorneoBinario;
 import enrut.grafo.ConstructorCaminos;
 import enrut.utils.Config;
+import enrut.utils.Lector;
 
 public class PrincipalAG {
 	
 	private PrincipalAG() {
-		
 	}
 	
 	/*
@@ -27,35 +24,34 @@ public class PrincipalAG {
 	 */
 	public static void main(String[] args) {
 		// -----------------------| Variables |--------------------------
-		ConstructorCaminos builder = new ConstructorCaminos();
 		Poblacion poblacion;
-		OperadorSeleccion seleccion;
-		OperadorCruce cruce;
-		OperadorMutacion mutacion;
 		Config conf;
-		
-		
-		imprimirTitulo();
-		inicializarOperadores(seleccion, cruce, mutacion);
-		cargarConfiguracion(conf);
-			
-		// -----------------------| Cargar Rutas |-----------------------
+
+		// -----------------------| Control |-----------------------
 		if (args.length != 1)
-			throw new Error("Falta nombre de Carpeta de Rutas");
+			throw new Error("Falta nombre de Carpeta de Configuración");
 		
-		builder.leerCaminos(d, 5, args[0]);
+		// -----------------------| Inicialización |-----------------
+		imprimirTitulo();
+		conf = cargarConfiguracion(args[0]);
+		poblacion = inicializarPoblacion(conf);
+			
 		// -----------------------| Algoritmo Genético |-----------------
-		pob.setOperadorSeleccion(oSeleccion);
-		pob.setOperadorCruce(oCruce);
-		pob.setOperadorMutacion(oMutacion);
-		Cromosoma [] selectos;
+		poblacion.descartarIguales();
+		poblacion.evaluar();
 		
-		selectos = pob.seleccionar();
-		pob.cruzar(selectos);
-		pob.mutar();
+		int iteraciones = 0;
+		int maxIteraciones = conf.getMaxIteraciones();
+		while (iteraciones < maxIteraciones) {
+			Cromosoma[] selectos = poblacion.seleccionar();
+			poblacion.cruzar(selectos);
+			poblacion.mutar();
+			poblacion.reemplazar();
+			poblacion.descartarIguales();
+			poblacion.evaluar();
+		}
 		
 		// -----------------------| Finalización |-----------------------
-
 		System.out.println("¡¡¡END OF PROGRAM!!!");
 	}
 	
@@ -65,14 +61,52 @@ public class PrincipalAG {
 		System.out.println("      ..................................");
 	}
 	
-	private static void inicializarOperadores(OperadorSeleccion seleccion, 
-			OperadorCruce cruce, OperadorMutacion mutacion) {
-		seleccion = new TorneoBinario();
-		cruce = new CruceUniforme();
-		mutacion = new MutacionUnGen();
+	private static Config cargarConfiguracion(String path) {
+		Config config = new Config();
+		Lector lector = new Lector(path + "config.txt");
+		
+		String linea = lector.leerLinea();
+		while (linea != null) {
+			String[] partes = linea.split("=");
+			
+			if (partes[0].equalsIgnoreCase("MAX_ITERACIONES")) {
+				int valor = Integer.parseInt(partes[1]);
+				config.setMaxIteraciones(valor);
+			}
+			else if (partes[0].equalsIgnoreCase("MAX_CAMINOS")) {
+				int valor = Integer.parseInt(partes[1]);
+				config.setMaxCaminos(valor);
+			}
+			else if (partes[0].equalsIgnoreCase("MAX_POBLACION")) {
+				int valor = Integer.parseInt(partes[1]);
+				config.setTamPoblacion(valor);
+			}
+			else if (partes[0].equalsIgnoreCase("PATH_ARCHIVOS")) {
+				/*
+				 * Del archivo demandas.txt deben leerse las
+				 * demandas y crear el arreglo correspondiente
+				 */
+				Demanda[] demandas = null;
+				
+				ConstructorCaminos builder = new ConstructorCaminos();
+				builder.leerCaminos(demandas, config.getMaxCaminos(), partes[1]);
+				config.setDemandas(demandas);
+			}
+			else {
+				throw new Error("Valor de configuración incorrecto");
+			}
+		}
+		
+		return config;
 	}
 	
-	private static void cargarConfiguracion(Config conf) {
-				 
+	private static Poblacion inicializarPoblacion(Config conf) {
+		Poblacion p = new Poblacion(conf.getDemandas(), conf.getTamPoblacion());
+		
+		p.setOperadorCruce(new CruceUniforme());
+		p.setOperadorMutacion(new MutacionUnGen());
+		p.setOperadorSeleccion(new TorneoBinario());
+		
+		return p;
 	}
 }

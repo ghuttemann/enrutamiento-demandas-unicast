@@ -52,7 +52,7 @@ public class ConstructorCaminos {
 			GrupoCaminos grupo = new GrupoCaminos();
 			
 			// Leemos el grupo de caminos
-			leerGrupoCaminos(grupo, lector);
+			leerGrupoCaminos(demandas[i], grupo, lector);
 			
 			// Guardamos el grupo de caminos para la demanda
 			demandas[i].setCaminos(grupo);
@@ -80,12 +80,33 @@ public class ConstructorCaminos {
 	 * @param grupo El grupo de caminos.
 	 * @param lector El manejador del archivo del cual leer.
 	 */
-	private void leerGrupoCaminos(GrupoCaminos grupo, Lector lector) {
+	private void leerGrupoCaminos(Demanda demanda, GrupoCaminos grupo, 
+			Lector lector) {
 		// Comenzamos a leer los caminos
 		String linea = lector.leerLinea();
 		while (linea != null) {
 			String[] partes = linea.split("-");
+			
+			/*
+			 * Camino que se irá construyendo
+			 * para cada lectura.
+			 */
 			Camino cam = new Camino();
+			
+			/*
+			 * Indica si el camino construido
+			 * hasta el momento es válido.
+			 */
+			boolean caminoValido = true;
+			
+			/*
+			 * Ancho de banda requerido por la
+			 * demanda. Cada camino construido
+			 * debe, al menos, soportar este
+			 * ancho de banda.
+			 */
+			double anchoDeBanda = demanda.getAnchoDeBanda();
+			
 			
 			// Leemos cada arista del camino
 			for (int i=3; i < partes.length-3; i++) {
@@ -109,10 +130,28 @@ public class ConstructorCaminos {
 				// Agregamos la arista al camino
 				Arista a = new Arista(origen, destino, capacidad, costo);
 				cam.agregarArista(a);
+				
+				/*
+				 * Comprobamos que el camino construido hasta
+				 * el momento satisfaga el ancho de banda
+				 * requerido por la demanda.
+				 * En caso de no satisfacerla, anulamos la
+				 * construcción del camino actual.
+				 */
+				if (cam.getCapacidadMinima() < anchoDeBanda) {
+					caminoValido = false;
+					break;
+				}
 			}
 			
-			// Agregamos el camino al grupo de caminos
-			grupo.agregarCamino(cam);
+			/*
+			 * Agregamos el camino al grupo de caminos
+			 * solo si es válido, esto es, que pueda
+			 * satisfacer el ancho de banda requerido
+			 * por la demanda.
+			 */
+			if (caminoValido)
+				grupo.agregarCamino(cam);
 			
 			// Leemos el siguiente camino
 			linea = lector.leerLinea();

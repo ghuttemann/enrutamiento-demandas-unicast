@@ -42,6 +42,7 @@ public class PrincipalAG {
 		
 		int iteraciones = 0;
 		int maxIteraciones = conf.getMaxIteraciones();
+		System.out.println("Generacion: 0");
 		while (iteraciones < maxIteraciones) {
 			Cromosoma[] selectos = poblacion.seleccionar();
 			poblacion.cruzar(selectos);
@@ -49,8 +50,11 @@ public class PrincipalAG {
 			poblacion.reemplazar();
 			poblacion.descartarIguales();
 			poblacion.evaluar();
+			iteraciones++;
+			System.out.println("Generacion: "+iteraciones);
 		}
 		
+		poblacion.imprimir();
 		// -----------------------| Finalización |-----------------------
 		System.out.println("¡¡¡END OF PROGRAM!!!");
 	}

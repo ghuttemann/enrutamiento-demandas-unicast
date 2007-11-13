@@ -178,6 +178,14 @@ public class Cromosoma {
 		}
 		return retorno;
 	}
+	
+	public void imprimir(){
+		for (int i=0; i<this.getCantGenes();i++){
+			String c = getGrupoCaminos(i).getCamino(getGen(i)).toString();
+			System.out.println("Gen "+i+"= "+c);
+		}
+	}
+	
 	private class Capacidad {
 		private double valor;
 		

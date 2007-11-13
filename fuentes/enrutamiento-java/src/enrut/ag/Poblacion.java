@@ -47,6 +47,7 @@ public class Poblacion {
 	public Poblacion(Demanda[] demandas, int cant) {
 		individuos = new Cromosoma[cant];
 		hijos = new Cromosoma[cant];
+		fitness = new double[cant];
 		
 		for (int i=0; i < individuos.length; i++) {
 			individuos[i] = new Cromosoma(demandas);
@@ -130,7 +131,7 @@ public class Poblacion {
 	}
 
 	public void evaluar() {
-		for (int i=0; i<=this.getTamaño();i++) {
+		for (int i=0; i<this.getTamaño();i++) {
 			fitness[i] = individuos[i].evaluar();
 		}
 	}
@@ -165,5 +166,13 @@ public class Poblacion {
 
 	public void setOperadorSeleccion(OperadorSeleccion operadorSeleccion) {
 		this.operadorSeleccion = operadorSeleccion;
+	}
+	
+	public void imprimir(){
+		for (int i=0; i<this.getTamaño(); i++){
+			System.out.println("Cromosoma: "+i+" ");
+			individuos[i].imprimir();
+			System.out.println();
+		}
 	}
 }

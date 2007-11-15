@@ -20,6 +20,11 @@ public class Cromosoma {
 	 */
 	private Demanda[] demandas;
 	
+	/*
+	 * Costo de la solucion
+	 */
+	double costo;
+	
 	
 	/**
 	 * Construye un nuevo cromosoma con alelos
@@ -73,7 +78,8 @@ public class Cromosoma {
 			total += getGrupoCaminos(i).getCamino(getGen(i)).getCosto();
 		}
 		
-		return 1/total;
+		this.costo = 1/total;
+		return this.costo;
 	}
 	
 	private boolean esValido() {
@@ -166,17 +172,28 @@ public class Cromosoma {
 		return true;
 	}
 	
-	public boolean equals(Cromosoma c) {
-		boolean retorno=true;
+	public double getCosto() {
+		return this.costo;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		String thisClass = this.getClass().getName();
+		String objClass  = obj.getClass().getName();
 		
-		if (this.getCantGenes()!=c.getCantGenes())
+		if (!thisClass.equalsIgnoreCase(objClass))
+			return false;
+			
+		Cromosoma c = (Cromosoma) obj;
+		if (this.getCantGenes() != c.getCantGenes())
 			return false;
 		
-		for (int i=0; i<this.getCantGenes(); i++){
+		for (int i=0; i < this.getCantGenes(); i++){
 			if (this.getGen(i) != c.getGen(i))
 				return false;
 		}
-		return retorno;
+		
+		return true;
 	}
 	
 	public void imprimir(){
@@ -209,5 +226,4 @@ public class Cromosoma {
 			return this.valor < 0.0;
 		}
 	}
-
 }

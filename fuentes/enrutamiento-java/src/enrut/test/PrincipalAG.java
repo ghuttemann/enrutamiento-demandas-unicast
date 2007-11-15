@@ -88,7 +88,7 @@ public class PrincipalAG {
 			String[] partes = linea.split("=");
 			
 			try {
-				if (partes[0].equalsIgnoreCase("MAX_ITERACIONES")) {
+				if (partes[0].equalsIgnoreCase("MAX_TIEMPO")) {
 					int valor = Integer.parseInt(partes[1]);
 					config.setMaxTiempo(valor);
 				}
@@ -109,7 +109,7 @@ public class PrincipalAG {
 					config.setDemandas(demandas);
 				}
 				else {
-					throw new Error("Valor de configuración incorrecto");
+					throw new Error("Valor de configuración incorrecto: " + partes[0]);
 				}
 			}
 			catch (NumberFormatException e) {

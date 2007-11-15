@@ -39,6 +39,11 @@ public class Poblacion {
 	 */
 	private OperadorSeleccion operadorSeleccion;
 	
+	/*
+	 * Mejor cromosoma de toda la historia
+	 */
+	Cromosoma mejorIndividuo = null;
+	
 	/**
 	 * Crea una nueva población cant individuos
 	 * @param demandas Las demandas solicitadas
@@ -75,10 +80,8 @@ public class Poblacion {
 	public void descartarIguales() {
 		for (int i=0; i<this.getTamaño()-1; i++) {
 			for (int j=i+1; j<this.getTamaño(); j++) {
-				if (individuos[i].equals(individuos[j])){
+				if (individuos[i].equals(individuos[j])) {
 					operadorMutacion.mutar(individuos[j]);
-					i=0; // OJO (opcionalmente, se puede continuar)
-					j=1; // OJO (opcionalmente, se puede continuar)
 				}
 			}
 		}
@@ -98,7 +101,6 @@ public class Poblacion {
 	 * @param selectos
 	 */
 	public void cruzar(Cromosoma []selectos) {
-		
 		for (int i=0; i <= selectos.length-2; i = i+2){
 			Cromosoma nuevos[];
 			nuevos = operadorCruce.cruzar(selectos[i], selectos[i+1]);
@@ -127,13 +129,14 @@ public class Poblacion {
 	 */
 	public void reemplazar() {
 		for (int i =0; i<this.getTamaño(); i++)
-				individuos[i] = hijos[i];
+			individuos[i] = hijos[i];
 	}
 
 	public void evaluar() {
 		for (int i=0; i<this.getTamaño();i++) {
 			fitness[i] = individuos[i].evaluar();
 		}
+		elegirMejor();
 	}
 	
 	public double getFitness(int ind) {
@@ -168,9 +171,24 @@ public class Poblacion {
 		this.operadorSeleccion = operadorSeleccion;
 	}
 	
+	private void elegirMejor() {
+		if (mejorIndividuo == null)
+			mejorIndividuo = individuos[0];
+		
+		for (int i=0; i < this.getTamaño(); i++) {
+			if (individuos[i].getCosto() < mejorIndividuo.getCosto())
+				mejorIndividuo = individuos[i];
+		}
+	}
+	
+	public Cromosoma getMejorIndividuo() {
+		return this.mejorIndividuo;
+	}
+	
 	public void imprimir(){
 		for (int i=0; i<this.getTamaño(); i++){
 			System.out.println("Cromosoma: "+i+" ");
+			System.out.println("Fitness  : "+fitness[i]);
 			individuos[i].imprimir();
 			System.out.println();
 		}

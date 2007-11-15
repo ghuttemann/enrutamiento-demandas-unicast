@@ -39,6 +39,9 @@ public class Lector {
 	 */
 	public void abrir(String archivo) {
 		try {
+			if (input != null)
+				this.cerrar();
+			
 			input = new BufferedReader( new FileReader(archivo) );
 		}
 		catch (FileNotFoundException e) {

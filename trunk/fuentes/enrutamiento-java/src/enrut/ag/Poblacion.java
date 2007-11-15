@@ -112,14 +112,14 @@ public class Poblacion {
 
 	/**
 	 * Muta cromosomas de la población con una 
-	 * problabilidad de mutar de 0.01
+	 * problabilidad de mutar de 0.1
 	 */
 	public void mutar() {
 		Random rand = new Random(System.currentTimeMillis());
 		
 		for (int i=0; i < this.getTamaño(); i++){
-			if (rand.nextInt(100) > 98)
-				operadorMutacion.mutar(individuos[i]);
+			if (rand.nextInt(100) < 10)
+				operadorMutacion.mutar(hijos[i]);
 		}
 	}
 	
@@ -171,7 +171,15 @@ public class Poblacion {
 		this.operadorSeleccion = operadorSeleccion;
 	}
 	
+	/**
+	 * Elige el mejor cromosoma de 
+	 * toda la historia.
+	 */
 	private void elegirMejor() {
+		/*
+		 * Si todavia no se seleccionó
+		 * a ninguno, guardamos al primero.
+		 */
 		if (mejorIndividuo == null)
 			mejorIndividuo = individuos[0];
 		

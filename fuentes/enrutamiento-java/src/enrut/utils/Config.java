@@ -8,7 +8,7 @@ import enrut.ag.Demanda;
 public class Config {
 	private Demanda[] demandas;
 	private int maxCaminos;
-	private int maxIteraciones;
+	private int maxTiempo;
 	private int tamPoblacion;
 	
 	public Config() {
@@ -31,12 +31,12 @@ public class Config {
 		this.maxCaminos = maxCaminos;
 	}
 
-	public int getMaxIteraciones() {
-		return maxIteraciones;
+	public int getMaxTiempo() {
+		return maxTiempo;
 	}
 
-	public void setMaxIteraciones(int maxIteraciones) {
-		this.maxIteraciones = maxIteraciones;
+	public void setMaxTiempo(int maxTiempo) {
+		this.maxTiempo = maxTiempo;
 	}
 
 	public int getTamPoblacion() {

@@ -41,9 +41,14 @@ public class PrincipalAG {
 		poblacion.evaluar();
 		
 		int iteraciones = 0;
-		int maxIteraciones = conf.getMaxIteraciones();
+		boolean parada = false;
+		
+		long maxTiempo = 60000L * conf.getMaxTiempo();
+		long inicio = System.currentTimeMillis();
+		long tiempoActual;
+		
 		System.out.println("Generacion: 0");
-		while (iteraciones < maxIteraciones) {
+		while (!parada) {
 			Cromosoma[] selectos = poblacion.seleccionar();
 			poblacion.cruzar(selectos);
 			poblacion.mutar();
@@ -52,8 +57,17 @@ public class PrincipalAG {
 			poblacion.evaluar();
 			iteraciones++;
 			System.out.println("Generacion: "+iteraciones);
+			
+			tiempoActual = System.currentTimeMillis();
+			if (tiempoActual - inicio >= maxTiempo)
+				parada = true;
 		}
 		
+		System.out.println();
+		System.out.println("El mejor es:");
+		poblacion.getMejorIndividuo().imprimir();
+		System.out.println();
+		System.out.println();
 		poblacion.imprimir();
 		// -----------------------| Finalización |-----------------------
 		System.out.println("¡¡¡END OF PROGRAM!!!");
@@ -76,7 +90,7 @@ public class PrincipalAG {
 			try {
 				if (partes[0].equalsIgnoreCase("MAX_ITERACIONES")) {
 					int valor = Integer.parseInt(partes[1]);
-					config.setMaxIteraciones(valor);
+					config.setMaxTiempo(valor);
 				}
 				else if (partes[0].equalsIgnoreCase("MAX_CAMINOS")) {
 					int valor = Integer.parseInt(partes[1]);

@@ -7,7 +7,8 @@ import enrut.ag.Cromosoma;
 import enrut.ag.Demanda;
 import enrut.ag.Poblacion;
 import enrut.ag.oper.impl.cruce.CruceUniforme;
-import enrut.ag.oper.impl.mutacion.MutacionUnGen;
+import enrut.ag.oper.impl.mutacion.MutacionGenes;
+//import enrut.ag.oper.impl.mutacion.MutacionUnGen;
 import enrut.ag.oper.impl.seleccion.TorneoBinario;
 import enrut.grafo.ConstructorCaminos;
 import enrut.utils.Config;
@@ -56,27 +57,39 @@ public class PrincipalAG {
 			poblacion.descartarIguales();
 			poblacion.evaluar();
 			iteraciones++;
-			System.out.println("Generacion: "+iteraciones);
-			
 			tiempoActual = System.currentTimeMillis();
+			
 			if (tiempoActual - inicio >= maxTiempo)
 				parada = true;
+			else {
+				if (iteraciones%10 == 0){
+					System.out.println("Generacion: "+iteraciones);
+					imprimirMejor(poblacion);
+				}
+			}
 		}
 		
-		System.out.println();
-		System.out.println("El mejor es:");
-		poblacion.getMejorIndividuo().imprimir();
+		imprimirMejor(poblacion);
 		System.out.println();
 		System.out.println();
-		poblacion.imprimir();
+		//poblacion.imprimir();
 		// -----------------------| Finalización |-----------------------
 		System.out.println("¡¡¡END OF PROGRAM!!!");
 	}
+	
 	
 	private static void imprimirTitulo() {
 		System.out.println("      ..................................");
 		System.out.println("-----| Optimización de Demandas Unicast |------");
 		System.out.println("      ..................................");
+	}
+	
+	private static void imprimirMejor(Poblacion poblacion){
+		System.out.println();
+		System.out.println("El mejor es:");
+		double fitness = poblacion.getMejorIndividuo().getCosto();
+		System.out.println("Fitness : "+fitness);
+		poblacion.getMejorIndividuo().imprimir();
 	}
 	
 	private static Config cargarConfiguracion(String path) {
@@ -172,7 +185,7 @@ public class PrincipalAG {
 		Poblacion p = new Poblacion(conf.getDemandas(), conf.getTamPoblacion());
 		
 		p.setOperadorCruce(new CruceUniforme());
-		p.setOperadorMutacion(new MutacionUnGen());
+		p.setOperadorMutacion(new MutacionGenes());
 		p.setOperadorSeleccion(new TorneoBinario());
 		
 		return p;

@@ -9,9 +9,10 @@ import enrut.ag.Cromosoma;
 import enrut.ag.oper.OperadorMutacion;
 
 public class MutacionUnGen implements OperadorMutacion {
-	@Override
+	//@Override
 	public void mutar(Cromosoma a) {
 		Random rand = new Random(System.currentTimeMillis());
+		rand.nextInt();
 		
 		// Cantidad de genes del cromosoma
 		int cantGenes = a.getCantGenes();

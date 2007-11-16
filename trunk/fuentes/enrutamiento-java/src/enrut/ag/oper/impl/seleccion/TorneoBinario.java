@@ -10,11 +10,14 @@ import enrut.ag.Poblacion;
 import enrut.ag.oper.OperadorSeleccion;
 
 public class TorneoBinario implements OperadorSeleccion {
-	@Override
+	//@Override
 	public Cromosoma[] seleccionar(Poblacion p) {
+		if (p==null)
+			System.exit(0);
 		int cantMejores = p.getTamaño(); //tamaño de población seleccionada
 		Cromosoma Mejores[] = new Cromosoma[cantMejores];
-		Random rand = new Random(System.currentTimeMillis());
+		Random rand = new Random();
+		rand.nextInt();
 		
 		for (int i=0; i<cantMejores; i++) {
 			

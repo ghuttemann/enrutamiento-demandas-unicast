@@ -41,7 +41,8 @@ public class Cromosoma {
 	 * alelos randómicos.
 	 */
 	public void generarGenes() {
-		Random rand = new Random(System.currentTimeMillis());
+		Random rand = new Random();
+		rand.nextInt();
 		for (int i=0; i < genes.length; i++) {
 			int cantCaminos = demandas[i].getGrupoCaminos().getCantCaminos();
 			genes[i] = rand.nextInt(cantCaminos);

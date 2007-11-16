@@ -15,7 +15,7 @@ import enrut.ag.oper.OperadorCruce;
  * @author ghuttemann
  */
 public class CruceUniforme implements OperadorCruce {
-	@Override
+	//@Override
 	public Cromosoma[] cruzar(Cromosoma a, Cromosoma b) {
 		Cromosoma[] hijos = new Cromosoma[2];
 		
@@ -41,7 +41,8 @@ public class CruceUniforme implements OperadorCruce {
 		 */
 		int[] genes = new int[2];
 		
-		Random rand = new Random(System.currentTimeMillis());
+		Random rand = new Random();
+		rand.nextBoolean();
 		for (int i=0; i < a.getCantGenes(); i++) {
 			/*
 			 * Tiramos la moneda para obtener el

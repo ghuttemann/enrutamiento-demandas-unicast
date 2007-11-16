@@ -67,7 +67,11 @@ public class Poblacion {
 	public Poblacion(Demanda[] demandas) {
 		this(demandas, 32);
 	}
-	
+
+	/**
+	 * Obtiene la cantidad de individuos de la poblacion
+	 * @return int tamaño de poblacion
+	 */
 	public int getTamaño() {
 		return individuos.length;
 	}
@@ -78,6 +82,7 @@ public class Poblacion {
 	 * mutandolos.
 	 */
 	public void descartarIguales() {
+		//System.out.println("DESCARTARIGUALES...");
 		for (int i=0; i<this.getTamaño()-1; i++) {
 			for (int j=i+1; j<this.getTamaño(); j++) {
 				if (individuos[i].equals(individuos[j])) {
@@ -112,13 +117,14 @@ public class Poblacion {
 
 	/**
 	 * Muta cromosomas de la población con una 
-	 * problabilidad de mutar de 0.1
+	 * problabilidad de mutar de 1
 	 */
 	public void mutar() {
-		Random rand = new Random(System.currentTimeMillis());
+		Random rand = new Random();
+		rand.nextInt();
 		
 		for (int i=0; i < this.getTamaño(); i++){
-			if (rand.nextInt(100) < 10)
+			if (rand.nextInt(99) < 100)
 				operadorMutacion.mutar(hijos[i]);
 		}
 	}
@@ -130,8 +136,12 @@ public class Poblacion {
 	public void reemplazar() {
 		for (int i =0; i<this.getTamaño(); i++)
 			individuos[i] = hijos[i];
+		//individuos[0]=this.getMejorIndividuo(); // Reemplaza el mejor
 	}
 
+	/**
+	 * Realiza el calculo de fitness para todos los individuos
+	 */
 	public void evaluar() {
 		for (int i=0; i<this.getTamaño();i++) {
 			fitness[i] = individuos[i].evaluar();
@@ -139,6 +149,11 @@ public class Poblacion {
 		elegirMejor();
 	}
 	
+	/**
+	 * Obtiene el fitness de un individuo
+	 * @param ind indice de un individuo
+	 * @return fitness
+	 */
 	public double getFitness(int ind) {
 		return fitness[ind];
 	}
@@ -180,12 +195,14 @@ public class Poblacion {
 		 * Si todavia no se seleccionó
 		 * a ninguno, guardamos al primero.
 		 */
-		if (mejorIndividuo == null)
+		if (mejorIndividuo == null) {
 			mejorIndividuo = individuos[0];
+		}
 		
 		for (int i=0; i < this.getTamaño(); i++) {
-			if (individuos[i].getCosto() < mejorIndividuo.getCosto())
+			if (fitness[i]> mejorIndividuo.getCosto()) {
 				mejorIndividuo = individuos[i];
+			}
 		}
 	}
 	
@@ -193,6 +210,9 @@ public class Poblacion {
 		return this.mejorIndividuo;
 	}
 	
+	/**
+	 * Imprime en salida standard toda la población
+	 */
 	public void imprimir(){
 		for (int i=0; i<this.getTamaño(); i++){
 			System.out.println("Cromosoma: "+i+" ");

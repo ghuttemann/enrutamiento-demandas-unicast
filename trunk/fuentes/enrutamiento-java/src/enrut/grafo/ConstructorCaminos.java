@@ -109,7 +109,8 @@ public class ConstructorCaminos {
 			
 			
 			// Leemos cada arista del camino
-			for (int i=3; i < partes.length-3; i++) {
+			int i=3;
+			for (i=3; i < partes.length; i++) {
 				String[] arista = partes[i].split(":");
 				
 				// Obtenemos los datos de la arista
@@ -118,8 +119,8 @@ public class ConstructorCaminos {
 				try {
 					origen    = Integer.parseInt(arista[0]);
 					destino   = Integer.parseInt(arista[1]);
-					capacidad = Double.parseDouble(arista[2]);
-					costo     = Double.parseDouble(arista[3]);
+					costo     = Double.parseDouble(arista[2]);
+					capacidad = Double.parseDouble(arista[3]);
 				}
 				catch (NumberFormatException e) {
 					System.out.println("Error de conversión numérica");
@@ -150,6 +151,7 @@ public class ConstructorCaminos {
 			 * satisfacer el ancho de banda requerido
 			 * por la demanda.
 			 */
+			//System.out.println("Condición:"+i+"=="+(partes.length));
 			if (caminoValido)
 				grupo.agregarCamino(cam);
 			

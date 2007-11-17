@@ -44,15 +44,21 @@ public class Poblacion {
 	 */
 	Cromosoma mejorIndividuo = null;
 	
+	/*
+	 * Cantidad total de aristas 
+	 */
+	private int cantAristas = 0;
 	/**
 	 * Crea una nueva población cant individuos
 	 * @param demandas Las demandas solicitadas
 	 * @param cant La cantidad de individuos a generar
+	 * @param cantArist La cantidad de aristas del grafo a evaluar
 	 */
-	public Poblacion(Demanda[] demandas, int cant) {
+	public Poblacion(Demanda[] demandas, int cant, int cantArists) {
 		individuos = new Cromosoma[cant];
 		hijos = new Cromosoma[cant];
 		fitness = new double[cant];
+		cantAristas = cantArists;
 		
 		for (int i=0; i < individuos.length; i++) {
 			individuos[i] = new Cromosoma(demandas);
@@ -60,14 +66,6 @@ public class Poblacion {
 		}
 	}
 	
-	/**
-	 * Crea una población con 32 individuos
-	 * @param demandas Las demandas solicitadas
-	 */
-	public Poblacion(Demanda[] demandas) {
-		this(demandas, 32);
-	}
-
 	/**
 	 * Obtiene la cantidad de individuos de la poblacion
 	 * @return int tamaño de poblacion
@@ -124,7 +122,7 @@ public class Poblacion {
 		rand.nextInt();
 		
 		for (int i=0; i < this.getTamaño(); i++){
-			if (rand.nextInt(99) < 100)
+			if (rand.nextInt(99) < 20)
 				operadorMutacion.mutar(hijos[i]);
 		}
 	}
@@ -143,8 +141,9 @@ public class Poblacion {
 	 * Realiza el calculo de fitness para todos los individuos
 	 */
 	public void evaluar() {
+		
 		for (int i=0; i<this.getTamaño();i++) {
-			fitness[i] = individuos[i].evaluar();
+			fitness[i] = cantAristas + individuos[i].evaluar();
 		}
 		elegirMejor();
 	}
@@ -186,6 +185,14 @@ public class Poblacion {
 		this.operadorSeleccion = operadorSeleccion;
 	}
 	
+	public int getCantAristas(){
+		return this.cantAristas;
+	}
+	public void setCantAristas(int N){
+		this.cantAristas = N;
+	}
+	
+	
 	/**
 	 * Elige el mejor cromosoma de 
 	 * toda la historia.
@@ -199,15 +206,21 @@ public class Poblacion {
 			mejorIndividuo = individuos[0];
 		}
 		
+		double mejorFitness = cantAristas + mejorIndividuo.getCosto();
 		for (int i=0; i < this.getTamaño(); i++) {
-			if (fitness[i]> mejorIndividuo.getCosto()) {
+			if (fitness[i]> mejorFitness) {
 				mejorIndividuo = individuos[i];
+				mejorFitness = cantAristas + mejorIndividuo.getCosto();
 			}
 		}
 	}
 	
 	public Cromosoma getMejorIndividuo() {
 		return this.mejorIndividuo;
+	}
+	
+	public double getMejorFitness(){
+		return this.cantAristas + this.mejorIndividuo.getCosto();
 	}
 	
 	/**

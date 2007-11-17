@@ -42,6 +42,7 @@ public class PrincipalAG {
 		poblacion.evaluar();
 		
 		int iteraciones = 0;
+		int reinicios = 0;
 		boolean parada = false;
 		
 		long maxTiempo = 60000L * conf.getMaxTiempo();
@@ -54,6 +55,10 @@ public class PrincipalAG {
 			poblacion.cruzar(selectos);
 			poblacion.mutar();
 			poblacion.reemplazar();
+			if (poblacion.getMejorFitness()< conf.getCantAristas()){
+				poblacion = inicializarPoblacion(conf);
+				reinicios++;
+			}			
 			poblacion.descartarIguales();
 			poblacion.evaluar();
 			iteraciones++;
@@ -68,11 +73,17 @@ public class PrincipalAG {
 				}
 			}
 		}
-		
+		if (poblacion.getMejorFitness()< conf.getCantAristas()){
+			System.out.println("\n");
+			System.out.println("NO EXISTE SOLUCION VALIDA.");
+		}
+		System.out.println("\n");
+		System.out.println("ULTIMA POBLACION GENERADA");
+		System.out.println("Numero de Reinicios = "+reinicios);
 		imprimirMejor(poblacion);
 		System.out.println();
-		System.out.println();
-		//poblacion.imprimir();
+		poblacion.imprimir();
+		
 		// -----------------------| Finalización |-----------------------
 		System.out.println("¡¡¡END OF PROGRAM!!!");
 	}
@@ -87,7 +98,7 @@ public class PrincipalAG {
 	private static void imprimirMejor(Poblacion poblacion){
 		System.out.println();
 		System.out.println("El mejor es:");
-		double fitness = poblacion.getMejorIndividuo().getCosto();
+		double fitness = poblacion.getMejorFitness();
 		System.out.println("Fitness : "+fitness);
 		poblacion.getMejorIndividuo().imprimir();
 	}
@@ -133,7 +144,38 @@ public class PrincipalAG {
 			linea = lector.leerLinea();
 		}
 		
+		// Al Final escribimos al cantidad de aristas del grafo
+		int cantAristas = getCantAristas(path+"grafo.txt");
+		config.setCantAristas(cantAristas);
+		
+		lector.cerrar();
 		return config;
+	}
+	
+	private static int getCantAristas(String path){
+
+		Lector lector = new Lector(path);
+
+		String linea = lector.leerLinea(); // Cantidad de Nodos
+		linea = lector.leerLinea(); // Cantidad de Aristas
+		if (linea == null) {
+			System.out.println("Cantidad_Aristas: Archivo de grafo No valido");
+			System.exit(0);
+		}
+		
+		// se lee la cantidad de Aristas
+		int cantidad=0;
+		try {
+			cantidad = Integer.parseInt(linea);
+		} catch (NumberFormatException e) {
+			System.out.println("Error de conversión numérica");
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+		lector.cerrar();
+		
+		return cantidad;
 	}
 	
 	private static Demanda[] getDemandas(String path){
@@ -178,12 +220,14 @@ public class PrincipalAG {
 			d[i]= new Demanda(origen, destino, capacidad);
 		}
 		
+		lector.cerrar();
 		return d;
 	}
 	
 	private static Poblacion inicializarPoblacion(Config conf) {
-		Poblacion p = new Poblacion(conf.getDemandas(), conf.getTamPoblacion());
-		
+		Poblacion p = new Poblacion(conf.getDemandas(), conf.getTamPoblacion(),
+				conf.getCantAristas());
+	
 		p.setOperadorCruce(new CruceUniforme());
 		p.setOperadorMutacion(new MutacionGenes());
 		p.setOperadorSeleccion(new TorneoBinario());

@@ -10,6 +10,7 @@ public class Config {
 	private int maxCaminos;
 	private int maxTiempo;
 	private int tamPoblacion;
+	private int cantAristas;
 	
 	public Config() {
 		
@@ -45,5 +46,13 @@ public class Config {
 
 	public void setTamPoblacion(int tamPoblacion) {
 		this.tamPoblacion = tamPoblacion;
+	}
+	
+	public int getCantAristas() {
+		return cantAristas;
+	}
+
+	public void setCantAristas(int cantAristas) {
+		this.cantAristas = cantAristas;
 	}
 }

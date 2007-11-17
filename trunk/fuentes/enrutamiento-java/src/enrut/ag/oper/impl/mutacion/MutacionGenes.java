@@ -36,8 +36,7 @@ public class MutacionGenes implements OperadorMutacion {
 			 */
 			int valorActual = a.getGen(i);
 			int valorNuevo  = valorActual;
-			while (valorNuevo == valorActual)
-				valorNuevo = rand.nextInt(cantCaminos);
+			valorNuevo = rand.nextInt(cantCaminos);
 				
 			// Cambiamos el valor del gen
 			a.setGen(i, valorNuevo);

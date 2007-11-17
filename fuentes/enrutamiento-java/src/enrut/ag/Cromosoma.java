@@ -71,8 +71,11 @@ public class Cromosoma {
 	
 	public double evaluar() {
 		
-		if (!this.esValido())
-			return 0.0;
+		int repetidos = this.esValido();
+		if (repetidos>0) {
+			this.costo = -repetidos;
+			return -repetidos;
+		}
 		
 		double total=0.0;
 		for(int i=0; i<this.getCantGenes(); i++){
@@ -83,12 +86,12 @@ public class Cromosoma {
 		return this.costo;
 	}
 	
-	private boolean esValido() {
+	private int esValido() {
 		
 		Hashtable<String, Capacidad> aristasRepetidas;
 		
 		aristasRepetidas = new Hashtable<String, Capacidad>();
-		
+		int enlacesRepetidos = 0;		
 		/*
 		 * Iteramos sobre cada gen del cromosoma
 		 * excepto el último.
@@ -150,27 +153,29 @@ public class Cromosoma {
 							Demanda demanda = getDemandas()[k];
 							double auxiliar = demanda.getAnchoDeBanda();
 							capa.descontar(auxiliar);
+							capa.aumentarCantAristas();
 							aristasRepetidas.put(arista.toString(), capa);
 						}
-						
-						if (capa.esNegativo())
-							return false;
 					}
 				}
 				
+				/*
+				 * Si existieron solapamientos solo existen problemas
+				 */
 				if (repetida) {
 					Capacidad capa = aristasRepetidas.get(arista.toString());
 					Demanda demanda = getDemandas()[i];
 					double auxiliar = demanda.getAnchoDeBanda();
 					capa.descontar(auxiliar);
 					
-					if (capa.esNegativo())
-						return false;
+					if (capa.esNegativo()){
+						enlacesRepetidos += capa.getCantAristas();
+					}
 				}
 			}
 		}
 		
-		return true;
+		return enlacesRepetidos;
 	}
 	
 	public double getCosto() {
@@ -206,6 +211,7 @@ public class Cromosoma {
 	
 	private class Capacidad {
 		private double valor;
+		private int cantAristas = 0;
 		
 		public Capacidad(double valor) {
 			this.valor = valor;
@@ -218,9 +224,17 @@ public class Cromosoma {
 		public void descontar(double valor){
 			this.valor -= valor;
 		}
+
+		public void aumentarCantAristas() {
+			this.cantAristas++;
+		}
 		
 		public double getValor() {
 			return this.valor;
+		}
+		
+		public int getCantAristas(){
+			return this.cantAristas;
 		}
 		
 		public boolean esNegativo() {

@@ -30,12 +30,7 @@ public class TorneoBinario implements OperadorSeleccion {
 			// Se extrae los fitness de los correspondientes individuos 
 			double costo1 = p.getFitness(ind1);
 			double costo2 = p.getFitness(ind2);
-			
-			if (costo1==0.0 && costo2==0.0) {
-				i -= 1;
-				continue;
-			}
-			
+				
 			// Competencia
 			if (costo1>=costo2) { // Ganó individuo 1
 				Mejores[i]=p.getIndividuo(ind1);

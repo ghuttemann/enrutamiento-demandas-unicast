@@ -3,6 +3,10 @@
  */
 package enrut.test;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
+import au.com.bytecode.opencsv.CSVWriter;
 import enrut.ag.Cromosoma;
 import enrut.ag.Demanda;
 import enrut.ag.Poblacion;
@@ -24,9 +28,22 @@ public class PrincipalAG {
 	 * para la optimización de demandas unicast.
 	 */
 	public static void main(String[] args) {
+		for (int k =1; k<=10; k++){
 		// -----------------------| Variables |--------------------------
 		Poblacion poblacion;
 		Config conf;
+		/*
+		 * Variables para calculo de Resultados.
+		 *  Correr por: 5 min (300 seg)
+		 *  Tomar muestra cada: 5 seg.
+		 */
+		long muestra = 5000; 
+		String[] tiempos = new String [61];
+		String[] fitness = new String [61];
+		tiempos[0] = "Tiempo";
+		fitness[0] = "Costo";
+		int indiceTiempo = 1;
+		long iteradorTiempo = muestra; // se evalua de a 5 segundos
 
 		// -----------------------| Control |-----------------------
 		if (args.length != 1)
@@ -46,49 +63,96 @@ public class PrincipalAG {
 		boolean parada = false;
 		
 		long maxTiempo = 60000L * conf.getMaxTiempo();
-		long inicio = System.currentTimeMillis();
 		long tiempoActual;
-		
-		System.out.println("Generacion: 0");
+		long inicio = System.currentTimeMillis();
+		//System.out.println("Generacion: 0");
 		while (!parada) {
 			Cromosoma[] selectos = poblacion.seleccionar();
 			poblacion.cruzar(selectos);
 			poblacion.mutar();
 			poblacion.reemplazar();
-			if (poblacion.getMejorFitness()< conf.getCantAristas()){
-				poblacion = inicializarPoblacion(conf);
-				reinicios++;
-			}			
 			poblacion.descartarIguales();
 			poblacion.evaluar();
+			/*
+			 *  Se reinicializa si mas del 80% de la población actual es
+			 *  inválida.
+			 */
+			if (poblacion.reinicializar(0.8)){
+				// se guarda el mejor antes de reinicializar
+				Cromosoma best = poblacion.getMejorIndividuo();
+				poblacion = inicializarPoblacion(conf);
+				// se actualiza el mejor historico
+				poblacion.setMejorIndividuo(best);
+				poblacion.descartarIguales();
+				poblacion.evaluar();
+				reinicios++;
+			}
+			
 			iteraciones++;
 			tiempoActual = System.currentTimeMillis();
 			
+			
 			if (tiempoActual - inicio >= maxTiempo)
 				parada = true;
-			else {
-				if (iteraciones%10 == 0){
-					System.out.println("Generacion: "+iteraciones);
-					imprimirMejor(poblacion);
-				}
+			else if (tiempoActual - inicio >= iteradorTiempo){
+				//System.out.println("Generacion: "+iteraciones);
+				//imprimirMejor(poblacion);
+				tiempos[indiceTiempo]= ""+(tiempoActual - inicio);
+				fitness[indiceTiempo]= ""+poblacion.getMejorCosto();
+				indiceTiempo++;
+				iteradorTiempo += muestra; 		
 			}
 		}
+		
+		tiempos[indiceTiempo]= ""+maxTiempo;
+		fitness[indiceTiempo]= ""+poblacion.getMejorCosto();
+		
+		
 		if (poblacion.getMejorFitness()< conf.getCantAristas()){
 			System.out.println("\n");
 			System.out.println("NO EXISTE SOLUCION VALIDA.");
 		}
+		
 		System.out.println("\n");
 		System.out.println("ULTIMA POBLACION GENERADA");
 		System.out.println("Numero de Reinicios = "+reinicios);
 		imprimirMejor(poblacion);
 		System.out.println();
 		poblacion.imprimir();
+		// ----------------------| Escribir el Historico |-----------------
+
+		CSVWriter writer = null;
+		try {
+			String path = args[0]+"historico"+k+".csv";
+			writer = new CSVWriter(new FileWriter(path));
+		} catch (IOException e){
+			System.out.println("Error de escritura del archivo historico");
+			e.printStackTrace();
+			System.exit(0);			
+		}
+	
+		writer.writeNext(tiempos);
+		writer.writeNext(fitness);
+		String [] re = {"Reinicios",(""+reinicios)};
+		writer.writeNext(re);
 		
+		try {
+			writer.close();	
+		} catch (IOException e){
+			System.out.println("Error para cerrar archivo historico");
+			e.printStackTrace();
+			System.exit(0);			
+		}		
 		// -----------------------| Finalización |-----------------------
 		System.out.println("¡¡¡END OF PROGRAM!!!");
+		}
 	}
 	
 	
+	/* ------------------------------------------
+	 * --Funciones de Inicialización y Formateo--
+	 * ------------------------------------------
+	 */
 	private static void imprimirTitulo() {
 		System.out.println("      ..................................");
 		System.out.println("-----| Optimización de Demandas Unicast |------");

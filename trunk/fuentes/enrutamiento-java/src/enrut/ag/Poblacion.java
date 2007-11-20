@@ -42,7 +42,7 @@ public class Poblacion {
 	/*
 	 * Mejor cromosoma de toda la historia
 	 */
-	Cromosoma mejorIndividuo = null;
+	private Cromosoma mejorIndividuo = null;
 	
 	/*
 	 * Cantidad total de aristas 
@@ -215,14 +215,41 @@ public class Poblacion {
 		}
 	}
 	
+	/**
+	 * Realiza el control de la población, y si la cantidad
+	 * de cromosomas inválidos es mayor al factor, se reinicializa
+	 * la población.
+	 * @param factor valor entre 0 y 1 que indica el porcentaje permitido.
+	 * @return boolean si se reinicializa o no.
+	 */
+	public boolean reinicializar(double factor){
+		int contador = 0; // cuenta los cromosomas invalidos
+		for (int i=1; i < this.getTamaño(); i++) {
+			// si es invalido contar
+			if (fitness[i] < cantAristas) {
+				contador++;
+			}
+		}
+		if (contador > this.getTamaño()*factor) // Reinicializar
+			return true;
+		else // No Reinicializar
+			return false;
+	}
+
 	public Cromosoma getMejorIndividuo() {
 		return this.mejorIndividuo;
+	}
+	public void setMejorIndividuo(Cromosoma x) {
+		this.mejorIndividuo = x; 
 	}
 	
 	public double getMejorFitness(){
 		return this.cantAristas + this.mejorIndividuo.getCosto();
 	}
-	
+
+	public double getMejorCosto(){
+		return 1/this.mejorIndividuo.getCosto();
+	}	
 	/**
 	 * Imprime en salida standard toda la población
 	 */

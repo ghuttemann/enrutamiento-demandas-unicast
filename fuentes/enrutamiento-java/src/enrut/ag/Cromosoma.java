@@ -160,7 +160,7 @@ public class Cromosoma {
 				}
 				
 				/*
-				 * Si existieron solapamientos solo existen problemas
+				 * Si hay solapamientos entonces existen problemas
 				 */
 				if (repetida) {
 					Capacidad capa = aristasRepetidas.get(arista.toString());

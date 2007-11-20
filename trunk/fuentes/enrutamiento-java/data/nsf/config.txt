@@ -1,4 +1,4 @@
-MAX_TIEMPO=2
-MAX_CAMINOS=15
+MAX_TIEMPO=5
+MAX_CAMINOS=20
 MAX_POBLACION=32
-PATH_ARCHIVOS=D:\Facultad\2007\IA\repos\fuentes\enrutamiento-java\data\nsf\
+PATH_ARCHIVOS=C:\eclipse\Workspace\Enrutamiento\fuentes\enrutamiento-java\data\nsf\

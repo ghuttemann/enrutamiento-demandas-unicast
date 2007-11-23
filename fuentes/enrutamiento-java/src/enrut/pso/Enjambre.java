@@ -28,11 +28,13 @@ public class Enjambre {
 	 * Mejor Posición Global del Enjambre 
 	 */
 	private int[] mejorGlobal;
+	
 	/*
 	 * Factores K1, K2, K3, para el calculo de
 	 * la nueva ruta. 
 	 */
 	private double[] factores;
+	
 	/*
 	 * Cantidad total de aristas 
 	 */
@@ -109,10 +111,10 @@ public class Enjambre {
 	public int getCantAristas(){
 		return this.cantAristas;
 	}
+	
 	public void setCantAristas(int N){
 		this.cantAristas = N;
 	}
-	
 	
 	/**
 	 * Elige el mejor cromosoma de 
@@ -187,7 +189,6 @@ public class Enjambre {
 		}
 	}
 	
-
 	private int[] getMejorVecindad (int indice) {
 		int [] mejorLocal = particulas[indice].getPosActual();
 		int V1 = indice - 1;

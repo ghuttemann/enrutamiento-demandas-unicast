@@ -6,7 +6,6 @@ package enrut.pso;
 import java.util.Hashtable;
 import java.util.Random;
 
-import enrut.ag.Cromosoma;
 import enrut.ag.Demanda;
 import enrut.grafo.Arista;
 import enrut.grafo.Camino;
@@ -71,7 +70,8 @@ public class Particula {
 	public int getPosActual(int pos) {
 		return this.posActual[pos];
 	}
-	public int [] getPosActual() {
+	
+	public int[] getPosActual() {
 		return this.posActual;
 	}
 	
@@ -208,12 +208,12 @@ public class Particula {
 		if (!thisClass.equalsIgnoreCase(objClass))
 			return false;
 			
-		Cromosoma c = (Cromosoma) obj;
-		if (this.getCantCaminos() != c.getCantGenes())
+		Particula c = (Particula) obj;
+		if (this.getCantCaminos() != c.getCantCaminos())
 			return false;
 		
 		for (int i=0; i < this.getCantCaminos(); i++){
-			if (this.getPosActual(i) != c.getGen(i))
+			if (this.getPosActual(i) != c.getPosActual(i))
 				return false;
 		}
 		

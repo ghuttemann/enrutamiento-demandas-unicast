@@ -2,7 +2,7 @@ package enrut.utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import au.com.bytecode.opencsv.CSVWriter;;
+import au.com.bytecode.opencsv.CSVWriter;
 
 public class PruebaCsvWriter {
 	public static void main(String[] args) {
@@ -11,8 +11,7 @@ public class PruebaCsvWriter {
 		 * Archivo de salida
 		 */
 		String archivo = ".\\data\\prueba.csv";
-		
-		
+				
 		/*
 		 * Creamos el escritor CSV
 		 */
@@ -32,7 +31,6 @@ public class PruebaCsvWriter {
 			 */
 			for (int i=0; i < filas.length; i++)
 				writer.writeNext(filas[i]);
-					
 			
 			/*
 			 * Cerramos el escritor

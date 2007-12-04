@@ -4,10 +4,13 @@
 package enrut.ag.oper.impl.mutacion;
 
 import java.util.Random;
-
 import enrut.ag.Cromosoma;
 import enrut.ag.oper.OperadorMutacion;
 
+/*
+ * Implementación de la operación de mutación que muta
+ * todos los genes del cromosoma.
+ */
 public class MutacionGenes implements OperadorMutacion {
 	//@Override
 	public void mutar(Cromosoma a) {
@@ -19,9 +22,9 @@ public class MutacionGenes implements OperadorMutacion {
 		
 		for (int i=0; i<cantGenes; i++) {
 			
-			/*if (rand.nextInt(99)>99)
-				continue; // si es el 80% no se muta el gen
-			*/
+			//if (rand.nextInt(99)>99)
+			//	continue; // si es el 80% no se muta el gen
+			
 			/*
 			 * Dominio sobre el cual puede cambiarse
 			 * el gen, representado por la cantidad
@@ -30,17 +33,17 @@ public class MutacionGenes implements OperadorMutacion {
 			int cantCaminos = a.getGrupoCaminos(i).getCantCaminos();
 			
 			/*
-			 * Obtenemos el nuevo valor para el gen.
-			 * Mientras el valor calculado sea el
-			 * mismo al actual, volvemos a generarlo.
+			 * Obtenemos el nuevo valor para el gen. Si es el 
+			 * mismo, no hacemos nada. Es muy improbable que 
+			 * la gran mayoria de los genes quede con el mismo
+			 * valor, por lo que esta decisión hace ahorrar un 
+			 * poco de tiempo a la hora de realizar la operación 
+			 * de mutación, haciendo que sea O(1) por cada gen.
 			 */
-			int valorActual = a.getGen(i);
-			int valorNuevo  = valorActual;
-			valorNuevo = rand.nextInt(cantCaminos);
+			int valorNuevo = rand.nextInt(cantCaminos);
 				
 			// Cambiamos el valor del gen
 			a.setGen(i, valorNuevo);
 		}
 	}
 }
-

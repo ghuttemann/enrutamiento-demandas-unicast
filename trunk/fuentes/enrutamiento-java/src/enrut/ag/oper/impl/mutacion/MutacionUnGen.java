@@ -8,6 +8,11 @@ import java.util.Random;
 import enrut.ag.Cromosoma;
 import enrut.ag.oper.OperadorMutacion;
 
+/*
+ * Implementación de la operación de mutación que muta
+ * un gen elegido al azar, cambiándolo de valor hasta
+ * que sea realmente distinto al valor actual.
+ */
 public class MutacionUnGen implements OperadorMutacion {
 	//@Override
 	public void mutar(Cromosoma a) {

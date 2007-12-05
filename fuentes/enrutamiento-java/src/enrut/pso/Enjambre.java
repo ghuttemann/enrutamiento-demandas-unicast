@@ -82,6 +82,7 @@ public class Enjambre {
 		}
 		//System.out.println("Mutaciones: "+k);
 	}
+	
 	public void mutar(Particula a) {
 		Random rand = new Random();
 		rand.nextInt();
@@ -124,8 +125,8 @@ public class Enjambre {
 		return this.cantAristas;
 	}
 	
-	public void setCantAristas(int N){
-		this.cantAristas = N;
+	public void setCantAristas(int n){
+		this.cantAristas = n;
 	}
 	
 	/**
@@ -195,10 +196,10 @@ public class Enjambre {
 	
 	/**
 	 * Función donde se calcula las nuevas posiciones de las
-	 * particulas y se mueven (actualizan)a ellas. 
+	 * particulas y se mueven (actualizan) a ellas. 
 	 *
 	 */
-	public void NuevasPosiciones() {
+	public void nuevasPosiciones() {
 		for (int i=0; i< this.getTamaño(); i++ ) {
 			int[] nuevaPos;
 			nuevaPos = particulas[i].getNuevaPosicion(mejorParticula, factores);
@@ -238,5 +239,4 @@ public class Enjambre {
 			System.out.println();
 		}
 	}
-
 }

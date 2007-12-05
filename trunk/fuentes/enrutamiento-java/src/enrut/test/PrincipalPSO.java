@@ -64,16 +64,19 @@ public class PrincipalPSO {
 				enjambre.NuevasPosiciones(); // Proceso Principal
 				enjambre.descartarIguales(); // Opcional
 				enjambre.evaluar();
+				
 				/*
-				 * Se reinicializa si mas del 80% de las particulas actual
-				 * son inválida.
+				 * Se reinicializa si mas del 80% de las 
+				 * particulas actuales son inválidas.
 				 */
 				if (enjambre.reinicializar(0.8)) {
 					// se guarda el mejor antes de reinicializar
 					Particula best = enjambre.getMejorParticula();
 					enjambre = inicializarEnjambre(conf);
+					
 					// se actualiza el mejor historico
 					enjambre.setMejorParticula(best);
+					
 					enjambre.descartarIguales(); //Opcional
 					enjambre.evaluar();
 					reinicios++;
@@ -85,8 +88,8 @@ public class PrincipalPSO {
 				if (tiempoActual - inicio >= maxTiempo)
 					parada = true;
 				else if (tiempoActual - inicio >= iteradorTiempo) {
-					// System.out.println("Generacion: "+iteraciones);
-					// imprimirMejor(enjambre);
+					//System.out.println("Generacion: "+iteraciones);
+					//imprimirMejor(enjambre);
 					tiempos[indiceTiempo] = "" + (tiempoActual - inicio);
 					fitness[indiceTiempo] = "" + enjambre.getMejorCosto();
 					indiceTiempo++;
@@ -107,7 +110,7 @@ public class PrincipalPSO {
 			System.out.println("Numero de Reinicios = " + reinicios);
 			imprimirMejor(enjambre);
 			System.out.println();
-			enjambre.imprimir();
+			//enjambre.imprimir();
 			// ----------------------| Escribir el Historico |-----------------
 
 			CSVWriter writer = null;
@@ -127,7 +130,8 @@ public class PrincipalPSO {
 
 			try {
 				writer.close();
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				System.out.println("Error para cerrar archivo historico");
 				e.printStackTrace();
 				System.exit(0);

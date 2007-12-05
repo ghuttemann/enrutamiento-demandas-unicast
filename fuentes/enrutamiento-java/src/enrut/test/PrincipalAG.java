@@ -73,14 +73,16 @@ public class PrincipalAG {
 			poblacion.reemplazar();
 			poblacion.descartarIguales();
 			poblacion.evaluar();
+			
 			/*
-			 *  Se reinicializa si mas del 80% de la población actual es
-			 *  inválida.
+			 *  Se reinicializa si mas del 80% de 
+			 *  la población actual es inválida.
 			 */
 			if (poblacion.reinicializar(0.8)){
 				// se guarda el mejor antes de reinicializar
 				Cromosoma best = poblacion.getMejorIndividuo();
 				poblacion = inicializarPoblacion(conf);
+				
 				// se actualiza el mejor historico
 				poblacion.setMejorIndividuo(best);
 				poblacion.descartarIguales();

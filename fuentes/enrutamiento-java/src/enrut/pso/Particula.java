@@ -29,9 +29,19 @@ public class Particula {
 	private Demanda[] demandas;
 	
 	/*
-	 * Costo de la solucion
+	 * Costo de la solucion actual
 	 */
-	double costo;
+	private double costoActual;
+	
+	/*
+	 * Mejor posición personal
+	 */
+	private int[] mejorPosicion;
+	
+	/*
+	 * Costo de la mejor solucion personal
+	 */
+	private double mejorCosto;
 	
 	
 	/**
@@ -39,9 +49,12 @@ public class Particula {
 	 * randómicos para sus genes.
 	 * @param demandas Las demandas solicitadas
 	 */
-	public Particula(Demanda[] demandas) {
+	public Particula(Demanda[] demandas, int cantAristas) {
 		this.demandas = demandas;
 		posActual = new int[demandas.length];
+		
+		mejorPosicion = new int[posActual.length];
+		mejorCosto = -cantAristas;
 	}
 	
 	/**
@@ -91,7 +104,7 @@ public class Particula {
 		
 		int repetidos = this.esValido();
 		if (repetidos>0) {
-			this.costo = -repetidos;
+			this.costoActual = -repetidos;
 			return -repetidos;
 		}
 		
@@ -100,8 +113,20 @@ public class Particula {
 			total += getGrupoCaminos(i).getCamino(getPosActual(i)).getCosto();
 		}
 		
-		this.costo = 1/total;
-		return this.costo;
+		this.costoActual = 1/total;
+		
+		/*
+		 * Debemos verificar si la posición actual 
+		 * de la particula es mejor que la mejor
+		 * calculada hasta el momento y en caso de
+		 * serlo lo reemplazamos.
+		 */
+		if (costoActual > mejorCosto) {
+			System.arraycopy(posActual, 0, mejorPosicion, 0, posActual.length);
+			mejorCosto = costoActual;
+		}
+		
+		return this.costoActual;
 	}
 	
 	private int esValido() {
@@ -197,7 +222,7 @@ public class Particula {
 	}
 	
 	public double getCosto() {
-		return this.costo;
+		return this.costoActual;
 	}
 	
 	@Override
@@ -231,67 +256,36 @@ public class Particula {
 	 * Calcula una nueva Posición para la particula dadas:
 	 * la posicionActual, la mejor posicionLocal, la mejor
 	 * posicionGlobal y los factores.
-	 * @param mejorLocal
 	 * @param mejorGlobal
 	 * @param factores
 	 * @return int [] nueva posicion calculada
 	 */
-	public int[] getNuevaPosicion(int [] mejorLocal, int [] mejorGlobal, double[] factores) {
+	public int[] getNuevaPosicion(Particula mejorGlobal, int[] factores) {
 		
 		Random rand = new Random();
 		rand.nextInt();
 		int size = this.posActual.length;
 		int [] nuevaPos = new int[size];
-		nuevaPos[0] = posActual[size-1];
-		int j = 0;
 		
-		for (int i = 1; i< size; i++) {
-			int r = rand.nextInt(99)+1; // valor entre 1 y 100
-			double dr = 1/r;
-			if (dr <= factores[2]){
-				j = mejorGlobal[i-1];
-				if (j != 0) { // Corregir
-					
-				}
+		for (int i=0; i < size; i++) {
+			
+			int r = rand.nextInt(100)+1; // valor entre 1 y 100
+			
+			// Seleccionar Mejor Global
+			if (r <= factores[2]) { 
+				nuevaPos[i] = mejorGlobal.getPosActual(i);
 			}
-			/*
-			 * Falta seguir implementando el comentario de mas abajo
-			 */
-		
+			// Seleccionar Mejor Personal
+			else if (r <= factores[2]+factores[1]) { 
+				nuevaPos[i] = mejorPosicion[i];
+			}
+			// Seleccionar de la posicion actual
+			else {
+				nuevaPos[i] = posActual[i]; 
+			}
 		}
-		/*
-		8. FOR i := 2 TO nro_ciudades - 1 DO
-		9.   r := rand(0, 1); // numero aleatorio entre 0 y 1 
-		10.  ciudad_elegida = false;
-		11.  IF(r <= K3) THEN
-		12.    Elegir la ciudad j que aparece luego de la ciudad
-			   indicada por nueva_pos[i-1] en mejor_global;
-		13.    IF(ciudad j no está en nueva_pos) THEN
-		14.      nueva_pos[i] := ciudad j;
-		15.      ciudad_elegida = true;
-		16.    END_IF
-		17.  END_IF
-		18.  IF(r <= (K2 + K3) OR ciudad_elegida = false) THEN
-		19.    Elegir la ciudad j que aparece luego de la ciudad indicada por
-		       nueva_pos[i-1] en mejor_local;
-		20.    IF(ciudad j no está en nueva_pos) THEN
-		21.      nueva_pos[i] := ciudad j;
-		22.      ciudad_elegida = true;
-		23.    END_IF
-		24.  END_IF
-		25.  IF(ciudad_elegida = false) THEN
-		26.    nueva_pos[i] := ultima ciudad en la pos_actual que no aparece
-		       en nueva_pos;
-		27.  END_IF
-		28. END_FOR
-		29. nueva_pos[nro_ciudades] := ciudad restante;
-		30. retornar(nueva_pos);
-		*/
-		
 		return nuevaPos;
 	}
-	
-	
 	
 	private class Capacidad {
 		private double valor;

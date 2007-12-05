@@ -3,6 +3,7 @@
  */
 package enrut.pso;
 
+import java.util.Random;
 import enrut.ag.Demanda;
 /**
  * @author Administrador
@@ -15,25 +16,20 @@ public class Enjambre {
 	private Particula[] particulas;
 
 	/*
-	 * Valor de calidad de un cromosoma 
+	 * Valor de calidad de una Particula
 	 */
 	private double[] fitness;
 	
 	/*
-	 * Mejor cromosoma de toda la historia
+	 * Mejor Particula de toda la historia
 	 */
 	private Particula mejorParticula = null;
-	
-	/*
-	 * Mejor Posición Global del Enjambre 
-	 */
-	private int[] mejorGlobal;
 	
 	/*
 	 * Factores K1, K2, K3, para el calculo de
 	 * la nueva ruta. 
 	 */
-	private double[] factores;
+	private int[] factores;
 	
 	/*
 	 * Cantidad total de aristas 
@@ -46,24 +42,24 @@ public class Enjambre {
 	 * @param cant La cantidad de particulas a generar
 	 * @param cantArist La cantidad de aristas del grafo a evaluar
 	 */
-	public Enjambre(Demanda[] demandas, int cant, int cantArists) {
-		particulas = new Particula[cant];
-		fitness = new double[cant];
-		cantAristas = cantArists;
-		factores = new double [3];
-		factores[0] = 0.1;
-		factores[1] = 0.1;
-		factores[2] = 0.8;
+	public Enjambre(Demanda[] demandas, int cantParticulas, int cantAristas) {
+		particulas = new Particula[cantParticulas];
+		fitness = new double[cantParticulas];
+		this.cantAristas = cantAristas;
+		factores = new int[3];
+		factores[0] = 30;
+		factores[1] = 30;
+		factores[2] = 40;
 		
 		for (int i=0; i < particulas.length; i++) {
-			particulas[i] = new Particula(demandas);
+			particulas[i] = new Particula(demandas, this.cantAristas);
 			particulas[i].inicializarPosicion();
 		}
 	}
 	
 	/**
-	 * Obtiene la cantidad de particulas de la poblacion
-	 * @return int tamaño de poblacion
+	 * Obtiene la cantidad de particulas del enjambre
+	 * @return int tamaño del enjambre
 	 */
 	public int getTamaño() {
 		return particulas.length;
@@ -71,16 +67,32 @@ public class Enjambre {
 	
 	/**
 	 * Compara cada individuo de la población con
-	 * los demás y modifica los cromosomas duplicados
+	 * los demás y modifica las particulas duplicados
 	 * mutandolos.
 	 */
 	public void descartarIguales() {
+		//int k=0;
 		for (int i=0; i<this.getTamaño()-1; i++) {
 			for (int j=i+1; j<this.getTamaño(); j++) {
 				if (particulas[i].equals(particulas[j])) {
-					// TODO --> Modificar la particula igual
+					mutar(particulas[j]);
+					//k++;
 				}
 			}
+		}
+		//System.out.println("Mutaciones: "+k);
+	}
+	public void mutar(Particula a) {
+		Random rand = new Random();
+		rand.nextInt();
+		
+		// Cantidad de caminos de la particula
+		int cantCaminos = a.getCantCaminos();
+		
+		for (int i=0; i<cantCaminos; i++) {
+			int cantCam = a.getGrupoCaminos(i).getCantCaminos();
+			int valorNuevo = rand.nextInt(cantCam);
+			a.setPosActual(i, valorNuevo);
 		}
 	}
 
@@ -117,7 +129,7 @@ public class Enjambre {
 	}
 	
 	/**
-	 * Elige el mejor cromosoma de 
+	 * Elige la mejor particula de 
 	 * toda la historia.
 	 */
 	private void elegirMejor() {
@@ -139,29 +151,36 @@ public class Enjambre {
 	}
 	
 	/**
-	 * Realiza el control de la población, y si la cantidad
-	 * de cromosomas inválidos es mayor al factor, se reinicializa
-	 * la población.
+	 * Realiza el control del enjambre, y si la cantidad
+	 * de particulas inválidos es mayor al factor, retorna
+	 * true y en caso contrario, retorna false.
 	 * @param factor valor entre 0 y 1 que indica el porcentaje permitido.
-	 * @return boolean si se reinicializa o no.
+	 * @return true si la cantidad de invalidos supera el factor.
 	 */
 	public boolean reinicializar(double factor){
-		int contador = 0; // cuenta los cromosomas invalidos
+		int contador = 0; // cuenta las particulas invalidas
 		for (int i=1; i < this.getTamaño(); i++) {
 			// si es invalido contar
 			if (fitness[i] < cantAristas) {
 				contador++;
 			}
 		}
-		if (contador > this.getTamaño()*factor) // Reinicializar
+		
+		/*
+		 * Si el porcentaje de inválidos calculado es mayor 
+		 * al permitido, retornamos true
+		 */
+		if (contador > this.getTamaño()*factor)
 			return true;
-		else // No Reinicializar
-			return false;
+		
+		// Si no, retornamos false
+		return false;
 	}
 
 	public Particula getMejorParticula() {
 		return this.mejorParticula;
 	}
+	
 	public void setMejorParticula(Particula x) {
 		this.mejorParticula = x; 
 	}
@@ -182,14 +201,12 @@ public class Enjambre {
 	public void NuevasPosiciones() {
 		for (int i=0; i< this.getTamaño(); i++ ) {
 			int[] nuevaPos;
-			int[] posLocal = getMejorVecindad(i);
-			nuevaPos = particulas[i].getNuevaPosicion(posLocal, mejorGlobal,
-					factores);
+			nuevaPos = particulas[i].getNuevaPosicion(mejorParticula, factores);
 			particulas[i].setPosActual(nuevaPos);
 		}
 	}
 	
-	private int[] getMejorVecindad (int indice) {
+	private int[] getMejorVecindad(int indice) {
 		int [] mejorLocal = particulas[indice].getPosActual();
 		int V1 = indice - 1;
 		int V2 = indice + 1;

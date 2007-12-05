@@ -19,6 +19,7 @@ public class Poblacion {
 	 * hijos de los individuos selectos
 	 */
 	private Cromosoma[] hijos;
+	
 	/*
 	 * Valor de calidad de un cromosoma 
 	 */
@@ -48,17 +49,18 @@ public class Poblacion {
 	 * Cantidad total de aristas 
 	 */
 	private int cantAristas = 0;
+
 	/**
 	 * Crea una nueva población cant individuos
 	 * @param demandas Las demandas solicitadas
 	 * @param cant La cantidad de individuos a generar
 	 * @param cantArist La cantidad de aristas del grafo a evaluar
 	 */
-	public Poblacion(Demanda[] demandas, int cant, int cantArists) {
-		individuos = new Cromosoma[cant];
-		hijos = new Cromosoma[cant];
-		fitness = new double[cant];
-		cantAristas = cantArists;
+	public Poblacion(Demanda[] demandas, int cantIndividuos, int cantAristas) {
+		individuos = new Cromosoma[cantIndividuos];
+		hijos = new Cromosoma[cantIndividuos];
+		fitness = new double[cantIndividuos];
+		this.cantAristas = cantAristas;
 		
 		for (int i=0; i < individuos.length; i++) {
 			individuos[i] = new Cromosoma(demandas);
@@ -188,10 +190,10 @@ public class Poblacion {
 	public int getCantAristas(){
 		return this.cantAristas;
 	}
-	public void setCantAristas(int N){
-		this.cantAristas = N;
-	}
 	
+	public void setCantAristas(int n){
+		this.cantAristas = n;
+	}
 	
 	/**
 	 * Elige el mejor cromosoma de 
@@ -217,28 +219,35 @@ public class Poblacion {
 	
 	/**
 	 * Realiza el control de la población, y si la cantidad
-	 * de cromosomas inválidos es mayor al factor, se reinicializa
-	 * la población.
+	 * de cromosomas inválidos es mayor al factor, retorna
+	 * true y en caso contrario, retorna false.
 	 * @param factor valor entre 0 y 1 que indica el porcentaje permitido.
-	 * @return boolean si se reinicializa o no.
+	 * @return true si la cantidad de invalidos supera el factor.
 	 */
 	public boolean reinicializar(double factor){
 		int contador = 0; // cuenta los cromosomas invalidos
+		
 		for (int i=1; i < this.getTamaño(); i++) {
-			// si es invalido contar
-			if (fitness[i] < cantAristas) {
+			// Contamos si el fitness es inválido
+			if (fitness[i] < cantAristas)
 				contador++;
-			}
 		}
-		if (contador > this.getTamaño()*factor) // Reinicializar
+		
+		/*
+		 * Si el porcentaje de inválidos calculado es mayor 
+		 * al permitido, retornamos true
+		 */
+		if (contador > this.getTamaño()*factor)
 			return true;
-		else // No Reinicializar
-			return false;
+		
+		// Si no, retornamos false
+		return false;
 	}
 
 	public Cromosoma getMejorIndividuo() {
 		return this.mejorIndividuo;
 	}
+	
 	public void setMejorIndividuo(Cromosoma x) {
 		this.mejorIndividuo = x; 
 	}
@@ -249,7 +258,8 @@ public class Poblacion {
 
 	public double getMejorCosto(){
 		return 1/this.mejorIndividuo.getCosto();
-	}	
+	}
+	
 	/**
 	 * Imprime en salida standard toda la población
 	 */

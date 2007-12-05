@@ -61,7 +61,7 @@ public class PrincipalPSO {
 			long inicio = System.currentTimeMillis();
 
 			while (!parada) {
-				enjambre.NuevasPosiciones(); // Proceso Principal
+				enjambre.nuevasPosiciones(); // Proceso Principal
 				enjambre.descartarIguales(); // Opcional
 				enjambre.evaluar();
 				

@@ -1,5 +1,5 @@
-/**
- * 
+/*
+ * @(#)Particula.java
  */
 package enrut.pso;
 
@@ -86,6 +86,18 @@ public class Particula {
 	
 	public int[] getPosActual() {
 		return this.posActual;
+	}
+	
+	public int[] getMejorPosicion() {
+		return this.mejorPosicion;
+	}
+	
+	public int getMejorPosicion(int pos) {
+		return this.mejorPosicion[pos];
+	}
+	
+	public double getMejorCosto() {
+		return this.mejorCosto;
 	}
 	
 	public GrupoCaminos getGrupoCaminos(int i) {

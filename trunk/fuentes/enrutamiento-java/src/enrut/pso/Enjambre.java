@@ -1,10 +1,11 @@
-/**
- * 
+/*
+ * @(#)Enjambre.java
  */
 package enrut.pso;
 
 import java.util.Random;
 import enrut.ag.Demanda;
+import enrut.pso.oper.Movimiento;
 /**
  * @author Administrador
  *
@@ -35,6 +36,11 @@ public class Enjambre {
 	 * Cantidad total de aristas 
 	 */
 	private int cantAristas = 0;
+	
+	/*
+	 * Operador de Movimiento
+	 */
+	private Movimiento operadorMovimiento;
 	
 	/**
 	 * Crea una nueva población cant particulas
@@ -202,7 +208,7 @@ public class Enjambre {
 	public void nuevasPosiciones() {
 		for (int i=0; i< this.getTamaño(); i++ ) {
 			int[] nuevaPos;
-			nuevaPos = particulas[i].getNuevaPosicion(mejorParticula, factores);
+			nuevaPos = operadorMovimiento.mover(particulas[i], mejorParticula, factores);
 			particulas[i].setPosActual(nuevaPos);
 		}
 	}
@@ -238,5 +244,13 @@ public class Enjambre {
 			particulas[i].imprimir();
 			System.out.println();
 		}
+	}
+
+	public Movimiento getOperadorMovimiento() {
+		return operadorMovimiento;
+	}
+
+	public void setOperadorMovimiento(Movimiento operadorMovimiento) {
+		this.operadorMovimiento = operadorMovimiento;
 	}
 }

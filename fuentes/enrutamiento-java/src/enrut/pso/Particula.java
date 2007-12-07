@@ -36,12 +36,12 @@ public class Particula {
 	/*
 	 * Mejor posición personal
 	 */
-	private int[] mejorPosicion;
+	private int[] mejorPosicionLocal;
 	
 	/*
 	 * Costo de la mejor solucion personal
 	 */
-	private double mejorCosto;
+	private double mejorCostoLocal;
 	
 	
 	/**
@@ -53,8 +53,8 @@ public class Particula {
 		this.demandas = demandas;
 		posActual = new int[demandas.length];
 		
-		mejorPosicion = new int[posActual.length];
-		mejorCosto = -cantAristas;
+		mejorPosicionLocal = new int[posActual.length];
+		mejorCostoLocal = -cantAristas;
 	}
 	
 	/**
@@ -88,16 +88,16 @@ public class Particula {
 		return this.posActual;
 	}
 	
-	public int[] getMejorPosicion() {
-		return this.mejorPosicion;
+	public int[] getMejorPosicionLocal() {
+		return this.mejorPosicionLocal;
 	}
 	
-	public int getMejorPosicion(int pos) {
-		return this.mejorPosicion[pos];
+	public int getMejorPosicionLocal(int pos) {
+		return this.mejorPosicionLocal[pos];
 	}
 	
-	public double getMejorCosto() {
-		return this.mejorCosto;
+	public double getMejorCostoLocal() {
+		return this.mejorCostoLocal;
 	}
 	
 	public GrupoCaminos getGrupoCaminos(int i) {
@@ -133,9 +133,9 @@ public class Particula {
 		 * calculada hasta el momento y en caso de
 		 * serlo lo reemplazamos.
 		 */
-		if (costoActual > mejorCosto) {
-			System.arraycopy(posActual, 0, mejorPosicion, 0, posActual.length);
-			mejorCosto = costoActual;
+		if (costoActual > mejorCostoLocal) {
+			System.arraycopy(posActual, 0, mejorPosicionLocal, 0, posActual.length);
+			mejorCostoLocal = costoActual;
 		}
 		
 		return this.costoActual;
@@ -282,14 +282,13 @@ public class Particula {
 		for (int i=0; i < size; i++) {
 			
 			int r = rand.nextInt(100)+1; // valor entre 1 y 100
-			
 			// Seleccionar Mejor Global
 			if (r <= factores[2]) { 
 				nuevaPos[i] = mejorGlobal.getPosActual(i);
 			}
 			// Seleccionar Mejor Personal
 			else if (r <= factores[2]+factores[1]) { 
-				nuevaPos[i] = mejorPosicion[i];
+				nuevaPos[i] = mejorPosicionLocal[i];
 			}
 			// Seleccionar de la posicion actual
 			else {
@@ -298,6 +297,28 @@ public class Particula {
 		}
 		return nuevaPos;
 	}
+
+	public void clonar(Particula p) {
+		
+		this.demandas = new Demanda[p.demandas.length]; // vector de demandas
+		this.posActual = new int[p.demandas.length]; // vector de ints
+		this.mejorPosicionLocal = new int[posActual.length]; // vector de ints
+		
+		for (int i =0; i< p.demandas.length; i++) {
+			int origen = p.getDemandas()[i].getOrigen();
+			int destino = p.getDemandas()[i].getDestino();
+			double anchoDeBanda = p.getDemandas()[i].getAnchoDeBanda();
+			this.demandas[i] = new Demanda(origen, destino, anchoDeBanda);
+			this.demandas[i].setCaminos(p.getGrupoCaminos(i));
+			this.posActual[i] = p.getPosActual(i);
+			this.mejorPosicionLocal[i] = p.getMejorPosicionLocal(i);
+
+		}
+		
+		this.costoActual = p.costoActual;
+		this.mejorCostoLocal = p.mejorCostoLocal;
+	}
+	
 	
 	private class Capacidad {
 		private double valor;

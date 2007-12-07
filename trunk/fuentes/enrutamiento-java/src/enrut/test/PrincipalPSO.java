@@ -12,7 +12,8 @@ import enrut.ag.Demanda;
 import enrut.grafo.ConstructorCaminos;
 import enrut.pso.Enjambre;
 import enrut.pso.Particula;
-import enrut.pso.oper.impl.MovimientoDiversidad;
+//import enrut.pso.oper.impl.MovimientoDiversidad;
+import enrut.pso.oper.impl.MovimientoTradicional;
 import enrut.utils.Config;
 import enrut.utils.Lector;
 
@@ -43,7 +44,7 @@ public class PrincipalPSO {
 			 * Tomar muestra cada: 5 seg.
 			 */
 			long maxTiempo = 60000L * conf.getMaxTiempo();
-			long muestra = 1;
+			long muestra = 5000;
 			int size = ((int) (maxTiempo/muestra)) + 1;
 			String[] tiempos = new String[size];
 			String[] fitness = new String[size];
@@ -72,7 +73,7 @@ public class PrincipalPSO {
 				 * Se reinicializa si mas del 80% de las 
 				 * particulas actuales son inválidas.
 				 */
-				if (enjambre.reinicializar(0.8)) {
+				if (enjambre.reinicializar(1.1)) {
 					// se guarda el mejor antes de reinicializar
 					Particula best = enjambre.getMejorParticula();
 					enjambre = inicializarEnjambre(conf);
@@ -284,7 +285,7 @@ public class PrincipalPSO {
 		Enjambre p = new Enjambre(conf.getDemandas(), conf.getTamPoblacion(),
 				conf.getCantAristas());
 		
-		p.setOperadorMovimiento(new MovimientoDiversidad());
+		p.setOperadorMovimiento(new MovimientoTradicional());
 		
 		return p;
 	}

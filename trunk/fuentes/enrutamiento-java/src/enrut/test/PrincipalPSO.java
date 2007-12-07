@@ -12,6 +12,7 @@ import enrut.ag.Demanda;
 import enrut.grafo.ConstructorCaminos;
 import enrut.pso.Enjambre;
 import enrut.pso.Particula;
+import enrut.pso.oper.impl.MovimientoDiversidad;
 import enrut.utils.Config;
 import enrut.utils.Lector;
 
@@ -22,23 +23,11 @@ public class PrincipalPSO {
 	 * unicast.
 	 */
 	public static void main(String[] args) {
-		for (int k = 1; k <= 10; k++) {
+		for (int k = 1; k <= 1; k++) {
 			// -----------------------| Variables |--------------------------
 			Enjambre enjambre;
 			Config conf;
-			/*
-			 * Variables para calculo de Resultados.
-			 * Correr por: 5 min (300 seg)
-			 * Tomar muestra cada: 5 seg.
-			 */
-			long muestra = 5000;
-			String[] tiempos = new String[61];
-			String[] fitness = new String[61];
-			tiempos[0] = "Tiempo";
-			fitness[0] = "Costo";
-			int indiceTiempo = 1;
-			long iteradorTiempo = muestra; // se evalua de a 5 segundos
-
+			
 			// -----------------------| Control |-----------------------
 			if (args.length != 1)
 				throw new Error("Falta nombre de Carpeta de Configuración");
@@ -48,6 +37,21 @@ public class PrincipalPSO {
 			conf = cargarConfiguracion(args[0]);
 			enjambre = inicializarEnjambre(conf);
 
+			/*
+			 * Variables para calculo de Resultados.
+			 * Correr por: 5 min (300 seg)
+			 * Tomar muestra cada: 5 seg.
+			 */
+			long maxTiempo = 60000L * conf.getMaxTiempo();
+			long muestra = 1;
+			int size = ((int) (maxTiempo/muestra)) + 1;
+			String[] tiempos = new String[size];
+			String[] fitness = new String[size];
+			tiempos[0] = "Tiempo";
+			fitness[0] = "Costo";
+			int indiceTiempo = 1;
+			long iteradorTiempo = muestra; // se evalua de a 5 segundos
+			
 			// -----------------------| Algoritmo PSO |------------------
 			enjambre.descartarIguales(); // Opcional
 			enjambre.evaluar();
@@ -56,7 +60,6 @@ public class PrincipalPSO {
 			int reinicios = 0;
 			boolean parada = false;
 
-			long maxTiempo = 60000L * conf.getMaxTiempo();
 			long tiempoActual;
 			long inicio = System.currentTimeMillis();
 
@@ -88,8 +91,8 @@ public class PrincipalPSO {
 				if (tiempoActual - inicio >= maxTiempo)
 					parada = true;
 				else if (tiempoActual - inicio >= iteradorTiempo) {
-					//System.out.println("Generacion: "+iteraciones);
-					//imprimirMejor(enjambre);
+					System.out.println("Generacion: "+iteraciones);
+					imprimirMejor(enjambre);
 					tiempos[indiceTiempo] = "" + (tiempoActual - inicio);
 					fitness[indiceTiempo] = "" + enjambre.getMejorCosto();
 					indiceTiempo++;
@@ -280,6 +283,9 @@ public class PrincipalPSO {
 	private static Enjambre inicializarEnjambre(Config conf) {
 		Enjambre p = new Enjambre(conf.getDemandas(), conf.getTamPoblacion(),
 				conf.getCantAristas());
+		
+		p.setOperadorMovimiento(new MovimientoDiversidad());
+		
 		return p;
 	}
 }

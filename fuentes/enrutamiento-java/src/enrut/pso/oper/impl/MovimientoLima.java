@@ -10,7 +10,7 @@ import enrut.pso.oper.Movimiento;
 
 public class MovimientoLima implements Movimiento {
 
-	@Override
+	//@Override
 	public int[] mover(Particula p, Particula mejorGlobal, int[] factores) {
 		Random rand = new Random();
 		rand.nextInt();
@@ -28,7 +28,7 @@ public class MovimientoLima implements Movimiento {
 			}
 			// Seleccionar Mejor Personal
 			else if (r <= factores[2]+factores[1]) { 
-				nuevaPos[i] = p.getMejorPosicion(i);
+				nuevaPos[i] = p.getMejorPosicionLocal(i);
 			}
 			// Seleccionar de la posicion actual
 			else {

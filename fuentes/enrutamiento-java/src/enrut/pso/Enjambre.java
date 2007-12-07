@@ -52,10 +52,9 @@ public class Enjambre {
 		particulas = new Particula[cantParticulas];
 		fitness = new double[cantParticulas];
 		this.cantAristas = cantAristas;
-		factores = new int[3];
-		factores[0] = 30;
-		factores[1] = 30;
-		factores[2] = 40;
+		factores = new int[2];
+		factores[0] = 100;
+		factores[1] = 0;
 		
 		for (int i=0; i < particulas.length; i++) {
 			particulas[i] = new Particula(demandas, this.cantAristas);
@@ -145,13 +144,15 @@ public class Enjambre {
 		 * a ninguno, guardamos al primero.
 		 */
 		if (mejorParticula == null) {
-			mejorParticula = particulas[0];
+			mejorParticula = new Particula(particulas[0].getDemandas(),
+					particulas[0].getCantCaminos());
+			mejorParticula.clonar(particulas[0]);
 		}
 		
 		double mejorFitness = cantAristas + mejorParticula.getCosto();
 		for (int i=0; i < this.getTamaño(); i++) {
 			if (fitness[i]> mejorFitness) {
-				mejorParticula = particulas[i];
+				mejorParticula.clonar(particulas[i]);
 				mejorFitness = cantAristas + mejorParticula.getCosto();
 			}
 		}
@@ -206,14 +207,19 @@ public class Enjambre {
 	 *
 	 */
 	public void nuevasPosiciones() {
+		
+		Random rand = new Random();
+		rand.nextInt(101);
 		for (int i=0; i< this.getTamaño(); i++ ) {
 			int[] nuevaPos;
+			factores[0] = rand.nextInt(101);
+			factores[1] = 100-factores[0];
 			nuevaPos = operadorMovimiento.mover(particulas[i], mejorParticula, factores);
 			particulas[i].setPosActual(nuevaPos);
 		}
 	}
 	
-	private int[] getMejorVecindad(int indice) {
+	/*private int[] getMejorVecindad(int indice) {
 		int [] mejorLocal = particulas[indice].getPosActual();
 		int V1 = indice - 1;
 		int V2 = indice + 1;
@@ -233,7 +239,7 @@ public class Enjambre {
 		
 		return mejorLocal;
 	}
-	
+	*/
 	/**
 	 * Imprime en salida standard toda la población
 	 */

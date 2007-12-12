@@ -4,7 +4,8 @@
 package enrut.pso;
 
 import java.util.Random;
-import enrut.ag.Demanda;
+
+import enrut.Demanda;
 import enrut.pso.oper.Movimiento;
 /**
  * @author Administrador
@@ -76,24 +77,21 @@ public class Enjambre {
 	 * mutandolos.
 	 */
 	public void descartarIguales() {
-		//int k=0;
 		for (int i=0; i<this.getTamaño()-1; i++) {
 			for (int j=i+1; j<this.getTamaño(); j++) {
 				if (particulas[i].equals(particulas[j])) {
 					mutar(particulas[j]);
-					//k++;
 				}
 			}
 		}
-		//System.out.println("Mutaciones: "+k);
 	}
 	
-	public void mutar(Particula a) {
+	private void mutar(Particula a) {
 		Random rand = new Random();
 		rand.nextInt();
 		
 		// Cantidad de caminos de la particula
-		int cantCaminos = a.getCantCaminos();
+		int cantCaminos = a.getCantDimensiones();
 		
 		for (int i=0; i<cantCaminos; i++) {
 			int cantCam = a.getGrupoCaminos(i).getCantCaminos();
@@ -145,7 +143,7 @@ public class Enjambre {
 		 */
 		if (mejorParticula == null) {
 			mejorParticula = new Particula(particulas[0].getDemandas(),
-					particulas[0].getCantCaminos());
+					particulas[0].getCantDimensiones());
 			mejorParticula.clonar(particulas[0]);
 		}
 		

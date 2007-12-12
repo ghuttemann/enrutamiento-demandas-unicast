@@ -19,11 +19,23 @@ public class MovimientoTradicional implements Movimiento {
 			int actual = p.getPosActual(i);
 			int limite = p.getGrupoCaminos(i).getCantCaminos();
 			
+			// Distancia del actual al mejor personal
 			int a = Math.abs(pbest - actual) * factores[0];
+			
+			// Distancia del actual al mejor global
 			int b = Math.abs(gbest - actual) * factores[1];
+			
+			// Suma de las distancias
 			int c = a + b;
+			
+			/*
+			 * Dividimos entre 100.0f para ajustar. Esto se
+			 * debe a que los factores en vez de ir de 0 a 1,
+			 * va de 0 a 100.
+			 */
 			int d = Math.round(c / 100.0f);
 			
+			// Establecemos el nuevo valor
 			nuevaPos[i] = d % limite;
 		}
 		

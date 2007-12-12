@@ -5,24 +5,42 @@ package enrut.utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
+
 import au.com.bytecode.opencsv.CSVWriter;
 
 public class ImpresionSalida {
 	
-	public static void traza(long tiempo, int iteraciones, int reinicios,
+	private NumberFormat nf;
+	private String id;
+	
+	public ImpresionSalida(String id) {
+		this.id = id;
+		
+		this.nf = NumberFormat.getInstance(Locale.US);
+		this.nf.setMaximumFractionDigits(6);
+		this.nf.setMinimumFractionDigits(6);
+		this.nf.setRoundingMode(RoundingMode.HALF_UP);
+	}
+	
+	public void traza(long tiempo, int iteraciones, int reinicios,
 							double costo, double fitness) {
+		
+		System.out.print(this.id + "=");
 		System.out.print("[");
 		System.out.print("Tiempo: " + tiempo + " ms." + "\t");
 		System.out.print("Iteracion: " + iteraciones + "\t");
-		System.out.print("Fitness: " + fitness + "\t");
-		System.out.print("Costo: " + costo + "\t");
+		System.out.print("Fitness: " + nf.format(fitness) + "\t");
+		System.out.print("Costo: " + nf.format(costo) + "\t");
 		System.out.print("Reinicios: " + reinicios);
 		System.out.print("]");
 		System.out.println();
 	}
 
-	public static void escribirHistorico(int id, String path, int reinicios, 
+	public void escribirHistorico(int id, String path, int reinicios, 
 			List<String[]> historico) {
 
 		CSVWriter writer = null;
@@ -48,7 +66,7 @@ public class ImpresionSalida {
 		}
 	}
 
-	public static void registrarDatosHistoricos(List<String[]> historico, 
+	public void registrarDatosHistoricos(List<String[]> historico, 
 			long tiempo, double costo) {
 
 		String[] muestra = new String[2];
@@ -58,13 +76,13 @@ public class ImpresionSalida {
 		historico.add(muestra);
 	}
 	
-	public static void imprimirTituloPSO() {
+	public void imprimirTituloPSO() {
 		System.out.println("      ..........................................");
 		System.out.println("-----| Optimización de Demandas Unicast con PSO |------");
 		System.out.println("      ..........................................");
 	}
 	
-	public static void imprimirTituloAG() {
+	public void imprimirTituloAG() {
 		System.out.println("      .........................................");
 		System.out.println("-----| Optimización de Demandas Unicast con AG |------");
 		System.out.println("      .........................................");

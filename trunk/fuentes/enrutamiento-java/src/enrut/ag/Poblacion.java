@@ -4,7 +4,7 @@
 package enrut.ag;
 
 import java.util.Random;
-
+import enrut.Demanda;
 import enrut.ag.oper.OperadorCruce;
 import enrut.ag.oper.OperadorMutacion;
 import enrut.ag.oper.OperadorSeleccion;
@@ -82,7 +82,6 @@ public class Poblacion {
 	 * mutandolos.
 	 */
 	public void descartarIguales() {
-		//System.out.println("DESCARTARIGUALES...");
 		for (int i=0; i<this.getTamaño()-1; i++) {
 			for (int j=i+1; j<this.getTamaño(); j++) {
 				if (individuos[i].equals(individuos[j])) {
@@ -117,7 +116,7 @@ public class Poblacion {
 
 	/**
 	 * Muta cromosomas de la población con una 
-	 * problabilidad de mutar de 1
+	 * problabilidad de mutar de 0.20
 	 */
 	public void mutar() {
 		Random rand = new Random();

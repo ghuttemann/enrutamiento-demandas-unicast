@@ -7,16 +7,22 @@ import enrut.Demanda;
 import enrut.grafo.ConstructorCaminos;
 
 public class Config {
+	private String id;
+	private String pathRutas;
 	private Demanda[] demandas;
 	private int maxCaminos;
 	private int maxTiempo;
-	private int tamPoblacion;
+	private int tamPoblacionAG;
+	private int tamPoblacionPSO;
 	private int cantAristas;
 	private int cantCorridas;
 	private int intervaloMuestra;
+	private int porcReinicioAG;
+	private int porcReinicioPSO;
+	private int probMutacionAG;
 	
-	public Config() {
-		
+	public Config(String id) {
+		this.id = id;
 	}
 
 	public Demanda[] getDemandas() {
@@ -35,8 +41,12 @@ public class Config {
 		return maxTiempo;
 	}
 
-	public int getTamPoblacion() {
-		return tamPoblacion;
+	public int getTamPoblacionAG() {
+		return tamPoblacionAG;
+	}
+	
+	public int getTamPoblacionPSO() {
+		return tamPoblacionPSO;
 	}
 	
 	public int getCantAristas() {
@@ -51,7 +61,19 @@ public class Config {
 		return intervaloMuestra;
 	}
 	
-	public void cargar(String path) {
+	public int getPorcReinicioAG() {
+		return porcReinicioAG;
+	}
+
+	public int getPorcReinicioPSO() {
+		return porcReinicioPSO;
+	}
+
+	public int getProbMutacionAG() {
+		return probMutacionAG;
+	}
+	
+	public void cargarParametros(String path) {
 		Lector lector = new Lector(path + "config.txt");
 		
 		// Indica si ya se leyó la cantidad de caminos
@@ -59,56 +81,77 @@ public class Config {
 
 		String linea = lector.leerLinea();
 		while (linea != null) {
-			String[] partes = linea.split("=");
-
-			try {
-				if (partes[0].equalsIgnoreCase("MAX_TIEMPO")) {
-					int valor = Integer.parseInt(partes[1]);
-					this.setMaxTiempo(valor);
-				}
-				else if (partes[0].equalsIgnoreCase("MAX_CAMINOS")) {
-					int valor = Integer.parseInt(partes[1]);
-					this.setMaxCaminos(valor);
-					maxCaminosLeido = true;
-				}
-				else if (partes[0].equalsIgnoreCase("TAM_POBLACION")) {
-					int valor = Integer.parseInt(partes[1]);
-					this.setTamPoblacion(valor);
-				}
-				else if (partes[0].equalsIgnoreCase("CANT_CORRIDAS")) {
-					int valor = Integer.parseInt(partes[1]);
-					this.setCantCorridas(valor);
-				}
-				else if (partes[0].equalsIgnoreCase("INTERVALO_MUESTRA")) {
-					int valor = Integer.parseInt(partes[1]);
-					this.setIntervaloMuestra(valor);
-				}
-				else if (partes[0].equalsIgnoreCase("TABLA_RUTAS")) {
-					/*
-					 * Comprobamos si ya se leyó la variable
-					 * MAX_CAMINOS, ya que se utiliza para leer
-					 * cargar los caminos.
-					 */
-					if (!maxCaminosLeido) {
-						throw new Error("Antes de la lectura de la variable " +
-										"TABLA_RUTAS, debe leerse la variable MAX_CAMINOS");
+			
+			if (!linea.startsWith("#") && !linea.equals("")) {
+				String[] partes = linea.split("=");
+				
+				partes[0] = partes[0].trim();
+				partes[1] = partes[1].trim();
+	
+				try {
+					if (partes[0].equalsIgnoreCase("MAX_TIEMPO")) {
+						int valor = Integer.parseInt(partes[1]);
+						this.setMaxTiempo(valor);
 					}
-					
-					Demanda[] demandas = null;
-					demandas = getDemandas(path + "demandas.txt");
-
-					ConstructorCaminos builder = new ConstructorCaminos();
-					builder.leerCaminos(demandas, this.getMaxCaminos(), path + partes[1]);
-					this.setDemandas(demandas);
+					else if (partes[0].equalsIgnoreCase("MAX_CAMINOS")) {
+						int valor = Integer.parseInt(partes[1]);
+						this.setMaxCaminos(valor);
+						maxCaminosLeido = true;
+					}
+					else if (partes[0].equalsIgnoreCase("TAM_POBLACION_AG")) {
+						int valor = Integer.parseInt(partes[1]);
+						this.setTamPoblacionAG(valor);
+					}
+					else if (partes[0].equalsIgnoreCase("TAM_POBLACION_PSO")) {
+						int valor = Integer.parseInt(partes[1]);
+						this.setTamPoblacionPSO(valor);
+					}
+					else if (partes[0].equalsIgnoreCase("CANT_CORRIDAS")) {
+						int valor = Integer.parseInt(partes[1]);
+						this.setCantCorridas(valor);
+					}
+					else if (partes[0].equalsIgnoreCase("INTERVALO_MUESTRA")) {
+						int valor = Integer.parseInt(partes[1]);
+						this.setIntervaloMuestra(valor);
+					}
+					else if (partes[0].equalsIgnoreCase("PROB_MUTACION_AG")) {
+						int valor = Integer.parseInt(partes[1]);
+						this.setProbMutacionAG(valor);
+					}
+					else if (partes[0].equalsIgnoreCase("PORC_REINICIO_AG")) {
+						int valor = Integer.parseInt(partes[1]);
+						this.setPorcReinicioAG(valor);
+					}
+					else if (partes[0].equalsIgnoreCase("PORC_REINICIO_PSO")) {
+						int valor = Integer.parseInt(partes[1]);
+						this.setPorcReinicioPSO(valor);
+					}
+					else if (partes[0].equalsIgnoreCase("TABLA_RUTAS")) {
+						/*
+						 * Comprobamos si ya se leyó la variable
+						 * MAX_CAMINOS, ya que se utiliza para leer
+						 * cargar los caminos.
+						 */
+						if (!maxCaminosLeido) {
+							throw new Error("Antes de la lectura de la variable " +
+											"TABLA_RUTAS, debe leerse la variable MAX_CAMINOS");
+						}
+						
+						// Cargamos las demandas
+						demandas = getDemandas(path + "demandas.txt");
+						
+						// Guardamos el directorio de las rutas
+						pathRutas = partes[1];
+					}
+					else {
+						throw new Error("Valor de configuración incorrecto: \"" + partes[0] + "\"");
+					}
 				}
-				else {
-					throw new Error("Valor de configuración incorrecto: " + partes[0]);
+				catch (NumberFormatException e) {
+					System.out.println("Error de conversión numérica");
+					e.printStackTrace();
+					System.exit(0);
 				}
-			}
-			catch (NumberFormatException e) {
-				System.out.println("Error de conversión numérica");
-				e.printStackTrace();
-				System.exit(0);
 			}
 			linea = lector.leerLinea();
 		}
@@ -119,6 +162,15 @@ public class Config {
 
 		lector.cerrar();
 	}
+	
+	public void cargarRutas(String path) {
+		if (demandas == null)
+			throw new Error("Todavia no se inicializaron las demandas");
+		
+		ConstructorCaminos builder = new ConstructorCaminos();
+		builder.leerCaminos(demandas, this.getMaxCaminos(), path + pathRutas);
+		this.setDemandas(demandas);
+	}
 
 	private void setMaxCaminos(int maxCaminos) {
 		this.maxCaminos = maxCaminos;
@@ -128,8 +180,12 @@ public class Config {
 		this.maxTiempo = maxTiempo;
 	}
 
-	private void setTamPoblacion(int tamPoblacion) {
-		this.tamPoblacion = tamPoblacion;
+	private void setTamPoblacionAG(int tamPoblacionAG) {
+		this.tamPoblacionAG = tamPoblacionAG;
+	}
+	
+	private void setTamPoblacionPSO(int tamPoblacionPSO) {
+		this.tamPoblacionPSO = tamPoblacionPSO;
 	}
 
 	private void setCantAristas(int cantAristas) {
@@ -142,6 +198,18 @@ public class Config {
 
 	private void setIntervaloMuestra(int intervaloMuestra) {
 		this.intervaloMuestra = intervaloMuestra;
+	}
+	
+	private void setPorcReinicioAG(int porcReinicioAG) {
+		this.porcReinicioAG = porcReinicioAG;
+	}
+
+	private void setPorcReinicioPSO(int porcReinicioPSO) {
+		this.porcReinicioPSO = porcReinicioPSO;
+	}
+
+	private void setProbMutacionAG(int probMutacionAG) {
+		this.probMutacionAG = probMutacionAG;
 	}
 	
 	private int getCantAristas(String path) {
@@ -218,9 +286,20 @@ public class Config {
 	public void imprimir() {
 		System.out.println("Max. Cant. de Caminos     : " + (maxCaminos<=0 ? "ilimitado" : maxCaminos));
 		System.out.println("Tiempo de la Corrida      : " + maxTiempo + " seg.");
-		System.out.println("Tam. de Población/Enjambre: " + tamPoblacion + " individuos/particulas");
+		
+		if (this.id.equalsIgnoreCase("AG"))
+			System.out.println("Tamaño de la Población    : " + tamPoblacionAG + " individuos");
+		else if (this.id.equalsIgnoreCase("PSO"))
+			System.out.println("Tamaño del Enjambre       : " + tamPoblacionPSO + " particulas");
+		
 		System.out.println("Cant. de Aristas del Grafo: " + cantAristas);
 		System.out.println("Cantidad de Corridas      : " + cantCorridas);
 		System.out.println("Intervalo de la Muestra   : " + intervaloMuestra + " ms.");
+		System.out.println("Prob. de Mutación AG      : " + probMutacionAG);
+		
+		if (this.id.equalsIgnoreCase("AG"))
+			System.out.println("Porc. Reinicialización AG : " + porcReinicioAG);
+		else if (this.id.equalsIgnoreCase("PSO"))
+			System.out.println("Porc. Reinicialización PSO: " + porcReinicioPSO);
 	}
 }

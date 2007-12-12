@@ -3,7 +3,7 @@
  */
 package enrut.grafo;
 
-import enrut.ag.Demanda;
+import enrut.Demanda;
 import enrut.utils.Lector;
 
 public class ConstructorCaminos {

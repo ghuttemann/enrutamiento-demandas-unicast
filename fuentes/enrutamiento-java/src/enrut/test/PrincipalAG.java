@@ -27,9 +27,12 @@ public class PrincipalAG {
 		if (args.length != 1)
 			throw new Error("Falta nombre de Carpeta de Configuración");
 		
+		// Id del algoritmo
+		String id = "AG";
+		
 		// Cargamos la configuracion
-		Config conf = new Config();
-		conf.cargar(args[0]);
+		Config conf = new Config(id);
+		conf.cargarParametros(args[0]);
 		
 		// El tiempo máximo está en minutos
 		long maxTiempo = 1000L * conf.getMaxTiempo();
@@ -37,18 +40,23 @@ public class PrincipalAG {
 		// El intervalo de muestreo está en segundos
 		long intervaloMuestra = conf.getIntervaloMuestra(); // el valor leido está en segundos
 		
-		// Resultados historicos
-		LinkedList<String[]> historico = new LinkedList<String[]>();
-		
-		// Guardamos los titulos de las columnas
-		historico.add(new String[]{"Tiempo", "Costo"});
-
+		// Para imprimir la salida
+		ImpresionSalida salida = new ImpresionSalida(id);
 		
 		/*
 		 * Comenzamos las corridas
 		 */
 		for (int k = 1; k <= conf.getCantCorridas(); k++) {
-			ImpresionSalida.imprimirTituloAG();
+			// Resultados historicos
+			LinkedList<String[]> historico = new LinkedList<String[]>();
+			
+			// Guardamos los titulos de las columnas
+			historico.add(new String[]{"Tiempo", "Costo"});
+			
+			// Cargamos las rutas
+			conf.cargarRutas(args[0]);
+			
+			salida.imprimirTituloAG();
 			long iteradorTiempo = intervaloMuestra; // se evalua de a 5 segundos
 			
 			// Variables contadoras
@@ -79,7 +87,7 @@ public class PrincipalAG {
 				 *  Se reinicializa si mas del 80% de 
 				 *  la población actual es inválida.
 				 */
-				if (poblacion.reinicializar(0.8)) {
+				if (poblacion.reinicializar()) {
 					// se guarda el mejor antes de reinicializar
 					Cromosoma best = poblacion.getMejorIndividuo();
 					poblacion = inicializarPoblacion(conf);
@@ -102,13 +110,13 @@ public class PrincipalAG {
 				if (tiempoActual - tiempoInicio >= iteradorTiempo) {
 
 					// Imprimimos la salida, y...
-					ImpresionSalida.traza((tiempoActual-tiempoInicio), 
+					salida.traza((tiempoActual-tiempoInicio), 
 										  iteraciones, reinicios,
 										  poblacion.getMejorCosto(),
 										  poblacion.getMejorFitness());
 					
 					// ...registramos datos estadísticos
-					ImpresionSalida.registrarDatosHistoricos(historico, 
+					salida.registrarDatosHistoricos(historico, 
 											 tiempoActual - tiempoInicio,
 											 poblacion.getMejorCosto());
 					
@@ -126,19 +134,19 @@ public class PrincipalAG {
 			// -----------------------| Finalización |-----------------------
 			
 			// Registramos datos estadísticos finales
-			ImpresionSalida.registrarDatosHistoricos(historico, maxTiempo, 
+			salida.registrarDatosHistoricos(historico, maxTiempo, 
 								poblacion.getMejorCosto());
 			
 			// Registramos la cantidad de reinicios
 			historico.addFirst(new String[]{"Reinicios", String.valueOf(reinicios)});
 			
 			// Escribimos el historico
-			ImpresionSalida.escribirHistorico(k, args[0], reinicios, historico);
+			salida.escribirHistorico(k, args[0], reinicios, historico);
 
 			System.out.println();
 			System.out.println();
 			System.out.println("RESULTADO FINAL:");
-			ImpresionSalida.traza((tiempoActual-tiempoInicio),
+			salida.traza((tiempoActual-tiempoInicio),
 								  iteraciones, reinicios,
 								  poblacion.getMejorCosto(),
 								  poblacion.getMejorFitness());
@@ -155,6 +163,9 @@ public class PrincipalAG {
 				System.out.println("\n");
 				System.out.println("NO EXISTE SOLUCION VALIDA.");
 			}
+			
+			// Liberamos memoria
+			System.gc();
 		}
 		
 		System.out.println();
@@ -164,8 +175,11 @@ public class PrincipalAG {
 		
 	private static Poblacion inicializarPoblacion(Config conf) {
 		Poblacion p = new Poblacion(conf.getDemandas(), 
-									conf.getTamPoblacion(),
-									conf.getCantAristas());
+									conf.getTamPoblacionAG(),
+									conf.getCantAristas(),
+									conf.getProbMutacionAG());
+		
+		p.setPorcentajeReinicializacion(conf.getPorcReinicioAG() / 100.0);
 	
 		p.setOperadorCruce(new CruceUniforme());
 		p.setOperadorMutacion(new MutacionGenes());

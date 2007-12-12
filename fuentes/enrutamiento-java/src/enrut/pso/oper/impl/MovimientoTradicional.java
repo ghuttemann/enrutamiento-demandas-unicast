@@ -19,9 +19,12 @@ public class MovimientoTradicional implements Movimiento {
 			int actual = p.getPosActual(i);
 			int limite = p.getGrupoCaminos(i).getCantCaminos();
 			
-			int tmp = (factores[1]*(gbest-actual) + factores[0]*(pbest-actual));
-			int auxiliar = Math.abs(Math.round(tmp / 100.0f));
-			nuevaPos[i] = auxiliar % limite;
+			int a = Math.abs(pbest - actual) * factores[0];
+			int b = Math.abs(gbest - actual) * factores[1];
+			int c = a + b;
+			int d = Math.round(c / 100.0f);
+			
+			nuevaPos[i] = d % limite;
 		}
 		
 		return nuevaPos;

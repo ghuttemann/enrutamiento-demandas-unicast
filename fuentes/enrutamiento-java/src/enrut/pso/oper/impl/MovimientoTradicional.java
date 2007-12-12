@@ -35,8 +35,11 @@ public class MovimientoTradicional implements Movimiento {
 			 */
 			int d = Math.round(c / 100.0f);
 			
+			// Desplazamos al actual según la resultante
+			int e = Math.abs(actual + d);
+			
 			// Establecemos el nuevo valor
-			nuevaPos[i] = d % limite;
+			nuevaPos[i] = e % limite;
 		}
 		
 		return nuevaPos;

@@ -3,7 +3,7 @@
  */
 package enrut.test;
 
-import enrut.ag.Demanda;
+import enrut.Demanda;
 import enrut.grafo.Camino;
 import enrut.grafo.ConstructorGrafo;
 import enrut.grafo.Grafo;

@@ -1,79 +1,81 @@
-/**
- * PrincipalPSO.java
- * Pagina Principal del algoritmo PSO para conjunto de 
- * demandas unicast.
+/*
+ * @(#)PrincipalPSO.java
  */
 package enrut.test;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import au.com.bytecode.opencsv.CSVWriter;
-import enrut.ag.Demanda;
-import enrut.grafo.ConstructorCaminos;
+import java.util.LinkedList;
 import enrut.pso.Enjambre;
 import enrut.pso.Particula;
-//import enrut.pso.oper.impl.MovimientoDiversidad;
 import enrut.pso.oper.impl.MovimientoTradicional;
 import enrut.utils.Config;
-import enrut.utils.Lector;
+import enrut.utils.ImpresionSalida;
 
 public class PrincipalPSO {
+	
+	private PrincipalPSO() {
+	}
 
 	/*
-	 * Prueba principal del algoritmo PSO para la optimización de demandas
-	 * unicast.
+	 * Prueba principal del algoritmo PSO para la 
+	 * optimización de demandas unicast.
 	 */
 	public static void main(String[] args) {
-		for (int k = 1; k <= 1; k++) {
-			// -----------------------| Variables |--------------------------
-			Enjambre enjambre;
-			Config conf;
+		
+		// Controlamos si recibimos el directorio de configuracion
+		if (args.length != 1)
+			throw new Error("Falta nombre de Carpeta de Configuración");
+		
+		// Cargamos la configuracion
+		Config conf = new Config();
+		conf.cargar(args[0]);
+		
+		// El tiempo máximo está en minutos
+		long maxTiempo = 1000L * conf.getMaxTiempo();
+		
+		// El intervalo de muestreo está en segundos
+		long intervaloMuestra = conf.getIntervaloMuestra(); // el valor leido está en segundos
+		
+		// Resultados historicos
+		LinkedList<String[]> historico = new LinkedList<String[]>();
+		
+		// Guardamos los titulos de las columnas
+		historico.add(new String[]{"Tiempo", "Costo"});
+		
+		
+		/*
+		 * Comenzamos las corridas
+		 */
+		for (int k = 1; k <= conf.getCantCorridas(); k++) {
+			ImpresionSalida.imprimirTituloPSO();
+			long iteradorTiempo = intervaloMuestra; // se evalua de a 5 segundos
 			
-			// -----------------------| Control |-----------------------
-			if (args.length != 1)
-				throw new Error("Falta nombre de Carpeta de Configuración");
+			// Variables contadoras
+			int iteraciones = 0;
+			int reinicios   = 0;
 
-			// -----------------------| Inicialización |-----------------
-			imprimirTitulo();
-			conf = cargarConfiguracion(args[0]);
-			enjambre = inicializarEnjambre(conf);
-
-			/*
-			 * Variables para calculo de Resultados.
-			 * Correr por: 5 min (300 seg)
-			 * Tomar muestra cada: 5 seg.
-			 */
-			long maxTiempo = 60000L * conf.getMaxTiempo();
-			long muestra = 5000;
-			int size = ((int) (maxTiempo/muestra)) + 1;
-			String[] tiempos = new String[size];
-			String[] fitness = new String[size];
-			tiempos[0] = "Tiempo";
-			fitness[0] = "Costo";
-			int indiceTiempo = 1;
-			long iteradorTiempo = muestra; // se evalua de a 5 segundos
+			// Comenzamos a medir el tiempo
+			long tiempoActual;
+			long tiempoInicio = System.currentTimeMillis();
 			
-			// -----------------------| Algoritmo PSO |------------------
-			enjambre.descartarIguales(); // Opcional
+
+//-----------------------------| P S O |----------| I N I C I O |-----------------------------------//
+			
+			// Inicializamos el enjambre
+			Enjambre enjambre = inicializarEnjambre(conf);
+			enjambre.descartarIguales();
 			enjambre.evaluar();
 
-			int iteraciones = 0;
-			int reinicios = 0;
-			boolean parada = false;
-
-			long tiempoActual;
-			long inicio = System.currentTimeMillis();
-
-			while (!parada) {
+			// -----------------------| Ciclo principal |-----------------
+			while (true) {
 				enjambre.nuevasPosiciones(); // Proceso Principal
-				enjambre.descartarIguales(); // Opcional
+				enjambre.descartarIguales();
 				enjambre.evaluar();
 				
 				/*
-				 * Se reinicializa si mas del 80% de las 
+				 * Se reinicializa si mas del 50% de las 
 				 * particulas actuales son inválidas.
 				 */
-				if (enjambre.reinicializar(1.1)) {
+				if (enjambre.reinicializar(0.5)) {
 					// se guarda el mejor antes de reinicializar
 					Particula best = enjambre.getMejorParticula();
 					enjambre = inicializarEnjambre(conf);
@@ -81,212 +83,87 @@ public class PrincipalPSO {
 					// se actualiza el mejor historico
 					enjambre.setMejorParticula(best);
 					
-					enjambre.descartarIguales(); //Opcional
+					enjambre.descartarIguales();
 					enjambre.evaluar();
 					reinicios++;
 				}
 
+				// Contamos las iteraciones
 				iteraciones++;
+				
+				// Medimos el tiempo actual
 				tiempoActual = System.currentTimeMillis();
 
-				if (tiempoActual - inicio >= maxTiempo)
-					parada = true;
-				else if (tiempoActual - inicio >= iteradorTiempo) {
-					System.out.println("Generacion: "+iteraciones);
-					imprimirMejor(enjambre);
-					tiempos[indiceTiempo] = "" + (tiempoActual - inicio);
-					fitness[indiceTiempo] = "" + enjambre.getMejorCosto();
-					indiceTiempo++;
-					iteradorTiempo += muestra;
+				// Si transcurrió el intervalo de muestra...
+				if (tiempoActual - tiempoInicio >= iteradorTiempo) {
+
+					// Imprimimos la salida, y...
+					ImpresionSalida.traza((tiempoActual-tiempoInicio),
+										  iteraciones, reinicios,
+										  enjambre.getMejorCosto(), 
+										  enjambre.getMejorFitness());
+					
+					// ...registramos datos estadísticos
+					ImpresionSalida.registrarDatosHistoricos(historico, 
+											 tiempoActual - tiempoInicio,
+											 enjambre.getMejorCosto());
+					
+					// Incrementamos el muestreo pero en tiempo
+					iteradorTiempo += intervaloMuestra;
 				}
+				
+				// Si llegamos al tiempo, terminamos
+				if (tiempoActual - tiempoInicio >= maxTiempo)
+					break;
 			}
 
-			tiempos[indiceTiempo] = "" + maxTiempo;
-			fitness[indiceTiempo] = "" + enjambre.getMejorCosto();
+//-----------------------------| P S O |----------| F I N |-----------------------------------//
 
+			// -----------------------| Finalización |-----------------------
+			
+			// Registramos datos estadísticos finales
+			ImpresionSalida.registrarDatosHistoricos(historico, maxTiempo, 
+								enjambre.getMejorCosto());
+			
+			// Registramos la cantidad de reinicios
+			historico.addFirst(new String[]{"Reinicios", String.valueOf(reinicios)});
+			
+			// Escribimos el historico
+			ImpresionSalida.escribirHistorico(k, args[0], reinicios, historico);
+
+			System.out.println();
+			System.out.println();
+			System.out.println("RESULTADO FINAL:");
+			ImpresionSalida.traza((tiempoActual-tiempoInicio), 
+								  iteraciones, reinicios,
+								  enjambre.getMejorCosto(),
+								  enjambre.getMejorFitness());
+			
+			System.out.println();
+			System.out.println("SOLUCION:");
+			enjambre.getMejorParticula().imprimir();
+			
+			/*
+			 * En caso de que no exista solución válida, imprimimos
+			 * dicho mensaje para notificarlo.
+			 */
 			if (enjambre.getMejorFitness() < conf.getCantAristas()) {
 				System.out.println("\n");
 				System.out.println("NO EXISTE SOLUCION VALIDA.");
 			}
-
-			System.out.println("\n");
-			System.out.println("ULTIMA POBLACION GENERADA");
-			System.out.println("Numero de Reinicios = " + reinicios);
-			imprimirMejor(enjambre);
-			System.out.println();
-			//enjambre.imprimir();
-			// ----------------------| Escribir el Historico |-----------------
-
-			CSVWriter writer = null;
-			try {
-				String path = args[0] + "historico" + k + ".csv";
-				writer = new CSVWriter(new FileWriter(path));
-			} catch (IOException e) {
-				System.out.println("Error de escritura del archivo historico");
-				e.printStackTrace();
-				System.exit(0);
-			}
-
-			writer.writeNext(tiempos);
-			writer.writeNext(fitness);
-			String[] re = { "Reinicios", ("" + reinicios) };
-			writer.writeNext(re);
-
-			try {
-				writer.close();
-			}
-			catch (IOException e) {
-				System.out.println("Error para cerrar archivo historico");
-				e.printStackTrace();
-				System.exit(0);
-			}
-			// -----------------------| Finalización |-----------------------
-			System.out.println("¡¡¡END OF PROGRAM!!!");
 		}
-	}
-
-	/*
-	 * ------------------------------------------
-	 * --Funciones de Inicialización y Formateo--
-	 * ------------------------------------------
-	 */
-	private static void imprimirTitulo() {
-		System.out.println("      ..................................");
-		System.out.println("-----| Optimización de Demandas Unicast |------");
-		System.out.println("      ..................................");
-	}
-
-	private static void imprimirMejor(Enjambre enjambre) {
+		
 		System.out.println();
-		System.out.println("El mejor es:");
-		double fitness = enjambre.getMejorFitness();
-		System.out.println("Fitness : " + fitness);
-		enjambre.getMejorParticula().imprimir();
-	}
-
-	private static Config cargarConfiguracion(String path) {
-		Config config = new Config();
-		Lector lector = new Lector(path + "config.txt");
-
-		String linea = lector.leerLinea();
-		while (linea != null) {
-			String[] partes = linea.split("=");
-
-			try {
-				if (partes[0].equalsIgnoreCase("MAX_TIEMPO")) {
-					int valor = Integer.parseInt(partes[1]);
-					config.setMaxTiempo(valor);
-				} else if (partes[0].equalsIgnoreCase("MAX_CAMINOS")) {
-					int valor = Integer.parseInt(partes[1]);
-					config.setMaxCaminos(valor);
-				} else if (partes[0].equalsIgnoreCase("MAX_POBLACION")) {
-					int valor = Integer.parseInt(partes[1]);
-					config.setTamPoblacion(valor);
-				} else if (partes[0].equalsIgnoreCase("PATH_ARCHIVOS")) {
-					Demanda[] demandas = null;
-					demandas = getDemandas(path + "demandas.txt");
-
-					ConstructorCaminos builder = new ConstructorCaminos();
-					builder.leerCaminos(demandas, config.getMaxCaminos(),
-							partes[1]);
-					config.setDemandas(demandas);
-				} else {
-					throw new Error("Valor de configuración incorrecto: "
-							+ partes[0]);
-				}
-			} catch (NumberFormatException e) {
-				System.out.println("Error de conversión numérica");
-				e.printStackTrace();
-				System.exit(0);
-			}
-			linea = lector.leerLinea();
-		}
-
-		// Al Final escribimos al cantidad de aristas del grafo
-		int cantAristas = getCantAristas(path + "grafo.txt");
-		config.setCantAristas(cantAristas);
-
-		lector.cerrar();
-		return config;
-	}
-
-	private static int getCantAristas(String path) {
-
-		Lector lector = new Lector(path);
-
-		String linea = lector.leerLinea(); // Cantidad de Nodos
-		linea = lector.leerLinea(); // Cantidad de Aristas
-		if (linea == null) {
-			System.out.println("Cantidad_Aristas: Archivo de grafo No valido");
-			System.exit(0);
-		}
-
-		// se lee la cantidad de Aristas
-		int cantidad = 0;
-		try {
-			cantidad = Integer.parseInt(linea);
-		} catch (NumberFormatException e) {
-			System.out.println("Error de conversión numérica");
-			e.printStackTrace();
-			System.exit(0);
-		}
-
-		lector.cerrar();
-
-		return cantidad;
-	}
-
-	private static Demanda[] getDemandas(String path) {
-
-		Lector lector = new Lector(path);
-
-		String linea = lector.leerLinea();
-		if (linea == null) {
-			System.out.println("Archivo de demandas no valido");
-			System.exit(0);
-		}
-
-		// se lee la cantidad de demandas
-		int cantidad = 0;
-		try {
-			cantidad = Integer.parseInt(linea);
-		} catch (NumberFormatException e) {
-			System.out.println("Error de conversión numérica");
-			e.printStackTrace();
-			System.exit(0);
-		}
-
-		// se lee todas las demandas
-		Demanda[] d = new Demanda[cantidad];
-		for (int i = 0; i < cantidad; i++) {
-			linea = lector.leerLinea();
-			String[] partes = linea.split(" ");
-
-			int origen = 0;
-			int destino = 0;
-			double capacidad = 0.0;
-			try {
-				origen = Integer.parseInt(partes[0]);
-				destino = Integer.parseInt(partes[1]);
-				capacidad = Double.parseDouble(partes[2]);
-			} catch (NumberFormatException e) {
-				System.out.println("Error de conversión numérica");
-				e.printStackTrace();
-				System.exit(0);
-			}
-			d[i] = new Demanda(origen, destino, capacidad);
-		}
-
-		lector.cerrar();
-		return d;
+		System.out.println("PARAMETROS INICIALES:");
+		conf.imprimir();
 	}
 
 	private static Enjambre inicializarEnjambre(Config conf) {
-		Enjambre p = new Enjambre(conf.getDemandas(), conf.getTamPoblacion(),
-				conf.getCantAristas());
+		Enjambre p = new Enjambre(conf.getDemandas(), 
+								  conf.getTamPoblacion(),
+								  conf.getCantAristas());
 		
 		p.setOperadorMovimiento(new MovimientoTradicional());
-		
 		return p;
 	}
 }

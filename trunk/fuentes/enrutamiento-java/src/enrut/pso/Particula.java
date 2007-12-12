@@ -6,7 +6,7 @@ package enrut.pso;
 import java.util.Hashtable;
 import java.util.Random;
 
-import enrut.ag.Demanda;
+import enrut.Demanda;
 import enrut.grafo.Arista;
 import enrut.grafo.Camino;
 import enrut.grafo.GrupoCaminos;
@@ -108,7 +108,7 @@ public class Particula {
 		return this.demandas;
 	}
 	
-	public int getCantCaminos() {
+	public int getCantDimensiones() {
 		return this.posActual.length;
 	}
 	
@@ -121,7 +121,7 @@ public class Particula {
 		}
 		
 		double total=0.0;
-		for(int i=0; i<this.getCantCaminos(); i++){
+		for(int i=0; i<this.getCantDimensiones(); i++){
 			total += getGrupoCaminos(i).getCamino(getPosActual(i)).getCosto();
 		}
 		
@@ -151,7 +151,7 @@ public class Particula {
 		 * Iteramos sobre cada gen del cromosoma
 		 * excepto el último.
 		 */
-		for (int i=0; i < this.getCantCaminos()-1; i++) {
+		for (int i=0; i < this.getCantDimensiones()-1; i++) {
 			// Gen actual
 			int genActual = this.getPosActual(i);
 			
@@ -177,7 +177,7 @@ public class Particula {
 				 * Para cada arista del gen actual debemos
 				 * buscar en el gen destino.
 				 */
-				for (int k=i+1; k < this.getCantCaminos(); k++) {
+				for (int k=i+1; k < this.getCantDimensiones(); k++) {
 					int genDestino = this.getPosActual(k);
 					Camino camDestino = this.getGrupoCaminos(k).getCamino(genDestino);
 					
@@ -246,10 +246,10 @@ public class Particula {
 			return false;
 			
 		Particula c = (Particula) obj;
-		if (this.getCantCaminos() != c.getCantCaminos())
+		if (this.getCantDimensiones() != c.getCantDimensiones())
 			return false;
 		
-		for (int i=0; i < this.getCantCaminos(); i++){
+		for (int i=0; i < this.getCantDimensiones(); i++){
 			if (this.getPosActual(i) != c.getPosActual(i))
 				return false;
 		}
@@ -258,7 +258,7 @@ public class Particula {
 	}
 	
 	public void imprimir(){
-		for (int i=0; i<this.getCantCaminos();i++){
+		for (int i=0; i<this.getCantDimensiones();i++){
 			String c = getGrupoCaminos(i).getCamino(getPosActual(i)).toString();
 			System.out.println("Gen "+i+"= "+c);
 		}

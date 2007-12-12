@@ -22,9 +22,6 @@ public class MutacionGenes implements OperadorMutacion {
 		
 		for (int i=0; i<cantGenes; i++) {
 			
-			//if (rand.nextInt(99)>99)
-			//	continue; // si es el 80% no se muta el gen
-			
 			/*
 			 * Dominio sobre el cual puede cambiarse
 			 * el gen, representado por la cantidad

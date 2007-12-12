@@ -43,6 +43,11 @@ public class Enjambre {
 	 */
 	private Movimiento operadorMovimiento;
 	
+	/*
+	 * Porcentaje de reinicialización
+	 */
+	private double porcentajeReinicializacion;
+
 	/**
 	 * Crea una nueva población cant particulas
 	 * @param demandas Las demandas solicitadas
@@ -56,6 +61,8 @@ public class Enjambre {
 		factores = new int[2];
 		factores[0] = 100;
 		factores[1] = 0;
+		
+		this.porcentajeReinicializacion = 0.8;
 		
 		for (int i=0; i < particulas.length; i++) {
 			particulas[i] = new Particula(demandas, this.cantAristas);
@@ -163,7 +170,7 @@ public class Enjambre {
 	 * @param factor valor entre 0 y 1 que indica el porcentaje permitido.
 	 * @return true si la cantidad de invalidos supera el factor.
 	 */
-	public boolean reinicializar(double factor){
+	public boolean reinicializar() {
 		int contador = 0; // cuenta las particulas invalidas
 		for (int i=1; i < this.getTamaño(); i++) {
 			// si es invalido contar
@@ -176,7 +183,7 @@ public class Enjambre {
 		 * Si el porcentaje de inválidos calculado es mayor 
 		 * al permitido, retornamos true
 		 */
-		if (contador > this.getTamaño()*factor)
+		if (contador > this.getTamaño() * getPorcentajeReinicializacion())
 			return true;
 		
 		// Si no, retornamos false
@@ -256,5 +263,13 @@ public class Enjambre {
 
 	public void setOperadorMovimiento(Movimiento operadorMovimiento) {
 		this.operadorMovimiento = operadorMovimiento;
+	}
+	
+	public double getPorcentajeReinicializacion() {
+		return porcentajeReinicializacion;
+	}
+
+	public void setPorcentajeReinicializacion(double porcentajeReinicializacion) {
+		this.porcentajeReinicializacion = porcentajeReinicializacion;
 	}
 }

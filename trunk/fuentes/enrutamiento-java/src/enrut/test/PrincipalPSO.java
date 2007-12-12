@@ -25,9 +25,12 @@ public class PrincipalPSO {
 		if (args.length != 1)
 			throw new Error("Falta nombre de Carpeta de Configuración");
 		
+		// Id del algoritmo
+		String id = "PSO";
+		
 		// Cargamos la configuracion
-		Config conf = new Config();
-		conf.cargar(args[0]);
+		Config conf = new Config(id);
+		conf.cargarParametros(args[0]);
 		
 		// El tiempo máximo está en minutos
 		long maxTiempo = 1000L * conf.getMaxTiempo();
@@ -35,18 +38,24 @@ public class PrincipalPSO {
 		// El intervalo de muestreo está en segundos
 		long intervaloMuestra = conf.getIntervaloMuestra(); // el valor leido está en segundos
 		
-		// Resultados historicos
-		LinkedList<String[]> historico = new LinkedList<String[]>();
-		
-		// Guardamos los titulos de las columnas
-		historico.add(new String[]{"Tiempo", "Costo"});
+		// Para imprimir la salida
+		ImpresionSalida salida = new ImpresionSalida(id);
 		
 		
 		/*
 		 * Comenzamos las corridas
 		 */
 		for (int k = 1; k <= conf.getCantCorridas(); k++) {
-			ImpresionSalida.imprimirTituloPSO();
+			// Resultados historicos
+			LinkedList<String[]> historico = new LinkedList<String[]>();
+			
+			// Guardamos los titulos de las columnas
+			historico.add(new String[]{"Tiempo", "Costo"});
+			
+			// Cargamos las rutas
+			conf.cargarRutas(args[0]);
+			
+			salida.imprimirTituloPSO();
 			long iteradorTiempo = intervaloMuestra; // se evalua de a 5 segundos
 			
 			// Variables contadoras
@@ -75,7 +84,7 @@ public class PrincipalPSO {
 				 * Se reinicializa si mas del 50% de las 
 				 * particulas actuales son inválidas.
 				 */
-				if (enjambre.reinicializar(0.5)) {
+				if (enjambre.reinicializar()) {
 					// se guarda el mejor antes de reinicializar
 					Particula best = enjambre.getMejorParticula();
 					enjambre = inicializarEnjambre(conf);
@@ -98,13 +107,13 @@ public class PrincipalPSO {
 				if (tiempoActual - tiempoInicio >= iteradorTiempo) {
 
 					// Imprimimos la salida, y...
-					ImpresionSalida.traza((tiempoActual-tiempoInicio),
+					salida.traza((tiempoActual-tiempoInicio),
 										  iteraciones, reinicios,
 										  enjambre.getMejorCosto(), 
 										  enjambre.getMejorFitness());
 					
 					// ...registramos datos estadísticos
-					ImpresionSalida.registrarDatosHistoricos(historico, 
+					salida.registrarDatosHistoricos(historico, 
 											 tiempoActual - tiempoInicio,
 											 enjambre.getMejorCosto());
 					
@@ -122,19 +131,19 @@ public class PrincipalPSO {
 			// -----------------------| Finalización |-----------------------
 			
 			// Registramos datos estadísticos finales
-			ImpresionSalida.registrarDatosHistoricos(historico, maxTiempo, 
+			salida.registrarDatosHistoricos(historico, maxTiempo, 
 								enjambre.getMejorCosto());
 			
 			// Registramos la cantidad de reinicios
 			historico.addFirst(new String[]{"Reinicios", String.valueOf(reinicios)});
 			
 			// Escribimos el historico
-			ImpresionSalida.escribirHistorico(k, args[0], reinicios, historico);
+			salida.escribirHistorico(k, args[0], reinicios, historico);
 
 			System.out.println();
 			System.out.println();
 			System.out.println("RESULTADO FINAL:");
-			ImpresionSalida.traza((tiempoActual-tiempoInicio), 
+			salida.traza((tiempoActual-tiempoInicio), 
 								  iteraciones, reinicios,
 								  enjambre.getMejorCosto(),
 								  enjambre.getMejorFitness());
@@ -151,6 +160,9 @@ public class PrincipalPSO {
 				System.out.println("\n");
 				System.out.println("NO EXISTE SOLUCION VALIDA.");
 			}
+			
+			// Liberamos memoria
+			System.gc();
 		}
 		
 		System.out.println();
@@ -160,9 +172,10 @@ public class PrincipalPSO {
 
 	private static Enjambre inicializarEnjambre(Config conf) {
 		Enjambre p = new Enjambre(conf.getDemandas(), 
-								  conf.getTamPoblacion(),
+								  conf.getTamPoblacionPSO(),
 								  conf.getCantAristas());
 		
+		p.setPorcentajeReinicializacion(conf.getPorcReinicioPSO() / 100.0);
 		p.setOperadorMovimiento(new MovimientoTradicional());
 		return p;
 	}

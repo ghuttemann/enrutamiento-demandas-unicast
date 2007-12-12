@@ -49,6 +49,16 @@ public class Poblacion {
 	 * Cantidad total de aristas 
 	 */
 	private int cantAristas = 0;
+	
+	/*
+	 * Probabilidad de mutación (0 a 100)
+	 */
+	private int probabilidadMutacion;
+	
+	/*
+	 * Porcentaje de reinicialización
+	 */
+	private double porcentajeReinicializacion;
 
 	/**
 	 * Crea una nueva población cant individuos
@@ -56,11 +66,14 @@ public class Poblacion {
 	 * @param cant La cantidad de individuos a generar
 	 * @param cantArist La cantidad de aristas del grafo a evaluar
 	 */
-	public Poblacion(Demanda[] demandas, int cantIndividuos, int cantAristas) {
+	public Poblacion(Demanda[] demandas, int cantIndividuos, int cantAristas,
+						int probabilidadMutacion) {
 		individuos = new Cromosoma[cantIndividuos];
 		hijos = new Cromosoma[cantIndividuos];
 		fitness = new double[cantIndividuos];
 		this.cantAristas = cantAristas;
+		this.probabilidadMutacion = probabilidadMutacion;
+		this.porcentajeReinicializacion = 0.8;
 		
 		for (int i=0; i < individuos.length; i++) {
 			individuos[i] = new Cromosoma(demandas);
@@ -115,15 +128,14 @@ public class Poblacion {
 	}
 
 	/**
-	 * Muta cromosomas de la población con una 
-	 * problabilidad de mutar de 0.20
+	 * Muta cromosomas de la población
 	 */
 	public void mutar() {
 		Random rand = new Random();
 		rand.nextInt();
 		
 		for (int i=0; i < this.getTamaño(); i++){
-			if (rand.nextInt(99) < 20)
+			if (rand.nextInt(100) < this.getProbabilidadMutacion())
 				operadorMutacion.mutar(hijos[i]);
 		}
 	}
@@ -223,7 +235,7 @@ public class Poblacion {
 	 * @param factor valor entre 0 y 1 que indica el porcentaje permitido.
 	 * @return true si la cantidad de invalidos supera el factor.
 	 */
-	public boolean reinicializar(double factor){
+	public boolean reinicializar() {
 		int contador = 0; // cuenta los cromosomas invalidos
 		
 		for (int i=1; i < this.getTamaño(); i++) {
@@ -236,7 +248,7 @@ public class Poblacion {
 		 * Si el porcentaje de inválidos calculado es mayor 
 		 * al permitido, retornamos true
 		 */
-		if (contador > this.getTamaño()*factor)
+		if (contador > this.getTamaño() * getPorcentajeReinicializacion())
 			return true;
 		
 		// Si no, retornamos false
@@ -269,5 +281,21 @@ public class Poblacion {
 			individuos[i].imprimir();
 			System.out.println();
 		}
+	}
+
+	public int getProbabilidadMutacion() {
+		return probabilidadMutacion;
+	}
+
+	public void setProbabilidadMutacion(int probabilidadMutacion) {
+		this.probabilidadMutacion = probabilidadMutacion;
+	}
+
+	public double getPorcentajeReinicializacion() {
+		return porcentajeReinicializacion;
+	}
+
+	public void setPorcentajeReinicializacion(double porcentajeReinicializacion) {
+		this.porcentajeReinicializacion = porcentajeReinicializacion;
 	}
 }

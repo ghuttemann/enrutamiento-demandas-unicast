@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import java.util.Random;
 
 import enrut.Demanda;
+import enrut.Solucion;
 import enrut.grafo.Arista;
 import enrut.grafo.Camino;
 import enrut.grafo.GrupoCaminos;
@@ -16,7 +17,7 @@ import enrut.grafo.GrupoCaminos;
  * un AlgoritmoPSO.
  * @author marcelo rodas
  */
-public class Particula {
+public class Particula extends Solucion {
 	/*
 	 * Posicion Actual = Conjunto de Caminos para
 	 * satisfacer las demandas.

@@ -287,9 +287,9 @@ public class Config {
 		System.out.println("Max. Cant. de Caminos     : " + (maxCaminos<=0 ? "ilimitado" : maxCaminos));
 		System.out.println("Tiempo de la Corrida      : " + maxTiempo + " seg.");
 		
-		if (this.id.equalsIgnoreCase("AG"))
+		if (this.id.equalsIgnoreCase("AlgoritmoAG"))
 			System.out.println("Tamaño de la Población    : " + tamPoblacionAG + " individuos");
-		else if (this.id.equalsIgnoreCase("PSO"))
+		else if (this.id.equalsIgnoreCase("AlgoritmoPSO"))
 			System.out.println("Tamaño del Enjambre       : " + tamPoblacionPSO + " particulas");
 		
 		System.out.println("Cant. de Aristas del Grafo: " + cantAristas);
@@ -297,9 +297,9 @@ public class Config {
 		System.out.println("Intervalo de la Muestra   : " + intervaloMuestra + " ms.");
 		System.out.println("Prob. de Mutación AG      : " + probMutacionAG);
 		
-		if (this.id.equalsIgnoreCase("AG"))
+		if (this.id.equalsIgnoreCase("AlgoritmoAG"))
 			System.out.println("Porc. Reinicialización AG : " + porcReinicioAG);
-		else if (this.id.equalsIgnoreCase("PSO"))
+		else if (this.id.equalsIgnoreCase("AlgoritmoPSO"))
 			System.out.println("Porc. Reinicialización PSO: " + porcReinicioPSO);
 	}
 }

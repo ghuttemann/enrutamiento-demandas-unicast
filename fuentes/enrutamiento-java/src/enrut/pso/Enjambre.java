@@ -4,9 +4,9 @@
 package enrut.pso;
 
 import java.util.Random;
-
 import enrut.Demanda;
 import enrut.pso.oper.Movimiento;
+
 /**
  * @author Administrador
  *

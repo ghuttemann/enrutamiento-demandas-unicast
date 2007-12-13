@@ -16,7 +16,7 @@ public class PrincipalAG {
 	
 	private PrincipalAG() {
 	}
-	
+
 	/*
 	 * Prueba principal del algoritmo genetico 
 	 * para la optimización de demandas unicast.
@@ -28,7 +28,7 @@ public class PrincipalAG {
 			throw new Error("Falta nombre de Carpeta de Configuración");
 		
 		// Id del algoritmo
-		String id = "AG";
+		String id = "AlgoritmoAG";
 		
 		// Cargamos la configuracion
 		Config conf = new Config(id);
@@ -43,6 +43,7 @@ public class PrincipalAG {
 		// Para imprimir la salida
 		ImpresionSalida salida = new ImpresionSalida(id);
 		
+		
 		/*
 		 * Comenzamos las corridas
 		 */
@@ -56,7 +57,7 @@ public class PrincipalAG {
 			// Cargamos las rutas
 			conf.cargarRutas(args[0]);
 			
-			salida.imprimirTituloAG();
+			salida.imprimirTitulo(id);
 			long iteradorTiempo = intervaloMuestra; // se evalua de a 5 segundos
 			
 			// Variables contadoras
@@ -66,7 +67,8 @@ public class PrincipalAG {
 			// Comenzamos a medir el tiempo
 			long tiempoActual;
 			long tiempoInicio = System.currentTimeMillis();
-		
+	
+
 //-----------------------------| A G |----------| I N I C I O |-----------------------------------//
 			
 			// Inicializamos la población
@@ -84,8 +86,8 @@ public class PrincipalAG {
 				poblacion.evaluar();
 
 				/*
-				 *  Se reinicializa si mas del 80% de 
-				 *  la población actual es inválida.
+				 *  Se reinicializa si hay un porcentaje
+				 *  alto de inválidos.
 				 */
 				if (poblacion.reinicializar()) {
 					// se guarda el mejor antes de reinicializar
@@ -110,7 +112,7 @@ public class PrincipalAG {
 				if (tiempoActual - tiempoInicio >= iteradorTiempo) {
 
 					// Imprimimos la salida, y...
-					salida.traza((tiempoActual-tiempoInicio), 
+					salida.traza((tiempoActual-tiempoInicio),
 										  iteraciones, reinicios,
 										  poblacion.getMejorCosto(),
 										  poblacion.getMejorFitness());
@@ -130,12 +132,12 @@ public class PrincipalAG {
 			}
 
 //-----------------------------| P S O |----------| F I N |-----------------------------------//
-			
+
 			// -----------------------| Finalización |-----------------------
 			
 			// Registramos datos estadísticos finales
 			salida.registrarDatosHistoricos(historico, maxTiempo, 
-								poblacion.getMejorCosto());
+					poblacion.getMejorCosto());
 			
 			// Registramos la cantidad de reinicios
 			historico.addFirst(new String[]{"Reinicios", String.valueOf(reinicios)});

@@ -135,7 +135,7 @@ public class Poblacion {
 		rand.nextInt();
 		
 		for (int i=0; i < this.getTamaño(); i++){
-			if (rand.nextInt(100) < this.getProbabilidadMutacion())
+			if (rand.nextInt(101) < this.getProbabilidadMutacion())
 				operadorMutacion.mutar(hijos[i]);
 		}
 	}
@@ -147,7 +147,6 @@ public class Poblacion {
 	public void reemplazar() {
 		for (int i =0; i<this.getTamaño(); i++)
 			individuos[i] = hijos[i];
-		//individuos[0]=this.getMejorIndividuo(); // Reemplaza el mejor
 	}
 
 	/**

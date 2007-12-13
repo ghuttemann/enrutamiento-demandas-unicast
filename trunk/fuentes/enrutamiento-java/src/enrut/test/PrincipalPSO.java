@@ -16,7 +16,7 @@ public class PrincipalPSO {
 	}
 
 	/*
-	 * Prueba principal del algoritmo PSO para la 
+	 * Prueba principal del algoritmo AlgoritmoPSO para la 
 	 * optimización de demandas unicast.
 	 */
 	public static void main(String[] args) {
@@ -26,7 +26,7 @@ public class PrincipalPSO {
 			throw new Error("Falta nombre de Carpeta de Configuración");
 		
 		// Id del algoritmo
-		String id = "PSO";
+		String id = "AlgoritmoPSO";
 		
 		// Cargamos la configuracion
 		Config conf = new Config(id);
@@ -55,7 +55,7 @@ public class PrincipalPSO {
 			// Cargamos las rutas
 			conf.cargarRutas(args[0]);
 			
-			salida.imprimirTituloPSO();
+			salida.imprimirTitulo(id);
 			long iteradorTiempo = intervaloMuestra; // se evalua de a 5 segundos
 			
 			// Variables contadoras
@@ -65,7 +65,7 @@ public class PrincipalPSO {
 			// Comenzamos a medir el tiempo
 			long tiempoActual;
 			long tiempoInicio = System.currentTimeMillis();
-			
+	
 
 //-----------------------------| P S O |----------| I N I C I O |-----------------------------------//
 			
@@ -79,16 +79,16 @@ public class PrincipalPSO {
 				enjambre.nuevasPosiciones(); // Proceso Principal
 				enjambre.descartarIguales();
 				enjambre.evaluar();
-				
+
 				/*
-				 * Se reinicializa si mas del 50% de las 
-				 * particulas actuales son inválidas.
+				 *  Se reinicializa si hay un porcentaje
+				 *  alto de inválidos.
 				 */
 				if (enjambre.reinicializar()) {
 					// se guarda el mejor antes de reinicializar
 					Particula best = enjambre.getMejorParticula();
 					enjambre = inicializarEnjambre(conf);
-					
+
 					// se actualiza el mejor historico
 					enjambre.setMejorParticula(best);
 					
@@ -109,7 +109,7 @@ public class PrincipalPSO {
 					// Imprimimos la salida, y...
 					salida.traza((tiempoActual-tiempoInicio),
 										  iteraciones, reinicios,
-										  enjambre.getMejorCosto(), 
+										  enjambre.getMejorCosto(),
 										  enjambre.getMejorFitness());
 					
 					// ...registramos datos estadísticos
@@ -132,7 +132,7 @@ public class PrincipalPSO {
 			
 			// Registramos datos estadísticos finales
 			salida.registrarDatosHistoricos(historico, maxTiempo, 
-								enjambre.getMejorCosto());
+					enjambre.getMejorCosto());
 			
 			// Registramos la cantidad de reinicios
 			historico.addFirst(new String[]{"Reinicios", String.valueOf(reinicios)});
@@ -143,7 +143,7 @@ public class PrincipalPSO {
 			System.out.println();
 			System.out.println();
 			System.out.println("RESULTADO FINAL:");
-			salida.traza((tiempoActual-tiempoInicio), 
+			salida.traza((tiempoActual-tiempoInicio),
 								  iteraciones, reinicios,
 								  enjambre.getMejorCosto(),
 								  enjambre.getMejorFitness());

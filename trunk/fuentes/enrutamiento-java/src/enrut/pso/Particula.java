@@ -13,7 +13,7 @@ import enrut.grafo.GrupoCaminos;
 
 /**
  * Clase que representa una particula en el esquema de
- * un PSO.
+ * un AlgoritmoPSO.
  * @author marcelo rodas
  */
 public class Particula {
@@ -74,9 +74,9 @@ public class Particula {
 		this.posActual[pos] = valor;
 	}
 	
-	public void setPosActual(int [] pos) {
+	public void setPosActual(int[] pos) {
 		for(int i=0; i< posActual.length; i++) {
-			setPosActual(i,pos[i]);
+			setPosActual(i, pos[i]);
 		}
 	}
 	

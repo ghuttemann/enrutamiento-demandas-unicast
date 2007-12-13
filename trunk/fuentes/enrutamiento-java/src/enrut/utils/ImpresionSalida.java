@@ -76,15 +76,16 @@ public class ImpresionSalida {
 		historico.add(muestra);
 	}
 	
-	public void imprimirTituloPSO() {
-		System.out.println("      ..........................................");
-		System.out.println("-----| Optimización de Demandas Unicast con PSO |------");
-		System.out.println("      ..........................................");
-	}
-	
-	public void imprimirTituloAG() {
-		System.out.println("      .........................................");
-		System.out.println("-----| Optimización de Demandas Unicast con AG |------");
-		System.out.println("      .........................................");
+	public void imprimirTitulo(String id) {
+		if (id.equalsIgnoreCase("AlgoritmoAG")) {
+			System.out.println("      .........................................");
+			System.out.println("-----| Optimización de Demandas Unicast con AG |------");
+			System.out.println("      .........................................");
+		}
+		else if (id.equalsIgnoreCase("AlgoritmoPSO")) {
+			System.out.println("      ..........................................");
+			System.out.println("-----| Optimización de Demandas Unicast con PSO |------");
+			System.out.println("      ..........................................");
+		}
 	}
 }

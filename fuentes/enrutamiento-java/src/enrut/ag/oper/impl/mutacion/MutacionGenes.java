@@ -8,7 +8,7 @@ import enrut.ag.Cromosoma;
 import enrut.ag.oper.OperadorMutacion;
 
 /*
- * Implementaci髇 de la operaci髇 de mutaci髇 que muta
+ * Implementaci贸n de la operaci贸n de mutaci贸n que muta
  * todos los genes del cromosoma.
  */
 public class MutacionGenes implements OperadorMutacion {
@@ -33,9 +33,9 @@ public class MutacionGenes implements OperadorMutacion {
 			 * Obtenemos el nuevo valor para el gen. Si es el 
 			 * mismo, no hacemos nada. Es muy improbable que 
 			 * la gran mayoria de los genes quede con el mismo
-			 * valor, por lo que esta decisi髇 hace ahorrar un 
-			 * poco de tiempo a la hora de realizar la operaci髇 
-			 * de mutaci髇, haciendo que sea O(1) por cada gen.
+			 * valor, por lo que esta decisi贸n hace ahorrar un 
+			 * poco de tiempo a la hora de realizar la operaci贸n 
+			 * de mutaci贸n, haciendo que sea O(1) por cada gen.
 			 */
 			int valorNuevo = rand.nextInt(cantCaminos);
 				

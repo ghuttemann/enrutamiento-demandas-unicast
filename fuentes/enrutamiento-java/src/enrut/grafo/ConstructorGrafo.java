@@ -11,7 +11,7 @@ import enrut.utils.Lector;
  * aristas, de un archivo de texto.
  * 
  * @see Grafo
- * @author Germán Hüttemann Arza
+ * @author GermÃ¡n HÃ¼ttemann Arza
  */
 public class ConstructorGrafo {
 	private Grafo grafo;
@@ -60,7 +60,7 @@ public class ConstructorGrafo {
 			}
 		}
 		catch (NumberFormatException e) {
-			System.out.println("Error de conversión numérica");
+			System.out.println("Error de conversiÃ³n numÃ©rica");
 			e.printStackTrace();
 			System.exit(0);
 		}

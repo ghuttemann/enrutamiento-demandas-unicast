@@ -22,9 +22,9 @@ public class PruebaCsvWriter {
 			/*
 			 * Filas a escribir en el archivo
 			 */
-			String[][] filas = {{"1089", "josé", "23/12/1980"},
+			String[][] filas = {{"1089", "josÃ©", "23/12/1980"},
 								{"1203", "pedro", "13/02/1987"},
-								{"8321", "maría", "13/11/1982"}};
+								{"8321", "marÃ­a", "13/11/1982"}};
 			
 			/*
 			 * Escribimos las filas en el archivo

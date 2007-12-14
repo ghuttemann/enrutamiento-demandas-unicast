@@ -8,7 +8,7 @@ package enrut.grafo;
  * destinos en los que se puede imprimir un grafo.
  * 
  * @see Grafo
- * @author Germán Hüttemann Arza
+ * @author GermÃ¡n HÃ¼ttemann Arza
  */
 public enum PrintTo {
 	STDOUT, FILE, ALL;

@@ -35,12 +35,12 @@ public class Particula extends Solucion {
 	private double costoActual;
 	
 	/*
-	 * Fitness de la solución
+	 * Fitness de la soluciÃ³n
 	 */
 	private double fitness;
 	
 	/*
-	 * Mejor posición personal
+	 * Mejor posiciÃ³n personal
 	 */
 	private int[] mejorPosicionLocal;
 	
@@ -57,7 +57,7 @@ public class Particula extends Solucion {
 	
 	/**
 	 * Construye un nuevo cromosoma con alelos
-	 * randómicos para sus genes.
+	 * randÃ³micos para sus genes.
 	 * @param demandas Las demandas solicitadas
 	 */
 	public Particula(Demanda[] demandas, int cantAristas) {
@@ -70,7 +70,7 @@ public class Particula extends Solucion {
 	}
 	
 	/**
-	 * Setea la posición actual con  
+	 * Setea la posiciÃ³n actual con  
 	 * valores aleatorios.
 	 */
 	public void inicializarPosicion() {
@@ -125,14 +125,14 @@ public class Particula extends Solucion {
 	}
 	
 	public double evaluar() {
-		// Calculamos el costo de la solución
+		// Calculamos el costo de la soluciÃ³n
 		double total=0.0;
 		for(int i=0; i<this.getCantDimensiones(); i++){
 			total += getGrupoCaminos(i).getCamino(getPosActual(i)).getCosto();
 		}
 		this.costoActual = total;
 		
-		// Verificamos si la solución es válida
+		// Verificamos si la soluciÃ³n es vÃ¡lida
 		int repetidos = this.esValido();
 		if (repetidos>0)
 			this.fitness = -repetidos;
@@ -140,7 +140,7 @@ public class Particula extends Solucion {
 			this.fitness = 1/this.costoActual;
 		
 		/*
-		 * Debemos verificar si la posición actual 
+		 * Debemos verificar si la posiciÃ³n actual 
 		 * de la particula es mejor que la mejor
 		 * calculada hasta el momento y en caso de
 		 * serlo lo reemplazamos.
@@ -162,14 +162,14 @@ public class Particula extends Solucion {
 		int enlacesRepetidos = 0;		
 		/*
 		 * Iteramos sobre cada gen del cromosoma
-		 * excepto el último.
+		 * excepto el Ãºltimo.
 		 */
 		for (int i=0; i < this.getCantDimensiones()-1; i++) {
 			// Gen actual
 			int genActual = this.getPosActual(i);
 			
 			/*
-			 * Camino actual, cuyas aristas serán
+			 * Camino actual, cuyas aristas serÃ¡n
 			 * buscadas en los subsecuentes caminos.
 			 */
 			Camino camActual = this.getGrupoCaminos(i).getCamino(genActual);
@@ -180,7 +180,7 @@ public class Particula extends Solucion {
 			 */
 			for (int j=0; j < camActual.getLongitud(); j++) {
 				/*
-				 * Arista del camino actual que será
+				 * Arista del camino actual que serÃ¡
 				 * buscada en los subsecuentes caminos.
 				 */
 				Arista arista = camActual.getArista(j);
@@ -195,7 +195,7 @@ public class Particula extends Solucion {
 					Camino camDestino = this.getGrupoCaminos(k).getCamino(genDestino);
 					
 					/*
-					 * Si la arista actual está contenida
+					 * Si la arista actual estÃ¡ contenida
 					 * en el camino, debemos agregar a la
 					 * lista de aristas repetidas.
 					 */
@@ -282,7 +282,7 @@ public class Particula extends Solucion {
 	}
 	
 	/**
-	 * Calcula una nueva Posición para la particula dadas:
+	 * Calcula una nueva posiciÃ³n para la particula dadas:
 	 * la posicionActual, la mejor posicionLocal, la mejor
 	 * posicionGlobal y los factores.
 	 * @param mejorGlobal

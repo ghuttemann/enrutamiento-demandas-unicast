@@ -17,13 +17,13 @@ public class PrincipalPSO {
 
 	/*
 	 * Prueba principal del algoritmo AlgoritmoPSO para la 
-	 * optimizaciÛn de demandas unicast.
+	 * optimizaci√≥n de demandas unicast.
 	 */
 	public static void main(String[] args) {
 		
 		// Controlamos si recibimos el directorio de configuracion
 		if (args.length != 1)
-			throw new Error("Falta nombre de Carpeta de ConfiguraciÛn");
+			throw new Error("Falta nombre de Carpeta de Configuraci√≥n");
 		
 		// Id del algoritmo
 		String id = "AlgoritmoPSO";
@@ -32,11 +32,11 @@ public class PrincipalPSO {
 		Config conf = new Config(id);
 		conf.cargarParametros(args[0]);
 		
-		// El tiempo m·ximo est· en minutos
+		// El tiempo m√°ximo est√° en minutos
 		long maxTiempo = 1000L * conf.getMaxTiempo();
 		
-		// El intervalo de muestreo est· en segundos
-		long intervaloMuestra = conf.getIntervaloMuestra(); // el valor leido est· en segundos
+		// El intervalo de muestreo est√° en milisegundos
+		long intervaloMuestra = conf.getIntervaloMuestra();
 		
 		// Para imprimir la salida
 		ImpresionSalida salida = new ImpresionSalida(id);
@@ -82,7 +82,7 @@ public class PrincipalPSO {
 
 				/*
 				 *  Se reinicializa si hay un porcentaje
-				 *  alto de inv·lidos.
+				 *  alto de inv√°lidos.
 				 */
 				if (enjambre.reinicializar()) {
 					// se guarda el mejor antes de reinicializar
@@ -103,7 +103,7 @@ public class PrincipalPSO {
 				// Medimos el tiempo actual
 				tiempoActual = System.currentTimeMillis();
 
-				// Si transcurriÛ el intervalo de muestra...
+				// Si transcurri√≥ el intervalo de muestra...
 				if (tiempoActual - tiempoInicio >= iteradorTiempo) {
 
 					// Imprimimos la salida, y...
@@ -112,7 +112,7 @@ public class PrincipalPSO {
 										  enjambre.getMejorCosto(),
 										  enjambre.getMejorFitness());
 					
-					// ...registramos datos estadÌsticos
+					// ...registramos datos estad√≠sticos
 					salida.registrarDatosHistoricos(historico, 
 											 tiempoActual - tiempoInicio,
 											 enjambre.getMejorCosto());
@@ -128,9 +128,9 @@ public class PrincipalPSO {
 
 //-----------------------------| P S O |----------| F I N |-----------------------------------//
 
-			// -----------------------| FinalizaciÛn |-----------------------
+			// -----------------------| Finalizaci√≥n |-----------------------
 			
-			// Registramos datos estadÌsticos finales
+			// Registramos datos estad√≠sticos finales
 			salida.registrarDatosHistoricos(historico, maxTiempo, 
 					enjambre.getMejorCosto());
 			
@@ -153,7 +153,7 @@ public class PrincipalPSO {
 			enjambre.getMejorParticula().imprimir();
 			
 			/*
-			 * En caso de que no exista soluciÛn v·lida, imprimimos
+			 * En caso de que no exista soluci√≥n v√°lida, imprimimos
 			 * dicho mensaje para notificarlo.
 			 */
 			if (enjambre.getMejorFitness() < conf.getCantAristas()) {

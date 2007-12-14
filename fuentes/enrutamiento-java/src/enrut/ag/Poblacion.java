@@ -11,7 +11,7 @@ import enrut.ag.oper.OperadorSeleccion;
 
 public class Poblacion {
 	/*
-	 * Individuos de la población
+	 * Individuos de la poblaciï¿½n
 	 */
 	private Cromosoma[] individuos;
 
@@ -31,12 +31,12 @@ public class Poblacion {
 	private OperadorCruce operadorCruce;
 	
 	/*
-	 * Operador de mutación
+	 * Operador de mutaciï¿½n
 	 */
 	private OperadorMutacion operadorMutacion;
 	
 	/*
-	 * Operador de selección
+	 * Operador de selecciï¿½n
 	 */
 	private OperadorSeleccion operadorSeleccion;
 	
@@ -51,17 +51,17 @@ public class Poblacion {
 	private int cantAristas = 0;
 	
 	/*
-	 * Probabilidad de mutación (0 a 100)
+	 * Probabilidad de mutaciï¿½n (0 a 100)
 	 */
 	private int probabilidadMutacion;
 	
 	/*
-	 * Porcentaje de reinicialización
+	 * Porcentaje de reinicializaciï¿½n
 	 */
 	private double porcentajeReinicializacion;
 
 	/**
-	 * Crea una nueva población cant individuos
+	 * Crea una nueva poblaciï¿½n cant individuos
 	 * @param demandas Las demandas solicitadas
 	 * @param cant La cantidad de individuos a generar
 	 * @param cantArist La cantidad de aristas del grafo a evaluar
@@ -83,20 +83,20 @@ public class Poblacion {
 	
 	/**
 	 * Obtiene la cantidad de individuos de la poblacion
-	 * @return int tamaño de poblacion
+	 * @return int tamaï¿½o de poblacion
 	 */
-	public int getTamaño() {
+	public int getTamaÃ±o() {
 		return individuos.length;
 	}
 	
 	/**
-	 * Compara cada individuo de la población con
-	 * los demás y modifica los cromosomas duplicados
+	 * Compara cada individuo de la poblaciï¿½n con
+	 * los demï¿½s y modifica los cromosomas duplicados
 	 * mutandolos.
 	 */
 	public void descartarIguales() {
-		for (int i=0; i<this.getTamaño()-1; i++) {
-			for (int j=i+1; j<this.getTamaño(); j++) {
+		for (int i=0; i<this.getTamaÃ±o()-1; i++) {
+			for (int j=i+1; j<this.getTamaÃ±o(); j++) {
 				if (individuos[i].equals(individuos[j])) {
 					operadorMutacion.mutar(individuos[j]);
 				}
@@ -105,7 +105,7 @@ public class Poblacion {
 	}
 
 	/**
-	 * Selecciona nuevos individuos de esta población
+	 * Selecciona nuevos individuos de esta poblaciï¿½n
 	 * @return Cromosoma[] nuevos individuos seleccionados
 	 */
 	public Cromosoma[] seleccionar() {
@@ -114,7 +114,7 @@ public class Poblacion {
 	
 	/**
 	 * Cruza los individuos seleccionados eliminando
-	 * la población vieja. 
+	 * la poblaciï¿½n vieja. 
 	 * @param selectos
 	 */
 	public void cruzar(Cromosoma []selectos) {
@@ -128,13 +128,13 @@ public class Poblacion {
 	}
 
 	/**
-	 * Muta cromosomas de la población
+	 * Muta cromosomas de la poblaciï¿½n
 	 */
 	public void mutar() {
 		Random rand = new Random();
 		rand.nextInt();
 		
-		for (int i=0; i < this.getTamaño(); i++){
+		for (int i=0; i < this.getTamaÃ±o(); i++){
 			if (rand.nextInt(101) < this.getProbabilidadMutacion())
 				operadorMutacion.mutar(hijos[i]);
 		}
@@ -142,10 +142,10 @@ public class Poblacion {
 	
 	/**
 	 * Realiza el reemplazo de individuos de
-	 * la población.
+	 * la poblaciï¿½n.
 	 */
 	public void reemplazar() {
-		for (int i =0; i<this.getTamaño(); i++)
+		for (int i =0; i<this.getTamaÃ±o(); i++)
 			individuos[i] = hijos[i];
 	}
 
@@ -154,7 +154,7 @@ public class Poblacion {
 	 */
 	public void evaluar() {
 		
-		for (int i=0; i<this.getTamaño();i++) {
+		for (int i=0; i<this.getTamaÃ±o();i++) {
 			fitness[i] = cantAristas + individuos[i].evaluar();
 		}
 		elegirMejor();
@@ -211,7 +211,7 @@ public class Poblacion {
 	 */
 	private void elegirMejor() {
 		/*
-		 * Si todavia no se seleccionó
+		 * Si todavia no se seleccionï¿½
 		 * a ninguno, guardamos al primero.
 		 */
 		if (mejorIndividuo == null) {
@@ -219,7 +219,7 @@ public class Poblacion {
 		}
 		
 		double mejorFitness = cantAristas + mejorIndividuo.getFitness();
-		for (int i=0; i < this.getTamaño(); i++) {
+		for (int i=0; i < this.getTamaÃ±o(); i++) {
 			if (fitness[i]> mejorFitness) {
 				mejorIndividuo = individuos[i];
 				mejorFitness = cantAristas + mejorIndividuo.getFitness();
@@ -228,8 +228,8 @@ public class Poblacion {
 	}
 	
 	/**
-	 * Realiza el control de la población, y si la cantidad
-	 * de cromosomas inválidos es mayor al factor, retorna
+	 * Realiza el control de la poblaciï¿½n, y si la cantidad
+	 * de cromosomas invï¿½lidos es mayor al factor, retorna
 	 * true y en caso contrario, retorna false.
 	 * @param factor valor entre 0 y 1 que indica el porcentaje permitido.
 	 * @return true si la cantidad de invalidos supera el factor.
@@ -237,17 +237,17 @@ public class Poblacion {
 	public boolean reinicializar() {
 		int contador = 0; // cuenta los cromosomas invalidos
 		
-		for (int i=1; i < this.getTamaño(); i++) {
-			// Contamos si el fitness es inválido
+		for (int i=1; i < this.getTamaÃ±o(); i++) {
+			// Contamos si el fitness es invï¿½lido
 			if (fitness[i] < cantAristas)
 				contador++;
 		}
 		
 		/*
-		 * Si el porcentaje de inválidos calculado es mayor 
+		 * Si el porcentaje de invï¿½lidos calculado es mayor 
 		 * al permitido, retornamos true
 		 */
-		if (contador > this.getTamaño() * getPorcentajeReinicializacion())
+		if (contador > this.getTamaÃ±o() * getPorcentajeReinicializacion())
 			return true;
 		
 		// Si no, retornamos false
@@ -271,10 +271,10 @@ public class Poblacion {
 	}
 	
 	/**
-	 * Imprime en salida standard toda la población
+	 * Imprime en salida standard toda la poblaciï¿½n
 	 */
 	public void imprimir(){
-		for (int i=0; i<this.getTamaño(); i++){
+		for (int i=0; i<this.getTamaÃ±o(); i++){
 			System.out.println("Cromosoma: "+i+" ");
 			System.out.println("Fitness  : "+fitness[i]);
 			individuos[i].imprimir();

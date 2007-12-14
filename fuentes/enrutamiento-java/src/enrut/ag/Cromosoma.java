@@ -28,14 +28,14 @@ public class Cromosoma extends Solucion {
 	private double costo;
 	
 	/*
-	 * Fitness de la solución
+	 * Fitness de la soluciÃ³n
 	 */
 	private double fitness;
 
 
 	/**
 	 * Construye un nuevo cromosoma con alelos
-	 * randómicos para sus genes.
+	 * randÃ³micos para sus genes.
 	 * @param demandas Las demandas solicitadas
 	 */
 	public Cromosoma(Demanda[] demandas) {
@@ -45,7 +45,7 @@ public class Cromosoma extends Solucion {
 	
 	/**
 	 * Setea los genes del cromosoma con 
-	 * alelos randómicos.
+	 * alelos randÃ³micos.
 	 */
 	public void generarGenes() {
 		Random rand = new Random();
@@ -77,14 +77,14 @@ public class Cromosoma extends Solucion {
 	}
 	
 	public double evaluar() {
-		// Calculamos el costo de la solución
+		// Calculamos el costo de la soluciÃ³n
 		double total=0.0;
 		for(int i=0; i<this.getCantGenes(); i++){
 			total += getGrupoCaminos(i).getCamino(getGen(i)).getCosto();
 		}
 		this.costo = total;
 		
-		// Verificamos si la solución es válida
+		// Verificamos si la soluciÃ³n es vÃ¡lida
 		int repetidos = this.esValido();
 		if (repetidos>0)
 			this.fitness = -repetidos;
@@ -102,14 +102,14 @@ public class Cromosoma extends Solucion {
 		int enlacesRepetidos = 0;		
 		/*
 		 * Iteramos sobre cada gen del cromosoma
-		 * excepto el último.
+		 * excepto el Ãºltimo.
 		 */
 		for (int i=0; i < this.getCantGenes()-1; i++) {
 			// Gen actual
 			int genActual = this.getGen(i);
 			
 			/*
-			 * Camino actual, cuyas aristas serán
+			 * Camino actual, cuyas aristas serÃ¡n
 			 * buscadas en los subsecuentes caminos.
 			 */
 			Camino camActual = this.getGrupoCaminos(i).getCamino(genActual);
@@ -120,7 +120,7 @@ public class Cromosoma extends Solucion {
 			 */
 			for (int j=0; j < camActual.getLongitud(); j++) {
 				/*
-				 * Arista del camino actual que será
+				 * Arista del camino actual que serÃ¡
 				 * buscada en los subsecuentes caminos.
 				 */
 				Arista arista = camActual.getArista(j);
@@ -135,7 +135,7 @@ public class Cromosoma extends Solucion {
 					Camino camDestino = this.getGrupoCaminos(k).getCamino(genDestino);
 					
 					/*
-					 * Si la arista actual está contenida
+					 * Si la arista actual estÃ¡ contenida
 					 * en el camino, debemos agregar a la
 					 * lista de aristas repetidas.
 					 */

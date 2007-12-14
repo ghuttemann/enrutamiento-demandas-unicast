@@ -19,13 +19,13 @@ public class PrincipalAG {
 
 	/*
 	 * Prueba principal del algoritmo genetico 
-	 * para la optimizaciÛn de demandas unicast.
+	 * para la optimizaci√≥n de demandas unicast.
 	 */
 	public static void main(String[] args) {
 		
 		// Controlamos si recibimos el directorio de configuracion
 		if (args.length != 1)
-			throw new Error("Falta nombre de Carpeta de ConfiguraciÛn");
+			throw new Error("Falta nombre de Carpeta de Configuraci√≥n");
 		
 		// Id del algoritmo
 		String id = "AlgoritmoAG";
@@ -34,11 +34,11 @@ public class PrincipalAG {
 		Config conf = new Config(id);
 		conf.cargarParametros(args[0]);
 		
-		// El tiempo m·ximo est· en minutos
+		// El tiempo m√°ximo est√° en minutos
 		long maxTiempo = 1000L * conf.getMaxTiempo();
 		
-		// El intervalo de muestreo est· en segundos
-		long intervaloMuestra = conf.getIntervaloMuestra(); // el valor leido est· en segundos
+		// El intervalo de muestreo est√° en milisegundos
+		long intervaloMuestra = conf.getIntervaloMuestra();
 		
 		// Para imprimir la salida
 		ImpresionSalida salida = new ImpresionSalida(id);
@@ -71,7 +71,7 @@ public class PrincipalAG {
 
 //-----------------------------| A G |----------| I N I C I O |-----------------------------------//
 			
-			// Inicializamos la poblaciÛn
+			// Inicializamos la poblaci√≥n
 			Poblacion poblacion = inicializarPoblacion(conf);
 			poblacion.descartarIguales();
 			poblacion.evaluar();
@@ -87,7 +87,7 @@ public class PrincipalAG {
 
 				/*
 				 *  Se reinicializa si hay un porcentaje
-				 *  alto de inv·lidos.
+				 *  alto de inv√°lidos.
 				 */
 				if (poblacion.reinicializar()) {
 					// se guarda el mejor antes de reinicializar
@@ -108,7 +108,7 @@ public class PrincipalAG {
 				// Medimos el tiempo actual
 				tiempoActual = System.currentTimeMillis();
 
-				// Si transcurriÛ el intervalo de muestra...
+				// Si transcurri√≥ el intervalo de muestra...
 				if (tiempoActual - tiempoInicio >= iteradorTiempo) {
 
 					// Imprimimos la salida, y...
@@ -117,7 +117,7 @@ public class PrincipalAG {
 										  poblacion.getMejorCosto(),
 										  poblacion.getMejorFitness());
 					
-					// ...registramos datos estadÌsticos
+					// ...registramos datos estad√≠sticos
 					salida.registrarDatosHistoricos(historico, 
 											 tiempoActual - tiempoInicio,
 											 poblacion.getMejorCosto());
@@ -133,9 +133,9 @@ public class PrincipalAG {
 
 //-----------------------------| P S O |----------| F I N |-----------------------------------//
 
-			// -----------------------| FinalizaciÛn |-----------------------
+			// -----------------------| Finalizaci√≥n |-----------------------
 			
-			// Registramos datos estadÌsticos finales
+			// Registramos datos estad√≠sticos finales
 			salida.registrarDatosHistoricos(historico, maxTiempo, 
 					poblacion.getMejorCosto());
 			
@@ -158,7 +158,7 @@ public class PrincipalAG {
 			poblacion.getMejorIndividuo().imprimir();
 			
 			/*
-			 * En caso de que no exista soluciÛn v·lida, imprimimos
+			 * En caso de que no exista soluci√≥n v√°lida, imprimimos
 			 * dicho mensaje para notificarlo.
 			 */
 			if (poblacion.getMejorFitness() < conf.getCantAristas()) {

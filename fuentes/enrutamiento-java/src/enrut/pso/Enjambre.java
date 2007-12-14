@@ -13,7 +13,7 @@ import enrut.pso.oper.Movimiento;
  */
 public class Enjambre {
 	/*
-	 * Individuos de la población
+	 * Individuos de la poblaciï¿½n
 	 */
 	private Particula[] particulas;
 
@@ -44,12 +44,12 @@ public class Enjambre {
 	private Movimiento operadorMovimiento;
 	
 	/*
-	 * Porcentaje de reinicialización
+	 * Porcentaje de reinicializaciï¿½n
 	 */
 	private double porcentajeReinicializacion;
 
 	/**
-	 * Crea una nueva población cant particulas
+	 * Crea una nueva poblaciï¿½n cant particulas
 	 * @param demandas Las demandas solicitadas
 	 * @param cant La cantidad de particulas a generar
 	 * @param cantArist La cantidad de aristas del grafo a evaluar
@@ -72,20 +72,20 @@ public class Enjambre {
 	
 	/**
 	 * Obtiene la cantidad de particulas del enjambre
-	 * @return int tamaño del enjambre
+	 * @return int tamaï¿½o del enjambre
 	 */
-	public int getTamaño() {
+	public int getTamaÃ±o() {
 		return particulas.length;
 	}
 	
 	/**
-	 * Compara cada individuo de la población con
-	 * los demás y modifica las particulas duplicados
+	 * Compara cada individuo de la poblaciï¿½n con
+	 * los demï¿½s y modifica las particulas duplicados
 	 * mutandolos.
 	 */
 	public void descartarIguales() {
-		for (int i=0; i<this.getTamaño()-1; i++) {
-			for (int j=i+1; j<this.getTamaño(); j++) {
+		for (int i=0; i<this.getTamaÃ±o()-1; i++) {
+			for (int j=i+1; j<this.getTamaÃ±o(); j++) {
 				if (particulas[i].equals(particulas[j])) {
 					mutar(particulas[j]);
 				}
@@ -111,7 +111,7 @@ public class Enjambre {
 	 * Realiza el calculo de fitness para todos los particulas
 	 */
 	public void evaluar() {
-		for (int i=0; i<this.getTamaño();i++) {
+		for (int i=0; i<this.getTamaÃ±o();i++) {
 			fitness[i] = cantAristas + particulas[i].evaluar();
 		}
 		elegirMejor();
@@ -144,7 +144,7 @@ public class Enjambre {
 	 */
 	private void elegirMejor() {
 		/*
-		 * Si todavia no se seleccionó
+		 * Si todavia no se seleccionï¿½
 		 * a ninguno, guardamos al primero.
 		 */
 		if (mejorParticula == null) {
@@ -154,7 +154,7 @@ public class Enjambre {
 		}
 		
 		double mejorFitness = cantAristas + mejorParticula.getFitness();
-		for (int i=0; i < this.getTamaño(); i++) {
+		for (int i=0; i < this.getTamaÃ±o(); i++) {
 			if (fitness[i]> mejorFitness) {
 				mejorParticula.clonar(particulas[i]);
 				mejorFitness = cantAristas + mejorParticula.getFitness();
@@ -164,14 +164,14 @@ public class Enjambre {
 	
 	/**
 	 * Realiza el control del enjambre, y si la cantidad
-	 * de particulas inválidos es mayor al factor, retorna
+	 * de particulas invï¿½lidos es mayor al factor, retorna
 	 * true y en caso contrario, retorna false.
 	 * @param factor valor entre 0 y 1 que indica el porcentaje permitido.
 	 * @return true si la cantidad de invalidos supera el factor.
 	 */
 	public boolean reinicializar() {
 		int contador = 0; // cuenta las particulas invalidas
-		for (int i=1; i < this.getTamaño(); i++) {
+		for (int i=1; i < this.getTamaÃ±o(); i++) {
 			// si es invalido contar
 			if (fitness[i] < cantAristas) {
 				contador++;
@@ -179,10 +179,10 @@ public class Enjambre {
 		}
 		
 		/*
-		 * Si el porcentaje de inválidos calculado es mayor 
+		 * Si el porcentaje de invï¿½lidos calculado es mayor 
 		 * al permitido, retornamos true
 		 */
-		if (contador > this.getTamaño() * getPorcentajeReinicializacion())
+		if (contador > this.getTamaÃ±o() * getPorcentajeReinicializacion())
 			return true;
 		
 		// Si no, retornamos false
@@ -206,7 +206,7 @@ public class Enjambre {
 	}	
 	
 	/**
-	 * Función donde se calcula las nuevas posiciones de las
+	 * Funciï¿½n donde se calcula las nuevas posiciones de las
 	 * particulas y se mueven (actualizan) a ellas. 
 	 *
 	 */
@@ -214,7 +214,7 @@ public class Enjambre {
 		
 		Random rand = new Random();
 		rand.nextInt(101);
-		for (int i=0; i< this.getTamaño(); i++ ) {
+		for (int i=0; i< this.getTamaÃ±o(); i++ ) {
 			int[] nuevaPos;
 			factores[0] = rand.nextInt(101);
 			factores[1] = 100-factores[0];
@@ -224,10 +224,10 @@ public class Enjambre {
 	}
 	
 	/**
-	 * Imprime en salida standard toda la población
+	 * Imprime en salida standard toda la poblaciï¿½n
 	 */
 	public void imprimir(){
-		for (int i=0; i<this.getTamaño(); i++){
+		for (int i=0; i<this.getTamaÃ±o(); i++){
 			System.out.println("Particula: "+i+" ");
 			System.out.println("Fitness  : "+fitness[i]);
 			particulas[i].imprimir();

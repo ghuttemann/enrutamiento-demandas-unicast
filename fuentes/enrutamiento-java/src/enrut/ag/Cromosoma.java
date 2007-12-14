@@ -216,8 +216,13 @@ public class Cromosoma extends Solucion {
 	
 	public void imprimir(){
 		for (int i=0; i<this.getCantGenes();i++){
+<<<<<<< .mine
+			String c = getGrupoCaminos(i).getCamino(getGen(i)).toString2();
+			System.out.println("Demanda "+i+"= "+c);
+=======
 			String c = getGrupoCaminos(i).getCamino(getGen(i)).toString();
 			System.out.println("Demanda "+i+"= "+c);
+>>>>>>> .r207
 		}
 	}
 	

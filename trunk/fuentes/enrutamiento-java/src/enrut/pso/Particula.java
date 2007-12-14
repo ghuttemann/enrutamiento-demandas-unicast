@@ -35,6 +35,11 @@ public class Particula extends Solucion {
 	private double costoActual;
 	
 	/*
+	 * Fitness de la solución
+	 */
+	private double fitness;
+	
+	/*
 	 * Mejor posición personal
 	 */
 	private int[] mejorPosicionLocal;
@@ -43,6 +48,11 @@ public class Particula extends Solucion {
 	 * Costo de la mejor solucion personal
 	 */
 	private double mejorCostoLocal;
+	
+	/*
+	 * Costo de la mejor solucion personal
+	 */
+	private double mejorFitnessLocal;
 	
 	
 	/**
@@ -55,7 +65,8 @@ public class Particula extends Solucion {
 		posActual = new int[demandas.length];
 		
 		mejorPosicionLocal = new int[posActual.length];
-		mejorCostoLocal = -cantAristas;
+		mejorCostoLocal    = -cantAristas;
+		mejorFitnessLocal  = -cantAristas;
 	}
 	
 	/**
@@ -114,19 +125,19 @@ public class Particula extends Solucion {
 	}
 	
 	public double evaluar() {
-		
-		int repetidos = this.esValido();
-		if (repetidos>0) {
-			this.costoActual = -repetidos;
-			return -repetidos;
-		}
-		
+		// Calculamos el costo de la solución
 		double total=0.0;
 		for(int i=0; i<this.getCantDimensiones(); i++){
 			total += getGrupoCaminos(i).getCamino(getPosActual(i)).getCosto();
 		}
+		this.costoActual = total;
 		
-		this.costoActual = 1/total;
+		// Verificamos si la solución es válida
+		int repetidos = this.esValido();
+		if (repetidos>0)
+			this.fitness = -repetidos;
+		else
+			this.fitness = 1/this.costoActual;
 		
 		/*
 		 * Debemos verificar si la posición actual 
@@ -134,12 +145,13 @@ public class Particula extends Solucion {
 		 * calculada hasta el momento y en caso de
 		 * serlo lo reemplazamos.
 		 */
-		if (costoActual > mejorCostoLocal) {
+		if (fitness > mejorFitnessLocal) {
 			System.arraycopy(posActual, 0, mejorPosicionLocal, 0, posActual.length);
-			mejorCostoLocal = costoActual;
+			mejorFitnessLocal = fitness;
+			mejorCostoLocal   = costoActual;
 		}
 		
-		return this.costoActual;
+		return this.fitness;
 	}
 	
 	private int esValido() {
@@ -238,6 +250,10 @@ public class Particula extends Solucion {
 		return this.costoActual;
 	}
 	
+	public double getFitness() {
+		return fitness;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		String thisClass = this.getClass().getName();
@@ -261,7 +277,7 @@ public class Particula extends Solucion {
 	public void imprimir(){
 		for (int i=0; i<this.getCantDimensiones();i++){
 			String c = getGrupoCaminos(i).getCamino(getPosActual(i)).toString();
-			System.out.println("Gen "+i+"= "+c);
+			System.out.println("Demanda "+i+"= "+c);
 		}
 	}
 	
@@ -313,11 +329,12 @@ public class Particula extends Solucion {
 			this.demandas[i].setCaminos(p.getGrupoCaminos(i));
 			this.posActual[i] = p.getPosActual(i);
 			this.mejorPosicionLocal[i] = p.getMejorPosicionLocal(i);
-
 		}
 		
 		this.costoActual = p.costoActual;
 		this.mejorCostoLocal = p.mejorCostoLocal;
+		this.fitness = p.fitness;
+		this.mejorFitnessLocal = p.mejorFitnessLocal;
 	}
 	
 	

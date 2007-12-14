@@ -218,11 +218,11 @@ public class Poblacion {
 			mejorIndividuo = individuos[0];
 		}
 		
-		double mejorFitness = cantAristas + mejorIndividuo.getCosto();
+		double mejorFitness = cantAristas + mejorIndividuo.getFitness();
 		for (int i=0; i < this.getTamaño(); i++) {
 			if (fitness[i]> mejorFitness) {
 				mejorIndividuo = individuos[i];
-				mejorFitness = cantAristas + mejorIndividuo.getCosto();
+				mejorFitness = cantAristas + mejorIndividuo.getFitness();
 			}
 		}
 	}
@@ -263,11 +263,11 @@ public class Poblacion {
 	}
 	
 	public double getMejorFitness(){
-		return this.cantAristas + this.mejorIndividuo.getCosto();
+		return this.cantAristas + this.mejorIndividuo.getFitness();
 	}
 
 	public double getMejorCosto(){
-		return 1/this.mejorIndividuo.getCosto();
+		return this.mejorIndividuo.getCosto();
 	}
 	
 	/**

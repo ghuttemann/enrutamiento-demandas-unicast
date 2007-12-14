@@ -76,7 +76,7 @@ public class Config {
 	public void cargarParametros(String path) {
 		Lector lector = new Lector(path + "config.txt");
 		
-		// Indica si ya se leyó la cantidad de caminos
+		// Indica si ya se leyÃ³ la cantidad de caminos
 		boolean maxCaminosLeido = false;
 
 		String linea = lector.leerLinea();
@@ -128,7 +128,7 @@ public class Config {
 					}
 					else if (partes[0].equalsIgnoreCase("TABLA_RUTAS")) {
 						/*
-						 * Comprobamos si ya se leyó la variable
+						 * Comprobamos si ya se leyÃ³ la variable
 						 * MAX_CAMINOS, ya que se utiliza para leer
 						 * cargar los caminos.
 						 */
@@ -144,11 +144,11 @@ public class Config {
 						pathRutas = partes[1];
 					}
 					else {
-						throw new Error("Valor de configuración incorrecto: \"" + partes[0] + "\"");
+						throw new Error("Valor de configuraciÃ³n incorrecto: \"" + partes[0] + "\"");
 					}
 				}
 				catch (NumberFormatException e) {
-					System.out.println("Error de conversión numérica");
+					System.out.println("Error de conversiÃ³n numÃ©rica");
 					e.printStackTrace();
 					System.exit(0);
 				}
@@ -228,7 +228,7 @@ public class Config {
 			cantidad = Integer.parseInt(linea);
 		}
 		catch (NumberFormatException e) {
-			System.out.println("Error de conversión numérica");
+			System.out.println("Error de conversiÃ³n numÃ©rica");
 			e.printStackTrace();
 			System.exit(0);
 		}
@@ -252,7 +252,7 @@ public class Config {
 			cantidad = Integer.parseInt(linea);
 		}
 		catch (NumberFormatException e) {
-			System.out.println("Error de conversión numérica");
+			System.out.println("Error de conversiÃ³n numÃ©rica");
 			e.printStackTrace();
 			System.exit(0);
 		}
@@ -272,7 +272,7 @@ public class Config {
 				capacidad = Double.parseDouble(partes[2]);
 			}
 			catch (NumberFormatException e) {
-				System.out.println("Error de conversión numérica");
+				System.out.println("Error de conversiÃ³n numÃ©rica");
 				e.printStackTrace();
 				System.exit(0);
 			}
@@ -288,18 +288,18 @@ public class Config {
 		System.out.println("Tiempo de la Corrida      : " + maxTiempo + " seg.");
 		
 		if (this.id.equalsIgnoreCase("AlgoritmoAG"))
-			System.out.println("Tamaño de la Población    : " + tamPoblacionAG + " individuos");
+			System.out.println("TamaÃ±o de la PoblaciÃ³n    : " + tamPoblacionAG + " individuos");
 		else if (this.id.equalsIgnoreCase("AlgoritmoPSO"))
-			System.out.println("Tamaño del Enjambre       : " + tamPoblacionPSO + " particulas");
+			System.out.println("TamaÃ±o del Enjambre       : " + tamPoblacionPSO + " particulas");
 		
 		System.out.println("Cant. de Aristas del Grafo: " + cantAristas);
 		System.out.println("Cantidad de Corridas      : " + cantCorridas);
 		System.out.println("Intervalo de la Muestra   : " + intervaloMuestra + " ms.");
-		System.out.println("Prob. de Mutación AG      : " + probMutacionAG);
+		System.out.println("Prob. de MutaciÃ³n AG      : " + probMutacionAG);
 		
 		if (this.id.equalsIgnoreCase("AlgoritmoAG"))
-			System.out.println("Porc. Reinicialización AG : " + porcReinicioAG);
+			System.out.println("Porc. ReinicializaciÃ³n AG : " + porcReinicioAG);
 		else if (this.id.equalsIgnoreCase("AlgoritmoPSO"))
-			System.out.println("Porc. Reinicialización PSO: " + porcReinicioPSO);
+			System.out.println("Porc. ReinicializaciÃ³n PSO: " + porcReinicioPSO);
 	}
 }

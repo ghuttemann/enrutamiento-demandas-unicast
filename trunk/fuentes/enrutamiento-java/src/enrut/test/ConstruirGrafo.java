@@ -14,7 +14,7 @@ public class ConstruirGrafo {
 		ConstructorGrafo cg;
 		Grafo grafo;
 		
-		System.out.println("¡¡¡LECTOR DE ARCHIVO GRAFO!!!");
+		System.out.println("Â¡Â¡Â¡LECTOR DE ARCHIVO GRAFO!!!");
 		
 		if (args.length != 1)
 			throw new Error("Falta nombre de archivo");
@@ -42,7 +42,7 @@ public class ConstruirGrafo {
 						  new Camino(),
 						  new Camino()};
 		
-		System.out.println("¡¡¡END OF PROGRAM!!!"+rutas);
+		System.out.println("Â¡Â¡Â¡END OF PROGRAM!!!"+rutas);
 	}
 
 }

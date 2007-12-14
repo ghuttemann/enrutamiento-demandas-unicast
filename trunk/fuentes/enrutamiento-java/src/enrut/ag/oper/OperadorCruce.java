@@ -7,7 +7,7 @@ import enrut.ag.Cromosoma;
 
 public interface OperadorCruce {
 	/**
-	 * Realiza una operación de cruce entre dos
+	 * Realiza una operaciÃ³n de cruce entre dos
 	 * cromosomas, produciendo un arreglo de 
 	 * cromosomas hijos.
 	 * 

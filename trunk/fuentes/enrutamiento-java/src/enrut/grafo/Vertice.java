@@ -13,7 +13,7 @@ import java.util.Vector;
  *	
  * @see Arista
  * @see Grafo
- * @author Germán Hüttemann Arza
+ * @author GermÃ¡n HÃ¼ttemann Arza
  */
 public class Vertice {
  	/*
@@ -22,7 +22,7 @@ public class Vertice {
  	private Vector<Arista> adyacentes;
  	
  	/*
- 	 * Para saber si fue visitado durante algún
+ 	 * Para saber si fue visitado durante algÃºn
  	 * recorrido sobre el grafo.
  	 */
  	private boolean visitado;

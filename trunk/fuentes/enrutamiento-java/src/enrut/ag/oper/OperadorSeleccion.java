@@ -1,5 +1,5 @@
 /*
- * @(#)OperadorSelecci髇.java
+ * @(#)OperadorSeleccion.java
  */
 package enrut.ag.oper;
 
@@ -8,10 +8,10 @@ import enrut.ag.Poblacion;
 
 public interface OperadorSeleccion {
 	/**
-	 * Realiza una operaci髇 de selecci髇
-	 * sobre una poblaci髇 de individuos.
+	 * Realiza una operaci贸n de selecci贸n
+	 * sobre una poblaci贸n de individuos.
 	 * 
-	 * @param p La poblaci髇 sobre la cual realizar la selecci髇
+	 * @param p La poblaci贸n sobre la cual realizar la selecci贸n
 	 * @return Cromosomas seleccionados
 	 */
 	public Cromosoma[] seleccionar(Poblacion p);

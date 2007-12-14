@@ -43,14 +43,14 @@ public class GrupoCaminos {
 	 * conservados. El resto (si hubiere) son
 	 * desechados.
 	 * 
-	 * @param max La máxima cantidad de caminos a conservar.
+	 * @param max La mÃ¡xima cantidad de caminos a conservar.
 	 */
 	public void conservar(int max) {
 		int cantCaminos = this.getCantCaminos();
 		
 		/*
 		 * Si hay "max" o menos caminos,
-		 * o si el grupo está vacío, no 
+		 * o si el grupo estÃ¡ vacÃ­o, no 
 		 * hacemos nada.
 		 */
 		if (max >= cantCaminos || cantCaminos == 0)

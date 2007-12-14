@@ -11,7 +11,7 @@ package enrut.grafo;
  *
  * @see Vertice
  * @see Grafo
- * @author Germán Hüttemann Arza
+ * @author GermÃ¡n HÃ¼ttemann Arza
  */
 public class Arista {
  	

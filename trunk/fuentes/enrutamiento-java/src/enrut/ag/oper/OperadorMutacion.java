@@ -7,7 +7,7 @@ import enrut.ag.Cromosoma;
 
 public interface OperadorMutacion {
 	/**
-	 * Realiza una operación de mutación
+	 * Realiza una operaciÃ³n de mutaciÃ³n
 	 * sobre un cromosoma dado.
 	 * 
 	 * @param a El cromosoma a ser mutado

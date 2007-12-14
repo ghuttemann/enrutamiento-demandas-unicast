@@ -14,7 +14,7 @@ import java.util.Vector;
  * @see Arista
  * @see Vertice
  * @see Grafo
- * @author Germán Hüttemann Arza
+ * @author GermÃ¡n HÃ¼ttemann Arza
  */
 public class Camino {
 	private Vector<Arista> secuencia;
@@ -47,12 +47,12 @@ public class Camino {
  		secuencia.add(a);
  		costo += a.getCosto();
  		
- 		// Actualizamos la capacidad mínima del camino
+ 		// Actualizamos la capacidad mÃ­nima del camino
  		double capacidadArista = a.getCapacidad();
  		if (capacidadMinima == 0 || capacidadArista < capacidadMinima)
  			capacidadMinima = capacidadArista;
  		
- 		// Agregamos la arista también al hash
+ 		// Agregamos la arista tambiÃ©n al hash
  		hash.put(a.toString(), a);
  	}
  	
@@ -60,11 +60,11 @@ public class Camino {
  		Arista a = secuencia.remove(secuencia.size()-1);
  		costo -= a.getCosto();
  		
- 		// Actualizamos la capacidad mínima del camino
+ 		// Actualizamos la capacidad mÃ­nima del camino
  		if (a.getCapacidad() == capacidadMinima)
  			capacidadMinima = getMenorCapacidad();
  		
- 		// Quitamos la arista también del hash
+ 		// Quitamos la arista tambiÃ©n del hash
  		hash.remove(a.toString());
  		
  		return a;
@@ -143,10 +143,10 @@ public class Camino {
  		String thisClass = this.getClass().getName();
  		String objClass  = this.getClass().getName();
  		
- 		// Resultado de la opearción
+ 		// Resultado de la opearciÃ³n
  		boolean resultado = false;
  		
- 		// Realizamos la comparación
+ 		// Realizamos la comparaciÃ³n
  		if (thisClass.equalsIgnoreCase(objClass)) {
  			Camino cam = (Camino) obj;
  			if (this.secuencia.size() == cam.secuencia.size()) {

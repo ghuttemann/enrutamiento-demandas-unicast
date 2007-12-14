@@ -9,8 +9,8 @@ import enrut.ag.Cromosoma;
 import enrut.ag.oper.OperadorMutacion;
 
 /*
- * Implementación de la operación de mutación que muta
- * un gen elegido al azar, cambiándolo de valor hasta
+ * ImplementaciÃ³n de la operaciÃ³n de mutaciÃ³n que muta
+ * un gen elegido al azar, cambiÃ¡ndolo de valor hasta
  * que sea realmente distinto al valor actual.
  */
 public class MutacionUnGen implements OperadorMutacion {

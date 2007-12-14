@@ -14,17 +14,17 @@ public class TorneoBinario implements OperadorSeleccion {
 	public Cromosoma[] seleccionar(Poblacion p) {
 		if (p==null)
 			System.exit(0);
-		int cantMejores = p.getTamaÒo(); //tamaÒo de poblaciÛn seleccionada
+		int cantMejores = p.getTama√±o(); //tama√±o de poblaci√≥n seleccionada
 		Cromosoma Mejores[] = new Cromosoma[cantMejores];
 		Random rand = new Random();
 		rand.nextInt();
 		
 		for (int i=0; i<cantMejores; i++) {
 			
-			int ind1 = rand.nextInt(p.getTamaÒo()); // se elige un individuo
-			int ind2 = rand.nextInt(p.getTamaÒo()); // se elige un individuo
+			int ind1 = rand.nextInt(p.getTama√±o()); // se elige un individuo
+			int ind2 = rand.nextInt(p.getTama√±o()); // se elige un individuo
 			while (ind2==ind1) {
-				ind2 = rand.nextInt(p.getTamaÒo()); // se reelige un individuo
+				ind2 = rand.nextInt(p.getTama√±o()); // se reelige un individuo
 			}
 			
 			// Se extrae los fitness de los correspondientes individuos 
@@ -32,10 +32,10 @@ public class TorneoBinario implements OperadorSeleccion {
 			double costo2 = p.getFitness(ind2);
 				
 			// Competencia
-			if (costo1>=costo2) { // GanÛ individuo 1
+			if (costo1>=costo2) { // Gan√≥ individuo 1
 				Mejores[i]=p.getIndividuo(ind1);
 			}
-			else { // GanÛ individuo 2
+			else { // Gan√≥ individuo 2
 				Mejores[i]=p.getIndividuo(ind2);
 			}
 		}

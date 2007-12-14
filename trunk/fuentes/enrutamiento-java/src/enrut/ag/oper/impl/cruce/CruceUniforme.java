@@ -9,7 +9,7 @@ import enrut.ag.Cromosoma;
 import enrut.ag.oper.OperadorCruce;
 
 /**
- * ImplementaciÛn del operador
+ * Implementaci√≥n del operador
  * de cruzamiento uniforme.
  * 
  * @author ghuttemann
@@ -34,10 +34,10 @@ public class CruceUniforme implements OperadorCruce {
 		hijos[1] = new Cromosoma(a.getDemandas());
 		
 		/*
-		 * AquÌ iremos guardando el gen "i" de
+		 * Aqu√≠ iremos guardando el gen "i" de
 		 * cada uno de los cromosomas a cruzar,
 		 * "a" y "b", en este caso, para luego
-		 * realizar la selecciÛn de destinos.
+		 * realizar la selecci√≥n de destinos.
 		 */
 		int[] genes = new int[2];
 		
@@ -47,12 +47,12 @@ public class CruceUniforme implements OperadorCruce {
 			/*
 			 * Tiramos la moneda para obtener el
 			 * gen que incluiremos en el primer
-			 * hijo. El otro, ir· al segundo hijo.
+			 * hijo. El otro, ir√° al segundo hijo.
 			 */
 			boolean moneda = rand.nextBoolean();
 			
 			/* 
-			 * Realizamos la selecciÛn de destinos
+			 * Realizamos la selecci√≥n de destinos
 			 */
 			if (moneda) {
 				genes[0] = a.getGen(i); // Gen de "a" al primer hijo

@@ -28,7 +28,7 @@ public class Escritor {
 	}
 	
 	/**
-	 * Abre el archivo que recibe como par·metro
+	 * Abre el archivo que recibe como par√°metro
 	 * @param archivo Nombre del archivo a abrir.
 	 */
 	public void abrir(String archivo) {
@@ -48,7 +48,7 @@ public class Escritor {
 	}
 	
 	/**
-	 * Imprime el objeto que recibe como par·metro
+	 * Imprime el objeto que recibe como par√°metro
 	 */
 	public Escritor imprimir(Object arg) {
 		output.print(arg);

@@ -12,7 +12,7 @@ public class ConstructorCaminos {
 	 * Lee los caminos para una demanda dada.
 	 * 
 	 * @param demandas La lista de demandas
-	 * @param max Máxima cantidad de caminos a recuperar
+	 * @param max MÃ¡xima cantidad de caminos a recuperar
 	 * @param path Ruta donde se encuentrar los archivos a leer
 	 */
 	public void leerCaminos(Demanda[] demandas, int max, String path) {
@@ -38,7 +38,7 @@ public class ConstructorCaminos {
 				destEnArch = Integer.parseInt(lector.leerLinea());
 			}
 			catch (NumberFormatException e) {
-				System.out.println("Error de conversión numérica");
+				System.out.println("Error de conversiÃ³n numÃ©rica");
 				e.printStackTrace();
 				System.exit(0);
 			}
@@ -66,7 +66,7 @@ public class ConstructorCaminos {
 		 * demanda.
 		 * En caso de que "max" sea mayor a cero,
 		 * conservamos solo dicha cantidad (como 
-		 * máximo) de caminos para cada demanda.
+		 * mÃ¡ximo) de caminos para cada demanda.
 		 */
 		if (max > 0)
 		for (int i=0; i < demandas.length; i++)
@@ -88,14 +88,14 @@ public class ConstructorCaminos {
 			String[] partes = linea.split("-");
 			
 			/*
-			 * Camino que se irá construyendo
+			 * Camino que se irÃ¡ construyendo
 			 * para cada lectura.
 			 */
 			Camino cam = new Camino();
 			
 			/*
 			 * Indica si el camino construido
-			 * hasta el momento es válido.
+			 * hasta el momento es vÃ¡lido.
 			 */
 			boolean caminoValido = true;
 			
@@ -123,7 +123,7 @@ public class ConstructorCaminos {
 					capacidad = Double.parseDouble(arista[3]);
 				}
 				catch (NumberFormatException e) {
-					System.out.println("Error de conversión numérica");
+					System.out.println("Error de conversiÃ³n numÃ©rica");
 					e.printStackTrace();
 					System.exit(0);
 				}
@@ -137,7 +137,7 @@ public class ConstructorCaminos {
 				 * el momento satisfaga el ancho de banda
 				 * requerido por la demanda.
 				 * En caso de no satisfacerla, anulamos la
-				 * construcción del camino actual.
+				 * construcciÃ³n del camino actual.
 				 */
 				if (cam.getCapacidadMinima() < anchoDeBanda) {
 					caminoValido = false;
@@ -147,11 +147,11 @@ public class ConstructorCaminos {
 			
 			/*
 			 * Agregamos el camino al grupo de caminos
-			 * solo si es válido, esto es, que pueda
+			 * solo si es vÃ¡lido, esto es, que pueda
 			 * satisfacer el ancho de banda requerido
 			 * por la demanda.
 			 */
-			//System.out.println("Condición:"+i+"=="+(partes.length));
+			//System.out.println("CondiciÃ³n:"+i+"=="+(partes.length));
 			if (caminoValido)
 				grupo.agregarCamino(cam);
 			

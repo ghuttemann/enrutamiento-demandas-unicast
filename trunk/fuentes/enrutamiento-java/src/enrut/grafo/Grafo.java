@@ -16,7 +16,7 @@ import java.util.Iterator;
  *
  * @see Vertice
  * @see Arista
- * @author Germán Hüttemann Arza
+ * @author GermÃ¡n HÃ¼ttemann Arza
  */
 public class Grafo {
  	/*

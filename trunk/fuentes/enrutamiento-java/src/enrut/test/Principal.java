@@ -22,7 +22,7 @@ public class Principal {
 		
 		// Controlamos si recibimos el directorio de configuracion
 		if (args.length != 1)
-			throw new Error("Falta nombre de Carpeta de ConfiguraciÛn");
+			throw new Error("Falta nombre de Carpeta de Configuraci√≥n");
 		
 		// Id del algoritmo
 		String clase = algoritmo.getClass().getName();
@@ -32,11 +32,11 @@ public class Principal {
 		Config conf = new Config(id);
 		conf.cargarParametros(args[0]);
 		
-		// El tiempo m·ximo est· en minutos
+		// El tiempo m√°ximo est√° en segundos
 		long maxTiempo = 1000L * conf.getMaxTiempo();
 		
-		// El intervalo de muestreo est· en segundos
-		long intervaloMuestra = conf.getIntervaloMuestra(); // el valor leido est· en segundos
+		// El intervalo de muestreo est√° en milisegundos
+		long intervaloMuestra = conf.getIntervaloMuestra();
 		
 		// Para imprimir la salida
 		ImpresionSalida salida = new ImpresionSalida(id);
@@ -86,7 +86,7 @@ public class Principal {
 
 				/*
 				 *  Se reinicializa si hay un porcentaje
-				 *  alto de inv·lidos.
+				 *  alto de inv√°lidos.
 				 */
 				if (algoritmo.reinicializar()) {
 					// se guarda el mejor antes de reinicializar
@@ -110,7 +110,7 @@ public class Principal {
 				// Medimos el tiempo actual
 				tiempoActual = System.currentTimeMillis();
 
-				// Si transcurriÛ el intervalo de muestra...
+				// Si transcurri√≥ el intervalo de muestra...
 				if (tiempoActual - tiempoInicio >= iteradorTiempo) {
 
 					// Imprimimos la salida, y...
@@ -119,7 +119,7 @@ public class Principal {
 										  algoritmo.getMejorCosto(),
 										  algoritmo.getMejorFitness());
 					
-					// ...registramos datos estadÌsticos
+					// ...registramos datos estad√≠sticos
 					salida.registrarDatosHistoricos(historico, 
 											 tiempoActual - tiempoInicio,
 											 algoritmo.getMejorCosto());
@@ -135,9 +135,9 @@ public class Principal {
 
 //------------------------------------------------| F I N |-----------------------------------//
 
-			// -----------------------| FinalizaciÛn |-----------------------
+			// -----------------------| Finalizaci√≥n |-----------------------
 			
-			// Registramos datos estadÌsticos finales
+			// Registramos datos estad√≠sticos finales
 			salida.registrarDatosHistoricos(historico, maxTiempo, 
 					algoritmo.getMejorCosto());
 			
@@ -160,7 +160,7 @@ public class Principal {
 			algoritmo.getMejorSolucion().imprimir();
 			
 			/*
-			 * En caso de que no exista soluciÛn v·lida, imprimimos
+			 * En caso de que no exista soluci√≥n v√°lida, imprimimos
 			 * dicho mensaje para notificarlo.
 			 */
 			if (algoritmo.getMejorFitness() < conf.getCantAristas()) {

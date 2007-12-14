@@ -111,7 +111,6 @@ public class Enjambre {
 	 * Realiza el calculo de fitness para todos los particulas
 	 */
 	public void evaluar() {
-		
 		for (int i=0; i<this.getTamaño();i++) {
 			fitness[i] = cantAristas + particulas[i].evaluar();
 		}
@@ -154,11 +153,11 @@ public class Enjambre {
 			mejorParticula.clonar(particulas[0]);
 		}
 		
-		double mejorFitness = cantAristas + mejorParticula.getCosto();
+		double mejorFitness = cantAristas + mejorParticula.getFitness();
 		for (int i=0; i < this.getTamaño(); i++) {
 			if (fitness[i]> mejorFitness) {
 				mejorParticula.clonar(particulas[i]);
-				mejorFitness = cantAristas + mejorParticula.getCosto();
+				mejorFitness = cantAristas + mejorParticula.getFitness();
 			}
 		}
 	}
@@ -199,11 +198,11 @@ public class Enjambre {
 	}
 	
 	public double getMejorFitness(){
-		return this.cantAristas + this.mejorParticula.getCosto();
+		return this.cantAristas + this.mejorParticula.getFitness();
 	}
 
 	public double getMejorCosto(){
-		return 1/this.mejorParticula.getCosto();
+		return this.mejorParticula.getCosto();
 	}	
 	
 	/**
@@ -224,27 +223,6 @@ public class Enjambre {
 		}
 	}
 	
-	/*private int[] getMejorVecindad(int indice) {
-		int [] mejorLocal = particulas[indice].getPosActual();
-		int V1 = indice - 1;
-		int V2 = indice + 1;
-		if(indice == 0)
-			V1 = this.getTamaño()-1;
-		else if (indice == this.getTamaño()-1)
-			V2 = 0;
-		
-		double costoV1 = particulas[V1].getCosto();
-		double costo = particulas[indice].getCosto();
-		double costoV2 = particulas[V2].getCosto();
-		
-		if (costoV1 > costo && costoV1 > costoV2)
-			mejorLocal = particulas[V1].getPosActual();
-		else if (costoV2 > costo && costoV2 > costoV1)
-			mejorLocal = particulas[V2].getPosActual();
-		
-		return mejorLocal;
-	}
-	*/
 	/**
 	 * Imprime en salida standard toda la población
 	 */

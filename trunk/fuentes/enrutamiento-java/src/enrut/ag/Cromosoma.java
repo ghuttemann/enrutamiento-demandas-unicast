@@ -25,9 +25,14 @@ public class Cromosoma extends Solucion {
 	/*
 	 * Costo de la solucion
 	 */
-	double costo;
+	private double costo;
 	
-	
+	/*
+	 * Fitness de la solución
+	 */
+	private double fitness;
+
+
 	/**
 	 * Construye un nuevo cromosoma con alelos
 	 * randómicos para sus genes.
@@ -72,20 +77,21 @@ public class Cromosoma extends Solucion {
 	}
 	
 	public double evaluar() {
-		
-		int repetidos = this.esValido();
-		if (repetidos>0) {
-			this.costo = -repetidos;
-			return -repetidos;
-		}
-		
+		// Calculamos el costo de la solución
 		double total=0.0;
 		for(int i=0; i<this.getCantGenes(); i++){
 			total += getGrupoCaminos(i).getCamino(getGen(i)).getCosto();
 		}
+		this.costo = total;
 		
-		this.costo = 1/total;
-		return this.costo;
+		// Verificamos si la solución es válida
+		int repetidos = this.esValido();
+		if (repetidos>0)
+			this.fitness = -repetidos;
+		else
+			this.fitness = 1/this.costo;
+		
+		return this.fitness;
 	}
 	
 	private int esValido() {
@@ -184,6 +190,10 @@ public class Cromosoma extends Solucion {
 		return this.costo;
 	}
 	
+	public double getFitness() {
+		return fitness;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		String thisClass = this.getClass().getName();
@@ -207,7 +217,7 @@ public class Cromosoma extends Solucion {
 	public void imprimir(){
 		for (int i=0; i<this.getCantGenes();i++){
 			String c = getGrupoCaminos(i).getCamino(getGen(i)).toString();
-			System.out.println("Gen "+i+"= "+c);
+			System.out.println("Demanda "+i+"= "+c);
 		}
 	}
 	

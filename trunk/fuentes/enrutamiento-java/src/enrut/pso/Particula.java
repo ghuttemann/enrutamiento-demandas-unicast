@@ -276,7 +276,7 @@ public class Particula extends Solucion {
 	
 	public void imprimir(){
 		for (int i=0; i<this.getCantDimensiones();i++){
-			String c = getGrupoCaminos(i).getCamino(getPosActual(i)).toString();
+			String c = getGrupoCaminos(i).getCamino(getPosActual(i)).toString2();
 			System.out.println("Demanda "+i+"= "+c);
 		}
 	}

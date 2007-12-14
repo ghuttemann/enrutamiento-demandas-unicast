@@ -187,8 +187,22 @@ public class Camino {
  		return buffer.toString();
  	}
  	
+ 	public String toString2() {
+ 		String retorno;
+ 		retorno = "[De:" + getArista(0).getOrigen();
+ 		retorno += " A:" + getUltimaArista().getDestino();
+ 		retorno += "  |  Costo: " + getCosto() + "] \n";
+ 		retorno += "\t";//"         "; // El vacio a Demanda n = 
+ 		retorno += "  [Ruta: ";
+ 		for (int i=0; i < secuencia.size(); i++)
+ 			retorno += getArista(i).getOrigen() + "-";
+ 		
+ 		retorno += "" + getUltimaArista().getDestino() + "]";
+ 		return retorno;
+ 	}
+ 	
  	public void vaciar() {
  		while (!this.estaVacio())
  			this.quitarArista();
  	}
- }
+}

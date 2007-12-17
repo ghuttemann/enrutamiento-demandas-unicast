@@ -120,7 +120,8 @@ public class PrincipalAG {
 					// ...registramos datos estadísticos
 					salida.registrarDatosHistoricos(historico, 
 											 tiempoActual - tiempoInicio,
-											 poblacion.getMejorCosto());
+											 poblacion.getMejorCosto(),
+											 poblacion.getMejorFitness());
 					
 					// Incrementamos el muestreo pero en tiempo
 					iteradorTiempo += intervaloMuestra;
@@ -137,13 +138,13 @@ public class PrincipalAG {
 			
 			// Registramos datos estadísticos finales
 			salida.registrarDatosHistoricos(historico, maxTiempo, 
-					poblacion.getMejorCosto());
+					poblacion.getMejorCosto(), poblacion.getMejorFitness());
 			
 			// Registramos la cantidad de reinicios
 			historico.addFirst(new String[]{"Reinicios", String.valueOf(reinicios)});
 			
 			// Escribimos el historico
-			salida.escribirHistorico(k, args[0], reinicios, historico);
+			salida.escribirHistorico(k, args[0], historico);
 
 			System.out.println();
 			System.out.println();

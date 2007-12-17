@@ -70,8 +70,8 @@ public class ImpresionSalida {
 
 		String[] muestra = new String[3];
 		muestra[0] = String.valueOf(tiempo); 
-		muestra[1] = String.valueOf(costo);
-		muestra[2] = String.valueOf(fitness);
+		muestra[1] = String.valueOf(costo).replace('.', ',');
+		muestra[2] = String.valueOf(fitness).replace('.', ',');
 
 		historico.add(muestra);
 	}

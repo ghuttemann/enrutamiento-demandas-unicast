@@ -50,7 +50,7 @@ public class Principal {
 			LinkedList<String[]> historico = new LinkedList<String[]>();
 			
 			// Guardamos los titulos de las columnas
-			historico.add(new String[]{"Tiempo", "Costo"});
+			historico.add(new String[]{"Tiempo", "Costo", "Fitness"});
 			
 			// Cargamos las rutas
 			conf.cargarRutas(args[0]);
@@ -122,7 +122,8 @@ public class Principal {
 					// ...registramos datos estadísticos
 					salida.registrarDatosHistoricos(historico, 
 											 tiempoActual - tiempoInicio,
-											 algoritmo.getMejorCosto());
+											 algoritmo.getMejorCosto(),
+											 algoritmo.getMejorFitness());
 					
 					// Incrementamos el muestreo pero en tiempo
 					iteradorTiempo += intervaloMuestra;
@@ -139,13 +140,13 @@ public class Principal {
 			
 			// Registramos datos estadísticos finales
 			salida.registrarDatosHistoricos(historico, maxTiempo, 
-					algoritmo.getMejorCosto());
+					algoritmo.getMejorCosto(), algoritmo.getMejorFitness());
 			
 			// Registramos la cantidad de reinicios
-			historico.addFirst(new String[]{"Reinicios", String.valueOf(reinicios)});
+			historico.addFirst(new String[]{"Reinicios", String.valueOf(reinicios), ""});
 			
 			// Escribimos el historico
-			salida.escribirHistorico(k, args[0], reinicios, historico);
+			salida.escribirHistorico(k, args[0], historico);
 
 			System.out.println();
 			System.out.println();

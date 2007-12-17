@@ -40,8 +40,7 @@ public class ImpresionSalida {
 		System.out.println();
 	}
 
-	public void escribirHistorico(int id, String path, int reinicios, 
-			List<String[]> historico) {
+	public void escribirHistorico(int id, String path, List<String[]> historico) {
 
 		CSVWriter writer = null;
 		try {
@@ -67,11 +66,12 @@ public class ImpresionSalida {
 	}
 
 	public void registrarDatosHistoricos(List<String[]> historico, 
-			long tiempo, double costo) {
+			long tiempo, double costo, double fitness) {
 
-		String[] muestra = new String[2];
+		String[] muestra = new String[3];
 		muestra[0] = String.valueOf(tiempo); 
 		muestra[1] = String.valueOf(costo);
+		muestra[2] = String.valueOf(fitness);
 
 		historico.add(muestra);
 	}

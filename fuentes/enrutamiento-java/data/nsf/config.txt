@@ -1,8 +1,8 @@
 # Tiempo de la corrida (segundos)
-MAX_TIEMPO = 120
+MAX_TIEMPO = 180
 
 # Cantidad máxima de rutas a cargar
-MAX_CAMINOS = 20
+MAX_CAMINOS = 0
 
 # Tamaño de la población AG
 TAM_POBLACION_AG = 32
@@ -11,18 +11,18 @@ TAM_POBLACION_AG = 32
 TAM_POBLACION_PSO = 32
 
 # Cantidad de corridas a realizar
-CANT_CORRIDAS = 3
+CANT_CORRIDAS = 10
 
 # Cada cuántos milisegundos tomar una muestra
-INTERVALO_MUESTRA = 5000
+INTERVALO_MUESTRA = 1000
 
 # Probabilidad de la mutación en AG.
-# El valor va de 0 a 99.
+# El valor va de 0 a 100.
 PROB_MUTACION_AG = 20
 
 # Porcentaje de inválidos para reinicializar el enjambre. 
-# El valor va de 0 a 99.
-PORC_REINICIO_PSO = 50
+# El valor va de 0 a 100.
+PORC_REINICIO_PSO = 80
 
 # Porcentaje de inválidos para reinicializar la población.
 # El valor va de 0 a 100.

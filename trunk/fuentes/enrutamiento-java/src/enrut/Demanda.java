@@ -5,6 +5,10 @@ package enrut;
 
 import enrut.grafo.GrupoCaminos;
 
+/*
+ * Representa una demanda realizada
+ * sobre la red de comunicación (grafo).
+ */
 public class Demanda {
 	/*
 	 * El vertice origen de la demanda.
@@ -18,7 +22,7 @@ public class Demanda {
 	
 	/*
 	 * El ancho de banda requerido por la
-	 * Demanda. Medido en KB/s.
+	 * Demanda. Medido en Mbps.
 	 */
 	private double anchoDeBanda;
 	

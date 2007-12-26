@@ -12,20 +12,47 @@ import java.util.Locale;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
+/**
+ * Clase que se encarga de toda la impresión de 
+ * la salida de los algoritmos GA y PSO.
+ */
 public class ImpresionSalida {
-	
+	/*
+	 * Formateador de numeros de punto flotante
+	 */
 	private NumberFormat nf;
+	
+	/*
+	 * Id del algoritmo que lo utiliza
+	 */
 	private String id;
 	
+	/**
+	 * Crea un nuevo objeto de esta clase.
+	 */
 	public ImpresionSalida(String id) {
 		this.id = id;
 		
+		// Separador decimal = punto
 		this.nf = NumberFormat.getInstance(Locale.US);
+		
+		// Digitos decimales = seis
 		this.nf.setMaximumFractionDigits(6);
 		this.nf.setMinimumFractionDigits(6);
+		
+		// Se redondean los dígitos decimales
 		this.nf.setRoundingMode(RoundingMode.HALF_UP);
 	}
 	
+	/**
+	 * Imprime el estado de ejecución de un algoritmo
+	 * 
+	 * @param tiempo Tiempo transcurrido
+	 * @param iteraciones Iteración del algoritmo
+	 * @param reinicios Cantidad de reinicios de la población/enjambre
+	 * @param costo Mejor costo alcanzado hasta el momento
+	 * @param fitness Mejor fitness alcanzado hasta el momento
+	 */
 	public void traza(long tiempo, int iteraciones, int reinicios,
 							double costo, double fitness) {
 		
@@ -40,10 +67,20 @@ public class ImpresionSalida {
 		System.out.println();
 	}
 
+	/**
+	 * Imprime un archivo CSV con los datos de cada ejecución, para que
+	 * luego pueda ser abierto en Excel o Calc para sacar estadísticas y
+	 * realizar gráficos.
+	 * 
+	 * @param id Ejecución del algoritmo
+	 * @param path Directorio (terminado en barra) donde se tiene que imprimir el archivo
+	 * @param historico El listado de toda la salida a escribir
+	 */
 	public void escribirHistorico(int id, String path, List<String[]> historico) {
 
 		CSVWriter writer = null;
 		try {
+			// Creamos el archivo
 			path = path + "historico" + id + ".csv";
 			writer = new CSVWriter(new FileWriter(path), ';');
 		} 
@@ -53,9 +90,11 @@ public class ImpresionSalida {
 			System.exit(0);
 		}
 
+		// Escribimos la salida
 		writer.writeAll(historico);
 
 		try {
+			// Cerramos el archivo
 			writer.close();
 		}
 		catch (IOException e) {
@@ -65,17 +104,30 @@ public class ImpresionSalida {
 		}
 	}
 
+	/**
+	 * Agrega un registro (muestra) al histórico de ejecución.
+	 * 
+	 * @param historico El listado de toda la salida a escribir
+	 * @param tiempo Tiempo actual de ejecución
+	 * @param costo Mejor costo alcanzado hasta el momento
+	 * @param fitness Mejor fitness alcanzado hasta el momento
+	 */
 	public void registrarDatosHistoricos(List<String[]> historico, 
 			long tiempo, double costo, double fitness) {
 
+		// Construimos el registro (muestra)
 		String[] muestra = new String[3];
 		muestra[0] = String.valueOf(tiempo); 
 		muestra[1] = String.valueOf(costo).replace('.', ',');
 		muestra[2] = String.valueOf(fitness).replace('.', ',');
 
+		// Imprimimos el registro (muestra)
 		historico.add(muestra);
 	}
 	
+	/**
+	 * Imprime el titulo de la ejecución.
+	 */
 	public void imprimirTitulo(String id) {
 		if (id.equalsIgnoreCase("AlgoritmoAG")) {
 			System.out.println("      .........................................");

@@ -27,7 +27,7 @@ public class Demanda {
 	private double anchoDeBanda;
 	
 	/*
-	 * Caminos para la demanda
+	 * Caminos posibles para la demanda
 	 */
 	private GrupoCaminos caminos;
 	

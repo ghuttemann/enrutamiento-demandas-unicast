@@ -37,8 +37,10 @@ public class ConstructorGrafo {
 	
 			linea = lector.leerLinea();
 			while (linea != null) {
+				// Separamos la linea (arista)
 				String[] partes = linea.split("\\s");
 				
+				// Obtenemos los datos de la arista
 				origen    = Integer.parseInt(partes[0]);
 				destino   = Integer.parseInt(partes[1]);
 				capacidad = Double.parseDouble(partes[2]);
@@ -48,10 +50,18 @@ public class ConstructorGrafo {
 				Arista a = new Arista(origen, destino, costo, capacidad);
 				grafo.agregarArista(a);
 	
+				/*
+				 *  Contabilizamos la cantidad de lineas
+				 *  leídas, para realizar un control de
+				 *  consistencia.
+				 */
 				contador++;
+				
+				// Leemos la sgte línea (arista)
 				linea = lector.leerLinea();
 			}
 			
+			// Control de consistencia
 			if (contador != cantAristas) {
 				String str = "Error en el archivo \"" + archivo + "\"\n";
 				str += "La cantidad de vertices leidos no coincide con ";

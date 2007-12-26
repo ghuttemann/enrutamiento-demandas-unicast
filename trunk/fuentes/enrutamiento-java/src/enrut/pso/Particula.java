@@ -42,7 +42,7 @@ public class Particula extends Solucion {
 	/*
 	 * Mejor posición personal
 	 */
-	private int[] mejorPosicionLocal;
+	private int[] mejorPosicionPersonal;
 	
 	/*
 	 * Costo de la mejor solucion personal
@@ -56,15 +56,14 @@ public class Particula extends Solucion {
 	
 	
 	/**
-	 * Construye un nuevo cromosoma con alelos
-	 * randómicos para sus genes.
+	 * Construye una nueva particula
 	 * @param demandas Las demandas solicitadas
 	 */
 	public Particula(Demanda[] demandas, int cantAristas) {
 		this.demandas = demandas;
 		posActual = new int[demandas.length];
 		
-		mejorPosicionLocal = new int[posActual.length];
+		mejorPosicionPersonal = new int[posActual.length];
 		mejorCostoLocal    = -cantAristas;
 		mejorFitnessLocal  = -cantAristas;
 	}
@@ -82,59 +81,101 @@ public class Particula extends Solucion {
 		}
 	}
 	
+	/**
+	 * Setea el valor de una dimensión de la posición
+	 * @param pos Dimensión
+	 * @param valor Nuevo valor
+	 */
 	public void setPosActual(int pos, int valor) {
 		this.posActual[pos] = valor;
 	}
 	
+	/**
+	 * Setea la posición de la particula
+	 * @param pos Nueva posición
+	 */
 	public void setPosActual(int[] pos) {
 		for(int i=0; i< posActual.length; i++) {
 			setPosActual(i, pos[i]);
 		}
 	}
 	
+	/**
+	 * Obtiene el valor de una dimensión de la posición
+	 * @param pos Dimensión de la posición
+	 */
 	public int getPosActual(int pos) {
 		return this.posActual[pos];
 	}
 	
+	
+	/**
+	 * Obtiene la posición de la partícula.
+	 */
 	public int[] getPosActual() {
 		return this.posActual;
 	}
 	
-	public int[] getMejorPosicionLocal() {
-		return this.mejorPosicionLocal;
+	/**
+	 * Obtiene la mejor posición personal de la partícula
+	 */
+	public int[] getMejorPosicionPersonal() {
+		return this.mejorPosicionPersonal;
 	}
 	
-	public int getMejorPosicionLocal(int pos) {
-		return this.mejorPosicionLocal[pos];
+	/**
+	 * Obtiene la mejor posición personal de la partícula
+	 * en la dimensión "pos".
+	 */
+	public int getMejorPosicionPersonal(int pos) {
+		return this.mejorPosicionPersonal[pos];
 	}
 	
-	public double getMejorCostoLocal() {
+	/**
+	 * Obtiene el mejor costo personal de la partícula
+	 */
+	public double getMejorCostoPersonal() {
 		return this.mejorCostoLocal;
 	}
 	
+	/**
+	 * Obtiene el grupo de caminos asociado a la 
+	 * i-ésima dimensión.
+	 */
 	public GrupoCaminos getGrupoCaminos(int i) {
 		return this.demandas[i].getGrupoCaminos();
 	}
 	
+	/**
+	 * Obtiene las demandas asociadas a la partícula.
+	 */
 	public Demanda[] getDemandas() {
 		return this.demandas;
 	}
 	
+	/**
+	 * Obtiene la cantidad de dimensiones que tiene
+	 * la posición de la partícula.
+	 */
 	public int getCantDimensiones() {
 		return this.posActual.length;
 	}
 	
+	/**
+	 * Realiza la operación de evaluación
+	 * de la partícula, asignando fitness y costo.
+	 */
 	public double evaluar() {
 		// Calculamos el costo de la solución
-		double total=0.0;
-		for(int i=0; i<this.getCantDimensiones(); i++){
+		double total = 0.0;
+		for(int i=0; i < this.getCantDimensiones(); i++){
 			total += getGrupoCaminos(i).getCamino(getPosActual(i)).getCosto();
 		}
 		this.costoActual = total;
 		
 		// Verificamos si la solución es válida
 		int repetidos = this.esValido();
-		if (repetidos>0)
+		if (repetidos > 0)
 			this.fitness = -repetidos;
 		else
 			this.fitness = 1/this.costoActual;
@@ -146,7 +187,7 @@ public class Particula extends Solucion {
 		 * serlo lo reemplazamos.
 		 */
 		if (fitness > mejorFitnessLocal) {
-			System.arraycopy(posActual, 0, mejorPosicionLocal, 0, posActual.length);
+			System.arraycopy(posActual, 0, mejorPosicionPersonal, 0, posActual.length);
 			mejorFitnessLocal = fitness;
 			mejorCostoLocal   = costoActual;
 		}
@@ -154,6 +195,13 @@ public class Particula extends Solucion {
 		return this.fitness;
 	}
 	
+	/*
+	 * Verifica si la partícula es una solución
+	 * válida. Si lo es, esta función retorna cero.
+	 * En caso contrario, retorna la cantidad de
+	 * aristas en las que se viola la restricción
+	 * de ancho de banda.
+	 */
 	private int esValido() {
 		
 		Hashtable<String, Capacidad> aristasRepetidas;
@@ -236,7 +284,7 @@ public class Particula extends Solucion {
 					double auxiliar = demanda.getAnchoDeBanda();
 					capa.descontar(auxiliar);
 					
-					if (capa.esNegativo()){
+					if (capa.esNegativo()) {
 						enlacesRepetidos += capa.getCantAristas();
 					}
 				}
@@ -246,10 +294,16 @@ public class Particula extends Solucion {
 		return enlacesRepetidos;
 	}
 	
+	/**
+	 * Obtiene el costo asociado a la partícula
+	 */
 	public double getCosto() {
 		return this.costoActual;
 	}
 	
+	/**
+	 * Obtiene el fitness de la partícula
+	 */
 	public double getFitness() {
 		return fitness;
 	}
@@ -280,46 +334,15 @@ public class Particula extends Solucion {
 			System.out.println("Demanda "+i+"= "+c);
 		}
 	}
-	
-	/**
-	 * Calcula una nueva posición para la particula dadas:
-	 * la posicionActual, la mejor posicionLocal, la mejor
-	 * posicionGlobal y los factores.
-	 * @param mejorGlobal
-	 * @param factores
-	 * @return int [] nueva posicion calculada
-	 */
-	public int[] getNuevaPosicion(Particula mejorGlobal, int[] factores) {
-		
-		Random rand = new Random();
-		rand.nextInt();
-		int size = this.posActual.length;
-		int [] nuevaPos = new int[size];
-		
-		for (int i=0; i < size; i++) {
-			
-			int r = rand.nextInt(100)+1; // valor entre 1 y 100
-			// Seleccionar Mejor Global
-			if (r <= factores[2]) { 
-				nuevaPos[i] = mejorGlobal.getPosActual(i);
-			}
-			// Seleccionar Mejor Personal
-			else if (r <= factores[2]+factores[1]) { 
-				nuevaPos[i] = mejorPosicionLocal[i];
-			}
-			// Seleccionar de la posicion actual
-			else {
-				nuevaPos[i] = posActual[i]; 
-			}
-		}
-		return nuevaPos;
-	}
 
+	/**
+	 * Copia todos los valores de la particula "p".
+	 */
 	public void clonar(Particula p) {
 		
 		this.demandas = new Demanda[p.demandas.length]; // vector de demandas
 		this.posActual = new int[p.demandas.length]; // vector de ints
-		this.mejorPosicionLocal = new int[posActual.length]; // vector de ints
+		this.mejorPosicionPersonal = new int[posActual.length]; // vector de ints
 		
 		for (int i =0; i< p.demandas.length; i++) {
 			int origen = p.getDemandas()[i].getOrigen();
@@ -328,7 +351,7 @@ public class Particula extends Solucion {
 			this.demandas[i] = new Demanda(origen, destino, anchoDeBanda);
 			this.demandas[i].setCaminos(p.getGrupoCaminos(i));
 			this.posActual[i] = p.getPosActual(i);
-			this.mejorPosicionLocal[i] = p.getMejorPosicionLocal(i);
+			this.mejorPosicionPersonal[i] = p.getMejorPosicionPersonal(i);
 		}
 		
 		this.costoActual = p.costoActual;
@@ -336,7 +359,6 @@ public class Particula extends Solucion {
 		this.fitness = p.fitness;
 		this.mejorFitnessLocal = p.mejorFitnessLocal;
 	}
-	
 	
 	private class Capacidad {
 		private double valor;

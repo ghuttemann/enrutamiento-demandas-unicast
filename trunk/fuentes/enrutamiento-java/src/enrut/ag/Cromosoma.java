@@ -66,14 +66,14 @@ public class Cromosoma extends Solucion {
 		}
 	}
 	
-	/*
+	/**
 	 * Setea un determinado gen del cromosoma.
 	 */
 	public void setGen(int pos, int valor) {
 		this.genes[pos] = valor;
 	}
 	
-	/*
+	/**
 	 * Obtiene el valor de un determinado 
 	 * gen del cromosoma.
 	 */
@@ -81,7 +81,7 @@ public class Cromosoma extends Solucion {
 		return this.genes[pos];
 	}
 	
-	/*
+	/**
 	 * Obtiene el grupo de caminos relacionado
 	 * al gen i del cromosoma.
 	 */
@@ -89,7 +89,7 @@ public class Cromosoma extends Solucion {
 		return this.demandas[i].getGrupoCaminos();
 	}
 	
-	/*
+	/**
 	 * Obtiene las demandas relacionadas a
 	 * este cromosoma.
 	 */
@@ -97,7 +97,7 @@ public class Cromosoma extends Solucion {
 		return this.demandas;
 	}
 	
-	/*
+	/**
 	 * Obtiene la longitud (cantidad de genes)
 	 * de este cromosoma.
 	 */
@@ -105,7 +105,7 @@ public class Cromosoma extends Solucion {
 		return this.genes.length;
 	}
 	
-	/*
+	/**
 	 * Realiza la operación de evaluación
 	 * del cromosoma, asignando fitness y costo.
 	 */
@@ -227,7 +227,7 @@ public class Cromosoma extends Solucion {
 		return enlacesRepetidos;
 	}
 	
-	/*
+	/**
 	 * Obtiene el costo de la solución
 	 * representada por este cromosoma.
 	 */
@@ -235,14 +235,14 @@ public class Cromosoma extends Solucion {
 		return this.costo;
 	}
 	
-	/*
+	/**
 	 * Obtiene el fitness de este cromosoma.
 	 */
 	public double getFitness() {
 		return fitness;
 	}
 	
-	/*
+	/**
 	 * Función de comparación de igualdad.
 	 */
 	@Override
@@ -265,7 +265,7 @@ public class Cromosoma extends Solucion {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Imprime al cromosoma en la salida estándar.
 	 */
 	public void imprimir(){

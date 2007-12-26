@@ -53,6 +53,7 @@ public class GeneradorCaminos {
 			// Escribimos el destino
 			escritor.imprimir(j).nuevaLinea();
 			
+			// Escribimos cada camino de "i" a "j"
 			for (int k=0; k < grupo.getCantCaminos(); k++) {
 				Camino cam = grupo.getCamino(k);
 				escritor.imprimir(cam).nuevaLinea();
@@ -112,17 +113,34 @@ public class GeneradorCaminos {
 		
 		// Comenzamos el recorrido
 		while (it.hasNext()) {
+			// Obtenemos el sgte vertice
 			Arista a = it.next();
 			int destino = a.getDestino();
 			Vertice v = grafo.getVertice(destino);
 			
 			if (!v.getVisitado()) {
+				// Guardamos la arista en el camino actual
 				camino.agregarArista(a);
+				
+				/*
+				 * Volvemos a generar la siguiente arista a partir
+				 * del nuevo vertice alcanzado.
+				 */
 				generarGrupo(grafo, origen, destino, camino, caminos);
+				
+				/*
+				 * Una vez que acabamos de recorrer todos los caminos
+				 * desde este vértice, retrocedemos y quitamos la 
+				 * última arista del camino.
+				 */
 				camino.quitarArista();
 			}
 		}
 		
+		/*
+		 * Cuando visitamos todos los vecinos del
+		 * vertice lo marcamos como no visitado.
+		 */
 		vert.setVisitado(false);
 	}
 }

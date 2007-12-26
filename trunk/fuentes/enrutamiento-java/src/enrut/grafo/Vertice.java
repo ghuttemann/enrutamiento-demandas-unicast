@@ -47,27 +47,32 @@ public class Vertice {
  		adyacentes.add(a);
  	}
  	
-	/** Retorna la primera Arista adyacente al vertice. */
+	/** Retorna la lista de aristas adyacentes al vertice. */
  	public List<Arista> getAdyacentes() {
  		return adyacentes;
  	}
  	
+ 	/** Retorna la cantidad de aristas adyacentes */
  	public int getCantAristas() {
  		return adyacentes.size();
  	}
  	
+ 	/** Retorna la i-ésima arista adyacente al vértice */
  	public Arista getArista(int i) {
  		return adyacentes.get(i);
  	}
  	
+ 	/** Verifica si el vertice está visitado */
  	public boolean getVisitado() {
 		return visitado;
 	}
 
-	public void setVisitado(boolean visitado) {
+ 	/** Marca al vértica como visitado/no visitado */
+ 	public void setVisitado(boolean visitado) {
 		this.visitado = visitado;
 	}
 	
+ 	/** Retorna el id del vertice */
 	public int getId() {
 		return id;
 	}

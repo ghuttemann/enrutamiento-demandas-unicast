@@ -9,7 +9,7 @@ import enrut.ag.oper.OperadorMutacion;
 
 /*
  * Implementación de la operación de mutación que muta
- * todos los genes del cromosoma.
+ * todos los genes del cromosoma (mutación uniforme).
  */
 public class MutacionGenes implements OperadorMutacion {
 	//@Override

@@ -11,15 +11,22 @@ import enrut.utils.Config;
 import enrut.utils.ImpresionSalida;
 
 public class Principal {
-	
+	/*
+	 * Algoritmo a ser ejecutado.
+	 */
 	private Algoritmo algoritmo;
 	
+	/**
+	 * Construye un nuevo objeto de esta clase
+	 */
 	public Principal(Algoritmo alg) {
 		this.algoritmo = alg;
 	}
 
+	/**
+	 * Ejecución del algoritmo en cuestión.
+	 */
 	public void ejecutar(String[] args) {
-		
 		// Controlamos si recibimos el directorio de configuracion
 		if (args.length != 1)
 			throw new Error("Falta nombre de Carpeta de Configuración");
@@ -28,11 +35,11 @@ public class Principal {
 		String clase = algoritmo.getClass().getName();
 		String id = clase.substring(clase.lastIndexOf(".")+1);
 		
-		// Cargamos la configuracion
+		// Cargamos los parámetros de configuracion
 		Config conf = new Config(id);
 		conf.cargarParametros(args[0]);
 		
-		// El tiempo máximo está en segundos
+		// El tiempo máximo está en segundos, lo convertimos a milisegundos
 		long maxTiempo = 1000L * conf.getMaxTiempo();
 		
 		// El intervalo de muestreo está en milisegundos
@@ -45,7 +52,7 @@ public class Principal {
 		/*
 		 * Comenzamos las corridas
 		 */
-		for (int k = 1; k <= conf.getCantCorridas(); k++) {
+		for (int k = 1; k <= conf.getCantEjecuciones(); k++) {
 			// Resultados historicos
 			LinkedList<String[]> historico = new LinkedList<String[]>();
 			
@@ -69,7 +76,7 @@ public class Principal {
 
 //----------------------------------------------| I N I C I O |-----------------------------------//
 			
-			// Inicializamos la solucion
+			// Inicializamos la población/enjambre
 			algoritmo.inicializar(conf);
 			
 			// Eliminamos iguales y evaluamos
@@ -78,6 +85,7 @@ public class Principal {
 
 			// -----------------------| Ciclo principal |-----------------
 			while (true) {
+				// Operaciones principales del algoritmo
 				algoritmo.ejecutar();
 				
 				// Eliminamos iguales y evaluamos
@@ -89,23 +97,25 @@ public class Principal {
 				 *  alto de inválidos.
 				 */
 				if (algoritmo.reinicializar()) {
-					// se guarda el mejor antes de reinicializar
+					// Se guarda el mejor antes de reinicializar
 					Solucion best = algoritmo.getMejorSolucion();
 					
-					// Inicializamos la solucion
+					// Inicializamos la población/enjambre
 					algoritmo.inicializar(conf);
 
-					// se actualiza el mejor historico
+					// Se actualiza el mejor historico
 					algoritmo.setMejorSolucion(best);
 					
 					// Eliminamos iguales y evaluamos
 					algoritmo.descartarIguales();
 					algoritmo.evaluar();
-					reinicios++;
+					
+					// Contamos la cantidad de reinicios
+					++reinicios;
 				}
 
 				// Contamos las iteraciones
-				iteraciones++;
+				++iteraciones;
 				
 				// Medimos el tiempo actual
 				tiempoActual = System.currentTimeMillis();
@@ -125,11 +135,11 @@ public class Principal {
 											 algoritmo.getMejorCosto(),
 											 algoritmo.getMejorFitness());
 					
-					// Incrementamos el muestreo pero en tiempo
+					// Incrementamos el muestreo, pero en tiempo
 					iteradorTiempo += intervaloMuestra;
 				}
 				
-				// Si llegamos al tiempo, terminamos
+				// Si llegamos al tiempo de ejecución, terminamos
 				if (tiempoActual - tiempoInicio >= maxTiempo)
 					break;
 			}
@@ -142,12 +152,13 @@ public class Principal {
 			salida.registrarDatosHistoricos(historico, maxTiempo, 
 					algoritmo.getMejorCosto(), algoritmo.getMejorFitness());
 			
-			// Registramos la cantidad de reinicios
+			// Registramos la cantidad de reinicios, al comienzo de la lista
 			historico.addFirst(new String[]{"Reinicios", String.valueOf(reinicios), ""});
 			
-			// Escribimos el historico
+			// Escribimos el historico en el archivo CSV
 			salida.escribirHistorico(k, args[0], historico);
 
+			// Imprimimos el resultado final
 			System.out.println();
 			System.out.println();
 			System.out.println("RESULTADO FINAL:");
@@ -156,6 +167,7 @@ public class Principal {
 								  algoritmo.getMejorCosto(),
 								  algoritmo.getMejorFitness());
 			
+			// Imprimimos la solución final
 			System.out.println();
 			System.out.println("SOLUCION:");
 			algoritmo.getMejorSolucion().imprimir();
@@ -169,10 +181,11 @@ public class Principal {
 				System.out.println("NO EXISTE SOLUCION VALIDA.");
 			}
 			
-			// Liberamos memoria
+			// Liberamos memoria (útil en caso de tener varias ejecuciones).
 			System.gc();
 		}
 		
+		// Imprimimos los parámetros iniciales de configuración.
 		System.out.println();
 		System.out.println("PARAMETROS INICIALES:");
 		conf.imprimir();

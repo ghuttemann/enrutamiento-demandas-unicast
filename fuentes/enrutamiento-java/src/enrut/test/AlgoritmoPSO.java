@@ -10,6 +10,10 @@ import enrut.pso.Particula;
 import enrut.pso.oper.impl.MovimientoTradicional;
 import enrut.utils.Config;
 
+/**
+ * Implementación de la interfaz Algoritmo para el
+ * algoritmo basado en PSO.
+ */
 public class AlgoritmoPSO implements Algoritmo {
 	private Enjambre enjambre;
 	
@@ -23,6 +27,7 @@ public class AlgoritmoPSO implements Algoritmo {
 
 	@Override
 	public void ejecutar() {
+		// Operación principal del algoritmo basado en PSO.
 		enjambre.nuevasPosiciones();
 	}
 
@@ -62,6 +67,9 @@ public class AlgoritmoPSO implements Algoritmo {
 		return enjambre.reinicializar();
 	}
 
+	/*
+	 * Inicializa el enjambre del algoritmo basado en PSO.
+	 */
 	private static Enjambre inicializarEnjambre(Config conf) {
 		Enjambre p = new Enjambre(conf.getDemandas(), 
 								  conf.getTamPoblacionPSO(),

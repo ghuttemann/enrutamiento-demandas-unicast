@@ -9,6 +9,9 @@ import enrut.grafo.Camino;
 import enrut.grafo.ConstructorCaminos;
 import enrut.grafo.GrupoCaminos;
 
+/*
+ * Para probar la construcción de caminos.
+ */
 public class ConstruirCaminos {
 	public static void main(String[] args) {
 		ConstructorCaminos cc = new ConstructorCaminos();

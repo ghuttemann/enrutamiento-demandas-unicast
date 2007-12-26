@@ -9,6 +9,9 @@ import enrut.grafo.ConstructorGrafo;
 import enrut.grafo.Grafo;
 import enrut.grafo.PrintTo;
 
+/*
+ * Para probar la lectura de un grafo.
+ */
 public class ConstruirGrafo {
 	public static void main(String[] args) {
 		ConstructorGrafo cg;
@@ -44,5 +47,4 @@ public class ConstruirGrafo {
 		
 		System.out.println("¡¡¡END OF PROGRAM!!!"+rutas);
 	}
-
 }

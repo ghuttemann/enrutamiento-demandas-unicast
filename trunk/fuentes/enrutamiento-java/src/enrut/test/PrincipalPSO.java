@@ -45,7 +45,7 @@ public class PrincipalPSO {
 		/*
 		 * Comenzamos las corridas
 		 */
-		for (int k = 1; k <= conf.getCantCorridas(); k++) {
+		for (int k = 1; k <= conf.getCantEjecuciones(); k++) {
 			// Resultados historicos
 			LinkedList<String[]> historico = new LinkedList<String[]>();
 			

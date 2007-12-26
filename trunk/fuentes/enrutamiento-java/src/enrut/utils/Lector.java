@@ -10,7 +10,7 @@ import java.io.IOException;
 
 /**
  * Clase usada para la lectura de datos desde
- * teclado y para el borrado de pantalla.
+ * un archivo.
  *
  * @author German Huttemann Arza
  */

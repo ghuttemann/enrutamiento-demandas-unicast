@@ -8,6 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Clase para realizar la escritura de un archivo
+ */
 public class Escritor {
 	protected PrintWriter output;
 	private String archivo;
@@ -56,17 +59,26 @@ public class Escritor {
 		return this;
 	}
 	
+	/**
+	 * Imprime en el archivo un caracter de nueva línea
+	 */
 	public Escritor nuevaLinea() {
 		output.println();
 		this.chequearError();
 		return this;
 	}
 
+	/**
+	 * Cierra el archivo
+	 */
 	public void cerrar() {
 		output.flush();
 		output.close();
 	}
 	
+	/*
+	 * Chequea si hubo un error al operar sobre el archivo
+	 */
 	private void chequearError() {
 		if (output.checkError())
 			throw new Error("Error escribiendo en \"" + archivo + "\"");

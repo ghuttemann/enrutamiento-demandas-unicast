@@ -12,6 +12,10 @@ import enrut.ag.oper.impl.mutacion.MutacionGenes;
 import enrut.ag.oper.impl.seleccion.TorneoBinario;
 import enrut.utils.Config;
 
+/**
+ * Implementación de la interfaz Algoritmo para el 
+ * algoritmo basado en GA.
+ */
 public class AlgoritmoAG implements Algoritmo {
 	private Poblacion poblacion;
 	
@@ -25,6 +29,10 @@ public class AlgoritmoAG implements Algoritmo {
 
 	@Override
 	public void ejecutar() {
+		/*
+		 * Los cuatro pasos principales del 
+		 * algoritmo basado en GA.
+		 */
 		Cromosoma[] selectos = poblacion.seleccionar();
 		poblacion.cruzar(selectos);
 		poblacion.mutar();
@@ -67,6 +75,9 @@ public class AlgoritmoAG implements Algoritmo {
 		return poblacion.reinicializar();
 	}
 
+	/*
+	 * Inicializa la población del algoritmo basado en GA.
+	 */
 	private static Poblacion inicializarPoblacion(Config conf) {
 		Poblacion p = new Poblacion(conf.getDemandas(), 
 									conf.getTamPoblacionAG(),

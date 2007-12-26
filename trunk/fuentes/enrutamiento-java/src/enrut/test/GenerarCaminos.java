@@ -7,6 +7,9 @@ import enrut.grafo.ConstructorGrafo;
 import enrut.grafo.GeneradorCaminos;
 import enrut.grafo.Grafo;
 
+/*
+ * Dado un grafo, genera los caminos entre sus vertices
+ */
 public class GenerarCaminos {
 	public static void main(String[] args) {
 		ConstructorGrafo constGrafo;

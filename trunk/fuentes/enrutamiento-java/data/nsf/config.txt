@@ -1,34 +1,34 @@
 # Tiempo de la corrida (segundos)
 MAX_TIEMPO = 180
 
-# Cantidad m·xima de rutas a cargar
+# Cantidad m√°xima de rutas a cargar
 MAX_CAMINOS = 0
 
-# TamaÒo de la poblaciÛn AG
+# Tama√±o de la poblaci√≥n AG
 TAM_POBLACION_AG = 32
 
-# TamaÒo de la poblaciÛn PSO
+# Tama√±o de la poblaci√≥n PSO
 TAM_POBLACION_PSO = 32
 
-# Cantidad de corridas a realizar
-CANT_CORRIDAS = 10
+# Cantidad de ejecuciones a realizar
+CANT_EJECUCIONES = 10
 
-# Cada cu·ntos milisegundos tomar una muestra
+# Cada cu√°ntos milisegundos tomar una muestra
 INTERVALO_MUESTRA = 1000
 
-# Probabilidad de la mutaciÛn en AG.
+# Probabilidad de la mutaci√≥n en AG.
 # El valor va de 0 a 100.
 PROB_MUTACION_AG = 20
 
-# Porcentaje de inv·lidos para reinicializar el enjambre. 
+# Porcentaje de inv√°lidos para reinicializar el enjambre. 
 # El valor va de 0 a 100.
 PORC_REINICIO_PSO = 80
 
-# Porcentaje de inv·lidos para reinicializar la poblaciÛn.
+# Porcentaje de inv√°lidos para reinicializar la poblaci√≥n.
 # El valor va de 0 a 100.
 PORC_REINICIO_AG = 80
 
 # Subdirectorio, dentro del directorio de trabajo, dentro
 # del cual se encuentran los archivos de rutas.
-# Debe terminar en \ (windows) Û / (linux).
+# Debe terminar en \ (windows) √≥ / (linux).
 TABLA_RUTAS = rutas\

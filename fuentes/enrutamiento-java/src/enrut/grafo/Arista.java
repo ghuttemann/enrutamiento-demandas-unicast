@@ -5,9 +5,8 @@ package enrut.grafo;
 
 /**
  * Implementa la arista de un grafo, representada
- * por el vertice destino y por el costo de la
- * arista. El vertice origen es aquel que la contiene
- * en su lista de adyacencias.
+ * por los vertices origen y destino, y por el costo 
+ * y la capacidad de la misma.
  *
  * @see Vertice
  * @see Grafo
@@ -68,42 +67,72 @@ public class Arista {
  		return false;
  	}
  	
+ 	/**
+ 	 * Retorna una copia de esta arista.
+ 	 */
  	public Arista clonar() {
  		return new Arista(origen, destino, capacidad, costo);
  	}
 
+	/**
+	 * Obtiene el nodo origen de esta arista
+	 */
 	public int getOrigen() {
 		return origen;
 	}
 
+	/**
+	 * Setea el nodo origen de esta arista
+	 */
 	public void setOrigen(int origen) {
 		this.origen = origen;
 	}
 
+	/**
+	 * Obtiene el nodo destino de esta arista
+	 */
 	public int getDestino() {
 		return destino;
 	}
 
+	/**
+	 * Setea el nodo destino de esta arista
+	 */
 	public void setDestino(int destino) {
 		this.destino = destino;
 	}
 
+	/**
+	 * Obtiene el costo de esta arista
+	 */
 	public double getCosto() {
 		return costo;
 	}
 
+	/**
+	 * Setea el costo de esta arista
+	 */
 	public void setCosto(double costo) {
 		this.costo = costo;
 	}
 
+	/**
+	 * Obtiene el capacidad de esta arista
+	 */
 	public double getCapacidad() {
 		return capacidad;
 	}
 
+	/**
+	 * Setea la capacidad de esta arista
+	 */
 	public void setCapacidad(double capacidad) {
 		this.capacidad = capacidad;
 	}
 	
+	/* 
+	 * Retorna una representación de cadena de esta arista
+	 */
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
 		

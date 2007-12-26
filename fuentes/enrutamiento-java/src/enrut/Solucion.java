@@ -9,5 +9,8 @@ package enrut;
  * Particula.
  */
 public abstract class Solucion {
+	/**
+	 * Imprime la solución en la salida estándar
+	 */
 	public abstract void imprimir();
 }

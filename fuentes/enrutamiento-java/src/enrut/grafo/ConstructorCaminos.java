@@ -151,7 +151,6 @@ public class ConstructorCaminos {
 			 * satisfacer el ancho de banda requerido
 			 * por la demanda.
 			 */
-			//System.out.println("Condición:"+i+"=="+(partes.length));
 			if (caminoValido)
 				grupo.agregarCamino(cam);
 			

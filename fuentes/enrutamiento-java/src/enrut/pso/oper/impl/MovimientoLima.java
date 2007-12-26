@@ -8,6 +8,10 @@ import java.util.Random;
 import enrut.pso.Particula;
 import enrut.pso.oper.Movimiento;
 
+/*
+ * Implementación del movimiento de las partículas,
+ * basado en la tesis del Ing. Joaquín Lima.
+ */
 public class MovimientoLima implements Movimiento {
 
 	//@Override
@@ -28,7 +32,7 @@ public class MovimientoLima implements Movimiento {
 			}
 			// Seleccionar Mejor Personal
 			else if (r <= factores[2]+factores[1]) { 
-				nuevaPos[i] = p.getMejorPosicionLocal(i);
+				nuevaPos[i] = p.getMejorPosicionPersonal(i);
 			}
 			// Seleccionar de la posicion actual
 			else {

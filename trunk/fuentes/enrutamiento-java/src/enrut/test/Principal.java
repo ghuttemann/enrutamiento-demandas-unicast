@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import enrut.Algoritmo;
 import enrut.Solucion;
 import enrut.utils.Config;
+import enrut.utils.FormatDir;
 import enrut.utils.ImpresionSalida;
 
 public class Principal {
@@ -35,9 +36,12 @@ public class Principal {
 		String clase = algoritmo.getClass().getName();
 		String id = clase.substring(clase.lastIndexOf(".")+1);
 		
+		// Path del archivo de configuración
+		String path = FormatDir.format(args[0]);
+		
 		// Cargamos los parámetros de configuracion
 		Config conf = new Config(id);
-		conf.cargarParametros(args[0]);
+		conf.cargarParametros(path);
 		
 		// El tiempo máximo está en segundos, lo convertimos a milisegundos
 		long maxTiempo = 1000L * conf.getMaxTiempo();
@@ -60,7 +64,7 @@ public class Principal {
 			historico.add(new String[]{"Tiempo", "Costo", "Fitness"});
 			
 			// Cargamos las rutas
-			conf.cargarRutas(args[0]);
+			conf.cargarRutas(path);
 			
 			salida.imprimirTitulo(id);
 			long iteradorTiempo = intervaloMuestra;
@@ -156,7 +160,7 @@ public class Principal {
 			historico.addFirst(new String[]{"Reinicios", String.valueOf(reinicios), ""});
 			
 			// Escribimos el historico en el archivo CSV
-			salida.escribirHistorico(k, args[0], historico);
+			salida.escribirHistorico(k, path, historico);
 
 			// Imprimimos el resultado final
 			System.out.println();

@@ -248,7 +248,7 @@ public class Config {
 						demandas = getDemandas(path + "demandas.txt");
 						
 						// Guardamos el directorio de las rutas
-						pathRutas = partes[1];
+						pathRutas = FormatDir.format(partes[1]);
 					}
 					else {
 						throw new Error("Valor de configuración incorrecto: \"" + partes[0] + "\"");

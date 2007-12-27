@@ -80,7 +80,7 @@ public class ImpresionSalida {
 		CSVWriter writer = null;
 		try {
 			// Creamos el archivo
-			path = path + "historico" + id + ".csv";
+			path = path + "historico" + id + "-" + this.id +".csv";
 			writer = new CSVWriter(new FileWriter(path), ';');
 		} 
 		catch (IOException e) {

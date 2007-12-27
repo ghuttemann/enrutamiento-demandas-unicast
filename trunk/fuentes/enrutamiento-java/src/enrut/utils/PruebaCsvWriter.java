@@ -2,7 +2,7 @@ package enrut.utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import au.com.bytecode.opencsv.CSVWriter;
+import enrut.utils.CSVWriter;
 
 public class PruebaCsvWriter {
 	public static void main(String[] args) {

@@ -284,9 +284,8 @@ public class Particula extends Solucion {
 					double auxiliar = demanda.getAnchoDeBanda();
 					capa.descontar(auxiliar);
 					
-					if (capa.esNegativo()) {
-						enlacesRepetidos += capa.getCantAristas();
-					}
+					if (capa.getCantAristas() > 0 && capa.esNegativo())
+						++enlacesRepetidos;
 				}
 			}
 		}
